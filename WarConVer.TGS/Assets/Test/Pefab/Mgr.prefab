@@ -1,0 +1,113 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1716000339112248}
+  m_IsPrefabParent: 1
+--- !u!1 &1716000339112248
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4678903119026238}
+  - component: {fileID: 114657219107863532}
+  - component: {fileID: 114452001483190286}
+  m_Layer: 0
+  m_Name: Mgr
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4678903119026238
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1716000339112248}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.237133, y: -3.0943289, z: 0.99}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114452001483190286
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1716000339112248}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a0b2533cd0dceb4bb8eb98306a4eb85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GameStart: {fileID: 0}
+  ReLoadButton: {fileID: 0}
+  NoReLoad: {fileID: 0}
+  tmp: []
+  _player: {fileID: 0}
+  Cardpfb: {fileID: 0}
+  canvas: {fileID: 0}
+  card_Date: {fileID: 1716000339112248}
+  Field1: {fileID: 0}
+  ComDeck: {fileID: 0}
+  ImmDeck: {fileID: 0}
+  created: {fileID: 0}
+  player: {fileID: 0}
+  card:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  _cardList: {fileID: 0}
+  GetFiled: []
+  Deck1: {fileID: 0}
+  _unitMgr: {fileID: 0}
+  CardSprite: []
+  testHndInstant: {fileID: 114657219107863532}
+  Deck_Name: 
+  SumonCost: 0
+  _unitName: 0
+  DrawCount: 0
+  Cementery: 0
+  _samon_cost: 0
+  _Player_Mana: 0
+  ResetHand: 0
+  _cansamon: 0
+  _Load_Sprite: 0
+  _player_Trune: 1
+--- !u!114 &114657219107863532
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1716000339112248}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8d2dfbb93f2007488b2b451fe3eb490, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Hand:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
