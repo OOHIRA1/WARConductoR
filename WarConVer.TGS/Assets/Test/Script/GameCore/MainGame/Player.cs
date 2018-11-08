@@ -3,27 +3,31 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
+//==プレイヤークラス
 public class Player : MonoBehaviour
 {
     const int MAX_PLAYER_AP = 6;
 
-    [SerializeField] GameObject _gameMgr;
-    [SerializeField] GameMgr gameMgr;
-    [SerializeField] GameObject[] AP = { };
-    [SerializeField] GameObject[] LIFE = { };
-    [SerializeField] Material crystal;
-    [SerializeField] int _mana = 0;
-    [SerializeField] int _life = 0;
-    [SerializeField] int _turn = 0;
-    [SerializeField] int _handNum = 0;
-    [SerializeField] int _actionPoint = 0;
-    [SerializeField] int _effectPoint = 0;
-    [SerializeField] int _cemetery = 0;
-    [SerializeField] int _deck = 0;
-    [SerializeField] bool _dead = false;
-    [SerializeField] bool _playerTurn = false;
-    [SerializeField] Text _text;
+//    [SerializeField] GameObject _gameMgr;
+//    [SerializeField] GameMgr gameMgr;
+//    [SerializeField] GameObject[] AP = { };
+//    [SerializeField] GameObject[] LIFE = { };
+//    [SerializeField] Material crystal;
+    [SerializeField] int _mana = 0;				//マナとは？？？
+    [SerializeField] int _life = 0;				//プレイヤーのライフ
+    [SerializeField] int _turn = 0;				//何ターン目かのカウンター？？？
+    [SerializeField] int _handNum = 0;			//手札の数
+    [SerializeField] int _actionPoint = 0;		//APのこと？？？
+    [SerializeField] int _effectPoint = 0;		//???
+    [SerializeField] int _cemetery = 0;			//墓地
+    [SerializeField] int _deck = 0;				//デッキの枚数
+    [SerializeField] bool _dead = false;		//死んだかどうかのフラグ
+    [SerializeField] bool _playerTurn = false;	//自分のターンかどうかのフラグ？？？
+    [SerializeField] Text _text;				//???
 
+
+	//------------------------------------------------------
+	//アクセッサ
     public int Mana
     {
         set { this._mana = value; }
@@ -79,7 +83,10 @@ public class Player : MonoBehaviour
         set { this._text = value; }
         get { return this._text; }
     }
-   
+	//-----------------------------------------------------
+	//-----------------------------------------------------
+
+
 
     // Use this for initialization
     void Start( )
@@ -92,6 +99,10 @@ public class Player : MonoBehaviour
         
     }
 
+	//-----------------------------------------------------------------------------------------------------
+	//public関数
+
+	//--APクリスタルを更新する関数
     public void Update_Crystal_AP()
     {
         int counter = 0;
@@ -102,5 +113,6 @@ public class Player : MonoBehaviour
             print(counter);
         }
     }
-    
+    //--------------------------------------------------------------------------------------------------------
+	//--------------------------------------------------------------------------------------------------------
 }

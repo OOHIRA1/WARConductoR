@@ -37,22 +37,22 @@ public class GameMgr : MonoBehaviour
     /// ResetHand 初期手札を入れ替えたか
     /// DrawCount ゲーム中にドローした数
     /// </summary>
-    [SerializeField] GameObject GameStart;
-    [SerializeField] GameObject ReLoadButton;
-    [SerializeField] GameObject NoReLoad;
-    [SerializeField] GameObject[] tmp;
-    [SerializeField] GameObject _player;
-    [SerializeField] GameObject Cardpfb;
-    [SerializeField] GameObject canvas;
-    [SerializeField] GameObject card_Date;
-    [SerializeField] GameObject Field1;
-    [SerializeField] GameObject ComDeck;
-    [SerializeField] GameObject ImmDeck;
-    [SerializeField] CreatedCard created;
-    [SerializeField] Player player;
-    [SerializeField] Card[] card;
+	[SerializeField] GameObject GameStart = null;		//スタートボタン
+	[SerializeField] GameObject ReLoadButton = null;	//リロードボタン
+	[SerializeField] GameObject NoReLoad = null;		//リロードしないボタン
+    [SerializeField] GameObject[] tmp;					//手札系の何か？？
+//    [SerializeField] GameObject _player;
+//    [SerializeField] GameObject Cardpfb;
+//    [SerializeField] GameObject canvas;
+//    [SerializeField] GameObject card_Date;
+//    [SerializeField] GameObject Field1;
+	[SerializeField] GameObject ComDeck = null;			//調停者デッキボタン
+	[SerializeField] GameObject ImmDeck = null;			//不死デッキボタン
+	[SerializeField] CreatedCard created = null;
+    [SerializeField] Player player = null;
+	[SerializeField] Card[] card = new Card[8];			//手札にあるカード
     [SerializeField] CardList _cardList;
-   // [SerializeField] SceneMgr GetScene;
+//    [SerializeField] SceneMgr GetScene;
     [SerializeField] Filed[] GetFiled;
     [SerializeField] Deck1 Deck1;
     [SerializeField] UnitMgr _unitMgr;

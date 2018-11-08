@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+//==カードIDを管理するクラス
 public class CardList : MonoBehaviour
 {
 
@@ -13,43 +14,43 @@ public class CardList : MonoBehaviour
     private void Start()
     {
         card_Image_Id = new string[]
-    {
-        "Vanargand",
-        "Hohenstaufen",
-        "Schwarzwald",
-        "Volsunga",
-        "Nachzehrer",
-        "Luzifer",
-        "Tobalcaine",
-        "Pegasus",
-        "VereFilius",
-        "Babylon",
-        "Heilige",
-        "Wegweiser",
-        "Swastika",
-        "Guilltine",
-        "Rusalka",
-        "dracula",
-        "undead",
-        "blackdragon",
-        "kmiusagiaa",
-        "suke",
-        "zombie",
-        "carbuncle",
-        "garuda",
-        "kennryuu",
-        "karasu",
-        "suke2",
-        "samechang",
-        "reaper",
-        "poseidonn",
-        "kettosi",
-        "cornius",
-        "gypsum",
-        "machine",
-        "n",
-        "MAX_CARD_NUM"
-    };
+	    {
+	        "Vanargand",
+	        "Hohenstaufen",
+	        "Schwarzwald",
+	        "Volsunga",
+	        "Nachzehrer",
+	        "Luzifer",
+	        "Tobalcaine",
+	        "Pegasus",
+	        "VereFilius",
+	        "Babylon",
+	        "Heilige",
+	        "Wegweiser",
+	        "Swastika",
+	        "Guilltine",
+	        "Rusalka",
+	        "dracula",
+	        "undead",
+	        "blackdragon",
+	        "kmiusagiaa",
+	        "suke",
+	        "zombie",
+	        "carbuncle",
+	        "garuda",
+	        "kennryuu",
+	        "karasu",
+	        "suke2",
+	        "samechang",
+	        "reaper",
+	        "poseidonn",
+	        "kettosi",
+	        "cornius",
+	        "gypsum",
+	        "machine",
+	        "n",
+	        "MAX_CARD_NUM"
+	    };
     }
     /// <summary>
     /// カード名

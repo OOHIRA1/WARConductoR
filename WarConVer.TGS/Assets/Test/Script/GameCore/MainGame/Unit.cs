@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
+
+//==フィールドに召喚されたユニット
 public class Unit : MonoBehaviour
 {
 
