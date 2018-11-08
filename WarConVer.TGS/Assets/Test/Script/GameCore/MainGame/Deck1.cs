@@ -1,22 +1,29 @@
 ﻿using UnityEngine;
 
+
+//==デッキを管理するクラス？？？
 public class Deck1 : MonoBehaviour {
 
-    public const int MAX_DECK_NUM = 20;
-    const int MAX_CARD_ID_NUM = (int)CardList.Card.MAX_CARD_NUM;
-    CardList CardList;
-    [SerializeField] int[] Conciliator_Deck;
-    [SerializeField] int[] Immortality_Deck;
-    [SerializeField] bool Ledy_Deck = false;
-    [SerializeField] int deck_list_num = 0;
-    [SerializeField] string Deck_Name = "";
-    [SerializeField] enum DECK_LIST
+    public const int MAX_DECK_NUM = 20;								//デッキ最大枚数
+    const int MAX_CARD_ID_NUM = (int)CardList.Card.MAX_CARD_NUM;	//カードIDの最大数
+//    CardList CardList;
+	[SerializeField] int[] Conciliator_Deck;	//調停者デッキ(IDの配列)
+	[SerializeField] int[] Immortality_Deck;	//不死デッキ(IDの配列)
+    [SerializeField] bool Ledy_Deck = false;	//デッキの準備が出来たかどうかのフラグ
+    [SerializeField] int deck_list_num = 0;		//???
+    [SerializeField] string Deck_Name = "";		//使用するデッキ名
+	public int[] Deck = new int [MAX_DECK_NUM];	//使用するデッキ(IDの配列)
+/*  enum DECK_LIST
     {
         Conciliator,
         Immortality,
         MAX_DECK_LIST
     };
     private DECK_LIST GetDeck;
+*/
+
+	//================================================
+	//アクセッサ
     public int Deck_Select_Num
     {
         set { deck_list_num = value; }
@@ -32,12 +39,15 @@ public class Deck1 : MonoBehaviour {
         set { Ledy_Deck = value; }
         get { return Ledy_Deck; }
     }
-    public int[] Deck = new int [MAX_DECK_NUM];
+	//=================================================
+	//=================================================
+
+
 
     // Use this for initialization
     private void Start()
     {
-    
+		//調停者デッキの初期化----------------------
         Conciliator_Deck = new int[MAX_DECK_NUM]
         {
             //Volsunga,Wegweiserは仮
@@ -63,7 +73,9 @@ public class Deck1 : MonoBehaviour {
            (int)CardList.Card.Wegweiser,
            
         };
+		//-----------------------------------------
 
+		//不死デッキの初期化-------------------------
         Immortality_Deck = new int[MAX_DECK_NUM]
         {
            (int)CardList.Card.karasu,
@@ -87,8 +99,15 @@ public class Deck1 : MonoBehaviour {
            (int)CardList.Card.suke,
            (int)CardList.Card.n,
         };
+		//-------------------------------------------
         Ledy_Deck = true;
     }
+
+
+	//=========================================================
+	//public関数
+
+	//--使用するデッキをDeckに格納する関数
     public void Deck_Select()
     {
        
@@ -110,6 +129,8 @@ public class Deck1 : MonoBehaviour {
         }
 
     }
+	//==========================================================
+	//==========================================================
 
 }
 	
