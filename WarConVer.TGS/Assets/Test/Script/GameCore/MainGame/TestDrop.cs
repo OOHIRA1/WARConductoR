@@ -3,13 +3,13 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 public class TestDrop : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointerExitHandler {
 
-    [SerializeField] Image image;
-    [SerializeField] GameMgr gameMgr;
-    [SerializeField] UnitMgr unitMgr;
+	[SerializeField] Image image = null;
+	[SerializeField] GameMgr gameMgr = null;
+	[SerializeField] UnitMgr unitMgr = null;
   //  [SerializeField] Unit unit;
 
     private Sprite nowSprite;
-    private bool pointerExit = false;
+//    private bool pointerExit = false;
 
     private void Awake()
     {
@@ -54,7 +54,7 @@ public class TestDrop : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
         }
         if( pointereventData.pointerEnter == false || int.Parse(this.name) > 3)
         {
-            pointerExit = true;
+//            pointerExit = true;
             gameMgr.CanSamon = false;
         }
         Card Costcheck = pointereventData.pointerDrag.GetComponent<Card>();

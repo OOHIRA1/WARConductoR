@@ -2,7 +2,7 @@
 
 public class Main : MonoBehaviour {
 
-    [SerializeField] GameMgr mgr;
+	[SerializeField] GameMgr mgr = null;
 	// Use this for initialization
 	public void Game()
     {

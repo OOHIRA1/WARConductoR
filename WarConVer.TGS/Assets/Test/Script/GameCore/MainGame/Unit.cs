@@ -6,30 +6,30 @@ using UnityEngine.UI;
 public class Unit : MonoBehaviour
 {
 
-    [SerializeField] GameMgr _get_gameMgr;
-    [SerializeField] UnitMgr _unitMgr;
-    [SerializeField] Sprite nowSprite;
+	[SerializeField] GameMgr _get_gameMgr = null;
+	[SerializeField] UnitMgr _unitMgr = null;
+//    [SerializeField] Sprite nowSprite;
     [SerializeField] Image _unitImage;
     [SerializeField] Text powText;
     [SerializeField] Text comText;
     [SerializeField] GameObject powImage;
     [SerializeField] GameObject comImage;
-    [SerializeField] GameObject _tapImage;
+	[SerializeField] GameObject _tapImage = null;
     public GameObject OreO;
     [SerializeField] private int combat;
     [SerializeField] private int power;
     [SerializeField] private int move;
     [SerializeField] private int move_point;
     [SerializeField] private int ap;
-    [SerializeField] private int _unitName;
+//    [SerializeField] private int _unitName;
     [SerializeField] private string imageName;
     [SerializeField] private int _action_Count;
-    [SerializeField] UnitController unitController;
+	[SerializeField] UnitController unitController = null;
 
     private Button GetButton;
     private string eventName;
-    private bool add_Tup_Ation = false;
-    private Move move_class;
+//    private bool add_Tup_Ation = false;
+//    private Move move_class;
 
     public int _combat
     {
@@ -103,8 +103,8 @@ public class Unit : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        move_class = GetComponent<Move>();
-        _unitName = int.Parse(this.name);
+//        move_class = GetComponent<Move>();
+//        _unitName = int.Parse(this.name);
         GetButton = this.GetComponent<Button>();
         GetButton.onClick.AddListener(TupAction);
        // eventTrigger = GetButton.gameObject.AddComponent<EventTrigger>();
@@ -176,6 +176,6 @@ public class Unit : MonoBehaviour
         move_point = 0;
         ap = 0;
         this.GetComponent<Image>().sprite = null;
-        nowSprite = null;
+//        nowSprite = null;
     }
 }

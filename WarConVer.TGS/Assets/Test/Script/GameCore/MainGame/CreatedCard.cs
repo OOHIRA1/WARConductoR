@@ -5,7 +5,7 @@ public class CreatedCard : CardList {
 
     public int CardNum = 0;
     [SerializeField] int CardMoveType = 0;
-    [SerializeField] string Name = "";
+//    [SerializeField] string Name = "";
     [SerializeField] int[ ] Num = new int[ 3 ];
 
     // public int CardNum { get { return _CardNum; } set { _CardNum = value; } }
@@ -17,7 +17,7 @@ public class CreatedCard : CardList {
     /// <param GameObject="Card"></param>
     public delegate void CreatCallBack( int move, int[ ] Status);
 
-    [SerializeField] private int SearchCard = ( int )( ( int )( Card.MAX_CARD_NUM ) / 2 );
+//    [SerializeField] private int SearchCard = ( int )( ( int )( Card.MAX_CARD_NUM ) / 2 );
 
 
     public void  Created ( CreatCallBack creatCall ) 

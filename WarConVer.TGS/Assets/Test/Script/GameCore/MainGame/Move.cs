@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class Move : MonoBehaviour {
 
-    [SerializeField] UnitMgr unitMgr;
-    private int unit_Num;
+	[SerializeField] UnitMgr unitMgr = null;
+//    private int unit_Num;
 
-    public int set_unit_Num
-    {
-        set { unit_Num = value; }
-    }
+//    public int set_unit_Num
+//    {
+//        set { unit_Num = value; }
+//    }
 	// Use this for initialization
 	void Start () {
 	}

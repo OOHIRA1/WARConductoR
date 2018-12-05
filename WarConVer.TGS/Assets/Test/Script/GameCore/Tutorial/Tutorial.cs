@@ -7,10 +7,10 @@ using UnityEngine.EventSystems;
 [RequireComponent(typeof(Image))]
 public class Tutorial : MonoBehaviour, IDragHandler, IBeginDragHandler, IPointerEnterHandler, IEndDragHandler
 {
-    [SerializeField] GameObject Farst_Tutorial;
+	[SerializeField] GameObject Farst_Tutorial = null;
     [SerializeField] GameObject Tutorial_Image;
     private Card card;
-    private Transform canvas_transform;
+	private Transform canvas_transform = null;
     private Transform start_position;
 
     private void Start()

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class SelectDeck : MonoBehaviour {
 
-    [SerializeField] Deck1 deck1;
+	[SerializeField] Deck1 deck1 = null;
 	// Use this for initializationthi
 	void Start () {
 		

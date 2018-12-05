@@ -6,12 +6,12 @@ using UnityEngine.UI;
 public class Card : MonoBehaviour/*,IBeginDragHandler, IEndDragHandler, IDragHandler*/
 {
 
-    [SerializeField] GameObject card;
-    [SerializeField] GameMgr gameMgr;
+	[SerializeField] GameObject card = null;
+	[SerializeField] GameMgr gameMgr = null;
     [SerializeField] Image image;
     [SerializeField] Sprite Getsprite;
-    [SerializeField] Graphic GetGraphic;
-    [SerializeField] GameObject GetImage;
+//    [SerializeField] Graphic GetGraphic;
+//    [SerializeField] GameObject GetImage;
     [SerializeField] int scene;
    // [SerializeField] SceneMgr _sceneMgr;
     [SerializeField] Vector3 _vector3;
@@ -25,7 +25,7 @@ public class Card : MonoBehaviour/*,IBeginDragHandler, IEndDragHandler, IDragHan
     [SerializeField] int _actionPoint;
     [SerializeField] string _graphic;
     [SerializeField] Sprite GetSprite;
-    [SerializeField] SpriteRenderer Card_spriteRenderer;
+	[SerializeField] SpriteRenderer Card_spriteRenderer = null;
     [SerializeField] int _filed_Name;
     [SerializeField] bool cansamon = false;
     public int Combat
@@ -130,9 +130,9 @@ public class Card : MonoBehaviour/*,IBeginDragHandler, IEndDragHandler, IDragHan
         Move_Point = 0;
         ActionPoint = 0;
         image = null;
-        GetGraphic = null;
+//        GetGraphic = null;
         GetSprite = null;
-        GetImage = null;
+//        GetImage = null;
         this.gameObject.SetActive(false);
     }
 

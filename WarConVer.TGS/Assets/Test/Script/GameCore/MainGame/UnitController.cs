@@ -38,7 +38,7 @@ public class UnitController : MonoBehaviour {
 
     // Use this for initialization
 	void Start () {
-	
+		Debug.Log (move_num);
 	}
 	//呼び出されたあと、移動先を計算
     public int Move_Calculation(int move_Num, int unit_Num)

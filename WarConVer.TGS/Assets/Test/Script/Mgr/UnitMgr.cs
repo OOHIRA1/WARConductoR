@@ -27,11 +27,11 @@ public class UnitMgr : MonoBehaviour {
     }
 
     [SerializeField] CardList _cardList;
-    [SerializeField] Unit[] unit;
-    [SerializeField] UnitController unitController;
-    [SerializeField] Player _player;
+	[SerializeField] Unit[] unit = null;
+	[SerializeField] UnitController unitController = null;
+	[SerializeField] Player _player = null;
     [SerializeField] GameMgr gameMgr;
-    [SerializeField] GameObject[] Unit;
+	[SerializeField] GameObject[] Unit = null;
     [SerializeField] int _Power;
     [SerializeField] int _Com;
     [SerializeField] int _Cost;
@@ -41,10 +41,10 @@ public class UnitMgr : MonoBehaviour {
     [HideInInspector]public int Unit_Num;
     [SerializeField] int _Action_Num;
     [SerializeField] string _Image_Name;
-    [SerializeField] Button[] Action_Move;
+	[SerializeField] Button[] Action_Move = null;
     [SerializeField] GameObject[] Fieldselect;
     [SerializeField] Image iconImage;
-    [SerializeField] int tmp = 0;
+//    [SerializeField] int tmp = 0;
     [SerializeField] int Select_Move = 0;
 
     private int move_Field;
@@ -565,7 +565,7 @@ public class UnitMgr : MonoBehaviour {
             default:
                 break;
         }
-        tmp = Unit_Num;
+//        tmp = Unit_Num;
 
     }
 }

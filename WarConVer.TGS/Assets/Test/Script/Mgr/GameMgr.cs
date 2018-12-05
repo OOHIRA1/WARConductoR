@@ -51,25 +51,25 @@ public class GameMgr : MonoBehaviour
 	[SerializeField] CreatedCard created = null;
     [SerializeField] Player player = null;
 	[SerializeField] Card[] card = new Card[8];			//手札にあるカード
-    [SerializeField] CardList _cardList;
+	[SerializeField] CardList _cardList = null;
 //    [SerializeField] SceneMgr GetScene;
     [SerializeField] Filed[] GetFiled;
-    [SerializeField] Deck1 Deck1;
-    [SerializeField] UnitMgr _unitMgr;
+	[SerializeField] Deck1 Deck1 = null;
+	[SerializeField] UnitMgr _unitMgr = null;
     [SerializeField] Sprite[] CardSprite;
-    [SerializeField] Sprite[] Font;
-    [SerializeField] TestHndInstant testHndInstant;
-    [SerializeField] string Deck_Name = "";
-    [SerializeField] int SumonCost = 0;
+//    [SerializeField] Sprite[] Font;
+	[SerializeField] TestHndInstant testHndInstant = null;
+//    [SerializeField] string Deck_Name = "";
+//    [SerializeField] int SumonCost = 0;
     [SerializeField] int _unitName = 0;
     [SerializeField] int DrawCount = 0;
-    [SerializeField] int Cementery = 0;
+//    [SerializeField] int Cementery = 0;
     [SerializeField] int _samon_cost;
     [SerializeField] int _Player_Mana; //= 0;
     [SerializeField] bool ResetHand = false;
     [SerializeField] bool _cansamon;
     [SerializeField] bool _Load_Sprite;
-    [SerializeField] bool _player_Trune = true;
+//    [SerializeField] bool _player_Trune = true;
 
 
     public bool CanSamon
@@ -95,7 +95,7 @@ public class GameMgr : MonoBehaviour
     {
         
         CardSprite = Resources.LoadAll<Sprite>("Card");
-        Font = Resources.LoadAll<Sprite>("font");
+//        Font = Resources.LoadAll<Sprite>("font");
     }
     /// <summary>
     /// tmp 配列の宣言
@@ -210,7 +210,7 @@ public class GameMgr : MonoBehaviour
                 GameFin(player.Dead);
             }
             //ドロー変数宣言
-            int DrawNum = 0;
+//            int DrawNum = 0;
             //以下手札初期化と同じ動作
             CreatCard();
             //手札が８枚より多くなったら破棄
@@ -339,4 +339,3 @@ public class GameMgr : MonoBehaviour
     }
 
 }
-

@@ -5,8 +5,8 @@ using UnityEngine.UI;
 
 public class Selectfield : MonoBehaviour {
 
-    [SerializeField] UnitMgr unitMgr;
-    [SerializeField] UnitController unitController;
+	[SerializeField] UnitMgr unitMgr = null;
+	[SerializeField] UnitController unitController = null;
 	// Use this for initialization
 	void Start () {
         this.gameObject.GetComponent<Image>().color = Vector4.one * 0.6f;

@@ -2,7 +2,7 @@
 
 public class TapAction : MonoBehaviour {
 
-    [SerializeField] Sprite tapImage = null;
+//    [SerializeField] Sprite tapImage = null;
     [SerializeField] GameObject popUpImage = null;
     [SerializeField] GameObject gameMgr;
     

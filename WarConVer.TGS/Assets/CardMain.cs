@@ -16,5 +16,10 @@ public class CardMain : MonoBehaviour {
 	void Start () {
 		_cardSpriteRenderer = GetComponent<SpriteRenderer> ();
 		_cardDataLoader = GameObject.Find ("CardDataLoader").GetComponent<CardDataLoader>();
+		Debug.Log (_loadID);
+		Debug.Log (_cardData);
+		Debug.Log (_actionCount);
+		Debug.Log (_cardSpriteRenderer);
+		Debug.Log (_cardDataLoader);
 	}
 }

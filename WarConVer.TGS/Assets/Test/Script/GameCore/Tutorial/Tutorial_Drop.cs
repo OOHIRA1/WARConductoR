@@ -7,34 +7,34 @@ using UnityEngine.EventSystems;
 public class Tutorial_Drop : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] Image image;
-    [SerializeField] GameObject Tap_Image;
-    [SerializeField] GameObject Move_Buttom;
+	[SerializeField] GameObject Tap_Image = null;
+	[SerializeField] GameObject Move_Buttom = null;
    // [SerializeField] GameObject Fream;
-    [SerializeField] GameObject Hand;
-    [SerializeField] GameObject Hand2;
-    [SerializeField] GameObject Tutorial_Select_effect;
-    [SerializeField] GameObject Effect_Tutorial_Samon_Hand;
-    [SerializeField] GameObject Tap_Arrow_End;
-    [SerializeField] Tutorial_TurenEnd Tutorial_TurenEnd;
-    [SerializeField] GameObject Samon_YUBI;
+	[SerializeField] GameObject Hand = null;
+	[SerializeField] GameObject Hand2 = null;
+	[SerializeField] GameObject Tutorial_Select_effect = null;
+	[SerializeField] GameObject Effect_Tutorial_Samon_Hand = null;
+	[SerializeField] GameObject Tap_Arrow_End = null;
+	[SerializeField] Tutorial_TurenEnd Tutorial_TurenEnd = null;
+	[SerializeField] GameObject Samon_YUBI = null;
     private Sprite nowSprite;
-    private bool pointerExit = false;
+//    private bool pointerExit = false;
     private int This_Name = 0;
-    [SerializeField] GameObject Tutorial;
+	[SerializeField] GameObject Tutorial = null;
     [SerializeField] Vector3 Hand_Vector;
-    [SerializeField] Vector3 Hand_Vector2;
+//    [SerializeField] Vector3 Hand_Vector2;
     [SerializeField] GameObject Effect_Tap;
-    [SerializeField] Sprite poseidon;
-    [SerializeField] Sprite sukeruton;
+    [SerializeField] Sprite poseidon = null;
+	[SerializeField] Sprite sukeruton = null;
     [SerializeField] Sprite This_Unit_Image;
-    [SerializeField] Image Player_Mp;
-    [SerializeField] Sprite Farst_Saom_Mp;
+	[SerializeField] Image Player_Mp = null;
+	[SerializeField] Sprite Farst_Saom_Mp = null;
     private void Awake()
     {
         This_Name = int.Parse(this.name);
         image = this.gameObject.GetComponent<Image>();
         Hand_Vector = Hand.gameObject.transform.position;
-        Hand_Vector2 = Hand2.gameObject.transform.position;
+//        Hand_Vector2 = Hand2.gameObject.transform.position;
 
     }
     void Start()

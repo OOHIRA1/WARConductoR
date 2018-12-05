@@ -13,7 +13,7 @@ public class TestDrag : MonoBehaviour, IDragHandler, IBeginDragHandler,IPointerE
     private Card card;
     private Transform canvas_transform;
     private Transform start_position;
-    [SerializeField] UnitMgr unitMgr;
+	[SerializeField] UnitMgr unitMgr = null;
 
     private void Awake()
     {
