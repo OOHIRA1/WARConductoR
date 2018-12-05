@@ -13,10 +13,20 @@ public class CardMain : MonoBehaviour {
 	[SerializeField] int _actionCount = 0;						//移動回数
 	const int _MAX_ACTION_COUNT = 3;							//移動回数の最大値
 
+
+	//===================================================================
+	//アクセッサ
+	public int loadID {
+		get { return _loadID; }
+		set { _loadID = value; }//カードをInstantiateした際にIDを設定する
+	}
+	//===================================================================
+	//===================================================================
+
+
 	// Use this for initialization
 	void Start () {
 		_cardSpriteRenderer = GetComponent<SpriteRenderer> ();
-		_cardSpriteRenderer.sprite = (Sprite)Resources.Load<Sprite> ("Card/" + _loadID);//カード画像の読み込み
 		_cardDataLoader = GameObject.Find ("CardDataLoader").GetComponent<CardDataLoader>();
 		Load ();//カードデータの読み込み
 		Debug.Log (_cardData);
@@ -25,7 +35,15 @@ public class CardMain : MonoBehaviour {
 
 
 	//--カードデータを読み込む関数
-	void Load() {
+	void Load( ) {
+		_cardSpriteRenderer.sprite = (Sprite)Resources.Load<Sprite> ("Card/" + _loadID);//カード画像の読み込み
 		_cardData = _cardDataLoader.GetCardDataFromID ( _loadID );
 	}
+
+
+	//==========================================================================================================
+	//public関数
+
+	//===========================================================================================================
+	//===========================================================================================================
 }
