@@ -21,7 +21,7 @@ public class Point : MonoBehaviour {
 	}
 
 	void Update( ) {
-		if ( Input.GetKeyDown( KeyCode.Z ) ) DecreasePoint( 2 );
+		if ( Input.GetKeyDown( KeyCode.Z ) ) DecreasePoint( 1 );
 	}
 
 	//ポイントを減らす--------------------

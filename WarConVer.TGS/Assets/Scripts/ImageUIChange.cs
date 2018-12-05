@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ImageAPChange : ImagesDependedOnNumber {
+public class ImageUIChange : ImagesDependedOnNumber {
 
 	void Awake( ) {
 		_point = this.GetComponent< Point >( );
