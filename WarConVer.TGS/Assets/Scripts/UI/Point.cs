@@ -20,15 +20,11 @@ public class Point : MonoBehaviour {
 		Point_Num = _max_point;
 	}
 
-	void Update( ) {
-		if ( Input.GetKeyDown( KeyCode.Z ) ) DecreasePoint( 1 );
-	}
-
-	//ポイントを減らす--------------------
-	void DecreasePoint( int point ) {
+	//ポイントを減らす------------------------
+	public void DecreasePoint( int point ) {
 		if ( point > Point_Num ) return;	//減らすポイントが現在の値より多かったら
 
 		Point_Num -= point;	
 	}
-	//------------------------------------
+	//----------------------------------------
 }

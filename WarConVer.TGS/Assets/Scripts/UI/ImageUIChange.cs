@@ -7,7 +7,6 @@ public class ImageUIChange : ImagesDependedOnNumber {
 
 	void Awake( ) {
 		_point = this.GetComponent< Point >( );
-
 		//子になるゲームオブジェクトを取得する----------------------------------------
 		_image = new GameObject[ _point.Max_Point ];
 		var child_images = gameObject.GetComponentInChildren< Transform >( );
