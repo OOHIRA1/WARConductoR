@@ -9,6 +9,7 @@ TagManager:
   - Card
   - Select
   - particle
+  - Square
   layers:
   - Default
   - TransparentFX
@@ -19,7 +20,7 @@ TagManager:
   - 
   - 
   - particle
-  - 
+  - Square
   - 
   - 
   - 

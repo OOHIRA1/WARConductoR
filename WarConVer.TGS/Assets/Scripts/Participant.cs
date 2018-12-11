@@ -8,12 +8,6 @@ public class Participant : MonoBehaviour {
 	[ SerializeField ] Point _active_point		 = null;
 	[ SerializeField ] Point _life_point		 = null;
 
-	//テスト用
-	[ SerializeField ] Square _now_square = null;
-	[ SerializeField ] int _distans = 0;
-	[ SerializeField ] Field.DIRECTION[ ] _directions = new Field.DIRECTION[ 1 ];
-	List< Square > _squares = new List< Square >( );
-
 	void Start( ) {
 		
 	}
@@ -21,7 +15,6 @@ public class Participant : MonoBehaviour {
 	
 	void Update( ) {
 		if ( Input.GetKeyDown( KeyCode.A ) ) APAndLPTest( );
-		MoveCard( _card_in_field, _now_square );
 	}
 
 	void APAndLPTest( ) { 
@@ -30,15 +23,22 @@ public class Participant : MonoBehaviour {
 	}
 
 	//カードのを移動させる
-	public void MoveCard( GameObject card, Square now_square ) {
-		for ( int i = 0; i < _directions.Length; i++ ) {
-			_squares.Add( _field.SquareInThatDirection( now_square, _directions[ i ], _distans ) );
-		}
+	public void MoveCard( GameObject card, Square now_square, Field.DIRECTION[ ] directions, int distans, Square touch_square ) {
 
-		//リストで受け取ったマスをクリックしたらそこに移動する処理
-		if ( Input.GetKeyDown( KeyCode.Z ) ) { 
-			if ( _squares[ 0 ] == null ) return;
-			card.transform.position = _squares[ 0 ].gameObject.transform.position;
+		List< Square > squares = new List< Square >( );
+
+		for ( int i = 0; i < directions.Length; i++ ) {
+			squares.Add( _field.SquareInThatDirection( now_square, directions[ i ], distans ) );
+		}
+		
+
+		_field.ShowRange( squares, true );		//マスを赤くする(タイミングはテキトー)
+
+		for ( int i = 0; i < squares.Count; i++ ) { 
+			if ( squares[ i ].Index == touch_square.Index ) { 
+				card.transform.position = touch_square.gameObject.transform.position;
+				return;
+			}
 		}
 
 	}

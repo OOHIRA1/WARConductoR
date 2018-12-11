@@ -60,7 +60,9 @@ public class Field : MonoBehaviour {
 	//------------------------------------------------------------------------------------
 
 	//現在のマスから指定した範囲のマスの色を赤くする
-	public Square ShowRange( Square now_square, DIRECTION[ ] direction, int[ ] distance ) { 
-		return null;
+	public void ShowRange( List< Square > squares, bool value ) { 
+		for ( int i = 0; i < squares.Count; i++ ) { 
+			squares[ i ].ChangeColor( value );
+		}
 	}
 }
