@@ -13,12 +13,26 @@ public class CardMain : MonoBehaviour {
 	[SerializeField] int _actionCount = 0;						//移動回数
 	const int _MAX_ACTION_COUNT = 3;							//移動回数の最大値
 
+	//テスト用----------------------------------------------
+	[System.Serializable]
+	public struct CardDates {
+		public Field.DIRECTION[ ] directions;
+		public int distance;
+	}
+	public CardDates _cardDates = new CardDates( );
+	//-------------------------------------------------------
+
 
 	//===================================================================
 	//アクセッサ
 	public int loadID {
 		get { return _loadID; }
 		set { _loadID = value; }//カードをInstantiateした際にIDを設定する
+	}
+
+	public SpriteRenderer Card_Sprite_Renderer { 
+		get { return _cardSpriteRenderer; }
+		private set { _cardSpriteRenderer = value; }
 	}
 	//===================================================================
 	//===================================================================
@@ -43,6 +57,7 @@ public class CardMain : MonoBehaviour {
 
 	//==========================================================================================================
 	//public関数
+
 
 	//===========================================================================================================
 	//===========================================================================================================

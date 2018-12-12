@@ -7,6 +7,13 @@ public class Square : MonoBehaviour {
 	SpriteRenderer _sprite_renderer = null;
 	Color _red = Color.red;
 	Color originally_color = new Color( );
+	CardMain _on_card = null;
+
+	public CardMain On_Card { 
+		get { return _on_card; }
+		set { _on_card = value; }
+	}
+
 	void Awake( ) { 
 		_sprite_renderer = gameObject.GetComponent< SpriteRenderer >( );
 	}
@@ -17,7 +24,7 @@ public class Square : MonoBehaviour {
 
 	public int Index {
 		get { return _index; }
-		private set { _index = value; } 
+		private set { _index = value; }
 	}
 
 	public void ChangeColor( bool is_red_flag ) {
