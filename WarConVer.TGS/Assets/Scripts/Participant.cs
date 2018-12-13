@@ -12,17 +12,10 @@ public class Participant : MonoBehaviour {
 	
 	
 	void Update( ) {
-		if ( Input.GetKeyDown( KeyCode.A ) ) APAndLPTest( );
-	}
-
-	void APAndLPTest( ) { 
-		_active_point.DecreasePoint( 2 );
-		_life_point.DecreasePoint( 1 );
 	}
 
 	//カードのを移動させる
-	public void CardMove( CardMain card, Square now_square, Field.DIRECTION[ ] directions, int distans, Square touch_square ) {
-
+	public void CardMove( CardMain card, Square now_square, Field.DIRECTION[ ] directions, int distans, Square touch_square, int move_ap ) {
 		List< Square > squares = new List< Square >( );
 
 		//移動できるマスだけ格納-------------------------------------------------------------------
@@ -40,13 +33,27 @@ public class Participant : MonoBehaviour {
 			if ( squares[ i ].Index == touch_square.Index ) {	//あったら移動する
 				card.gameObject.transform.position = touch_square.gameObject.transform.position;
 				now_square.On_Card = null;	//現在のマスから乗っていたカードを外す
+				_active_point.DecreasePoint( move_ap );
 				touch_square.On_Card = card;
 				return;
 			}
 		}
 		//------------------------------------------------------------------------------------------
-
 	}
+
+
+	public void DirectAttack( Participant opponent_player, int move_ap ) {
+		_active_point.DecreasePoint( move_ap );
+		opponent_player._life_point.DecreasePoint( 1 );
+	}
+
+
+	//アクティブポイントが足りてるかどうかを判定する-----------
+	public bool  DecreaseActivePointConfirmation( int point ) { 
+		return _active_point.DecreasePointConfirmation( point );
+	}
+	//---------------------------------------------------------
+
 
 	//移動できるマスの色を変える
 	public void SquareChangeColor( Square now_square, Field.DIRECTION[ ] directions, int distans, bool value ) {

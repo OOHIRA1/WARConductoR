@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class MainSceneOperation : MonoBehaviour {
 	const float RAY_DIR = 100f;
-	bool _return_button = false; 
-	bool _move_button = false;
+	bool _return_button		   = false; 
+	bool _move_button		   = false;
+	bool _direct_attack_button = false;
 
 	public bool MouseTouch( ) {
 		if ( Input.GetMouseButtonDown( 0 ) ) {
@@ -50,12 +51,21 @@ public class MainSceneOperation : MonoBehaviour {
 	//----------------------------------------------
 
 
-	public RaycastHit2D RayCastSquare( ) {
-		Vector3 mouse_pos = Input.mousePosition;
-		//mouse_pos.z = 10f;
-		Vector3 world_pos = Camera.main.ScreenToWorldPoint( mouse_pos );		//マウスのScreen座標をWorld座標に変換
-
-		Debug.DrawRay( world_pos, new Vector3( 0,0,RAY_DIR ), Color.red, 999f, false );
-		return Physics2D.Raycast( world_pos, new Vector3( 0,0,RAY_DIR ), LayerMask.NameToLayer( "Square" ) );	//クリックされた場所から真っすぐにRawを飛ばす
+	//攻撃ボタン判定--------------------------------
+	//攻撃ボタンが押されたかどうかの判定
+	public bool DirectAttackButton( ) {
+		if ( _direct_attack_button ) { 
+			_direct_attack_button = false;
+			return true;
+		} else { 
+			return false;	
+		}
 	}
+
+	//動くボタンがクリックされたら呼ぶ関数
+	public void ClickDirectAttackButton( ) {
+		_direct_attack_button = true;
+	}
+	//----------------------------------------------
+
 }

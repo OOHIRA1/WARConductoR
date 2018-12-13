@@ -21,10 +21,23 @@ public class Point : MonoBehaviour {
 	}
 
 	//ポイントを減らす------------------------
-	public void DecreasePoint( int point ) {
-		if ( point > Point_Num ) return;	//減らすポイントが現在の値より多かったら
-
+	public void DecreasePoint( int point ) {	//減らすポイントが現在の値より多かったら
+		if ( !DecreasePointConfirmation( point ) ) {
+			Debug.Log( "減らすポイントが大きすぎる" );
+			return;	
+		}
+		
 		Point_Num -= point;	
 	}
 	//----------------------------------------
+
+	//減らすポイントが今あるポイントより多いかどうかを調べる
+	public bool DecreasePointConfirmation( int point ) { 
+		if ( point > Point_Num ) { 
+			return false;	
+		} else { 
+			return true;	
+		}
+	}
+
 }

@@ -18,6 +18,7 @@ public class CardMain : MonoBehaviour {
 	public struct CardDates {
 		public Field.DIRECTION[ ] directions;
 		public int distance;
+		public int move_ap;
 	}
 	public CardDates _cardDates = new CardDates( );
 	//-------------------------------------------------------
@@ -33,7 +34,7 @@ public class CardMain : MonoBehaviour {
 	public SpriteRenderer Card_Sprite_Renderer { 
 		get { return _cardSpriteRenderer; }
 		private set { _cardSpriteRenderer = value; }
-	}
+	} 
 	//===================================================================
 	//===================================================================
 
