@@ -695,6 +695,8 @@ MonoBehaviour:
     directions: 0200000003000000050000000800000007000000060000000400000001000000
     distance: 1
     move_ap: 1
+    hp: 3
+    attack_point: 2
 --- !u!1 &237354372
 GameObject:
   m_ObjectHideFlags: 0
@@ -728,7 +730,7 @@ MonoBehaviour:
   _return_button: {fileID: 1949290537}
   _move_button: {fileID: 1474539973}
   _direct_attack_button: {fileID: 1207233793}
-  _card_details_image: {fileID: 1083797296956662, guid: f89534b3538f8f44f9f9ad5d92d8dd18,
+  _card_details_image: {fileID: 1080583943361364, guid: 1ba175758612fc04183cefaae54a0da7,
     type: 2}
   _canvas: {fileID: 987176840}
   _now_square: {fileID: 1449274487}

@@ -19,6 +19,8 @@ public class CardMain : MonoBehaviour {
 		public Field.DIRECTION[ ] directions;
 		public int distance;
 		public int move_ap;
+		public int hp;
+		public int attack_point;
 	}
 	public CardDates _cardDates = new CardDates( );
 	//-------------------------------------------------------

@@ -36,6 +36,8 @@ public class MainSceneManeger : MonoBehaviour {
 	void Start( ) {
 		_now_square.On_Card = _card;
 		_card.gameObject.transform.position = _now_square.transform.position;
+		_card = null;
+		_now_square = null;
 
 		if ( _main_scene_operation == null ) { 
 			Debug.Log( "[エラー]MainSceneOperationが参照を取れていない" );	
@@ -63,7 +65,8 @@ public class MainSceneManeger : MonoBehaviour {
 			return;
 		}
 
-		switch ( _status ) { 
+		testCardDamage( );
+		switch ( _status ) {
 			case STATUS.IDLE:
 				CardDetailsPrint( );
 				return;
@@ -148,20 +151,29 @@ public class MainSceneManeger : MonoBehaviour {
 			if ( _card == null ) return;
 			//--------------------------------------------------------------------------
 
-			//カードの詳細画像の表示(生成)---------------------------------------------------------
+			//カードの詳細画像の表示(生成)-------------------------------------------------------------------------------------------------
+			//カードの詳細プレハブの取得
 			_details = Instantiate( _card_details_image, transform.position, Quaternion.identity );
+			Text attack_point = _details.transform.Find( "Attack_Point_Background/Attack_Point" ).GetComponent< Text >( );
+			Text hit_point = _details.transform.Find( "Hit_Point_Background/Hit_Point" ).GetComponent< Text >( );
+
+			//画像などの情報読み込み
 			_details.GetComponent< Image >( ).sprite = _card.Card_Sprite_Renderer.sprite;
+			attack_point.text = _card._cardDates.attack_point.ToString( );
+			hit_point.text = _card._cardDates.hp.ToString( );
+
+			//位置をずらしている
 			_details.transform.parent = _canvas.transform;
 			RectTransform details_pos = _details.GetComponent< RectTransform >( );
-			details_pos.localPosition = new Vector3( -210, 0, 0 );
-			//-------------------------------------------------------------------------------------
+			details_pos.localPosition = new Vector3( -210, 0, 0 );	//あとでこの部分の処理は修正するだろうからマジックナンバーを放置
+			//------------------------------------------------------------------------------------------------------------------------------
 
 			//プレイヤーによって表示するUI-------------------------------------------------------
 			if ( _card.gameObject.tag == "Player1" ) {
 				_return_button.SetActive( true );
 				if ( _player1.DecreaseActivePointConfirmation( _card._cardDates.move_ap ) ) {	//APが消費する分あったら
 					_move_button.SetActive( true );
-					if ( ( _now_square.Index - 1 ) / 4 == 0 ) {								//一列目にいたら
+					if ( ( _now_square.Index - 1 ) / 4 == 0 ) {								//一列目にいたら//修正するだろうからマジックナンバーを放置
 						_direct_attack_button.SetActive( true );
 					}
 				}
@@ -214,6 +226,15 @@ public class MainSceneManeger : MonoBehaviour {
 			return;
 		}
 		//-----------------------------------------------
+	}
+
+	void testCardDamage( ) { 
+		if ( Input.GetKeyDown( KeyCode.A ) ) { 
+			if ( _card == null ) return;
+				_card._cardDates.hp--;
+			if ( _card._cardDates.hp < 0 ) _card._cardDates.hp = 0;
+			
+		}
 	}
 }
 
