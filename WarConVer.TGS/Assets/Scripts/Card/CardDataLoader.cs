@@ -7,13 +7,13 @@ using System.IO;
 //
 //==使用方法：カードデータを読み込むGameObjectにアタッチ
 public class CardDataLoader : MonoBehaviour {
-	[SerializeField] string[] _csvFimeNames = null;		//CSVファイル名の配列
+	[SerializeField] string[] _csvFileNames = null;		//CSVファイル名の配列
 	[SerializeField] List<CardData> _cardDatas = null;	//カードデータ構造体リスト
 
 	void Awake() {
 		//CSVからカードデータを読み込む処理------------------
-		for (int i = 0; i < _csvFimeNames.Length; i++) {
-			LoadFromCSV ( _csvFimeNames[i] );
+		for (int i = 0; i < _csvFileNames.Length; i++) {
+			LoadFromCSV ( _csvFileNames[i] );
 		}
 		//-------------------------------------------------
 	}

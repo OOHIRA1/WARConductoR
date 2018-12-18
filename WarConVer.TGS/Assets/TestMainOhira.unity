@@ -154,6 +154,12 @@ MonoBehaviour:
     _necessaryAP: 0
     _necessaryAPForEffect: 0
   _actionCount: 0
+  _cardDates:
+    directions: 
+    distance: 0
+    move_ap: 0
+    hp: 0
+    attack_point: 0
 --- !u!212 &472380972
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -196,7 +202,7 @@ SpriteRenderer:
   m_Size: {x: 5.95, y: 8.42}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
 --- !u!4 &472380973
 Transform:
@@ -252,6 +258,12 @@ MonoBehaviour:
     _necessaryAP: 0
     _necessaryAPForEffect: 0
   _actionCount: 0
+  _cardDates:
+    directions: 
+    distance: 0
+    move_ap: 0
+    hp: 0
+    attack_point: 0
 --- !u!212 &559674150
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -294,7 +306,7 @@ SpriteRenderer:
   m_Size: {x: 5.95, y: 8.42}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
 --- !u!4 &559674151
 Transform:
@@ -350,6 +362,12 @@ MonoBehaviour:
     _necessaryAP: 0
     _necessaryAPForEffect: 0
   _actionCount: 0
+  _cardDates:
+    directions: 
+    distance: 0
+    move_ap: 0
+    hp: 0
+    attack_point: 0
 --- !u!212 &777664040
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -392,7 +410,7 @@ SpriteRenderer:
   m_Size: {x: 5.95, y: 8.42}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
 --- !u!4 &777664041
 Transform:
@@ -571,6 +589,12 @@ MonoBehaviour:
     _necessaryAP: 0
     _necessaryAPForEffect: 0
   _actionCount: 0
+  _cardDates:
+    directions: 
+    distance: 0
+    move_ap: 0
+    hp: 0
+    attack_point: 0
 --- !u!212 &1194968196
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -613,7 +637,7 @@ SpriteRenderer:
   m_Size: {x: 5.95, y: 8.42}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
 --- !u!4 &1194968197
 Transform:
@@ -704,9 +728,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed55e3f52d6a31f4391fe3e2c8585f34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _csvFimeNames:
-  - black_card_data
-  - white_card_data
+  _csvFileNames: []
   _cardDatas: []
 --- !u!4 &1714969784
 Transform:
@@ -832,6 +854,12 @@ MonoBehaviour:
     _necessaryAP: 0
     _necessaryAPForEffect: 0
   _actionCount: 0
+  _cardDates:
+    directions: 
+    distance: 0
+    move_ap: 0
+    hp: 0
+    attack_point: 0
 --- !u!212 &2136544268
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -874,7 +902,7 @@ SpriteRenderer:
   m_Size: {x: 5.95, y: 8.42}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
 --- !u!4 &2136544269
 Transform:

@@ -65,6 +65,12 @@ MonoBehaviour:
     _necessaryAP: 0
     _necessaryAPForEffect: 0
   _actionCount: 0
+  _cardDates:
+    directions: 
+    distance: 0
+    move_ap: 0
+    hp: 0
+    attack_point: 0
 --- !u!212 &212490584638795008
 SpriteRenderer:
   m_ObjectHideFlags: 1
