@@ -6,6 +6,7 @@ public class TestMainOohiraManager : MonoBehaviour {
 	public int _cardDisplayedCount = 0;//表示されたカードの数
 	public GameObject[] _cards = null;
 	public int _id = 1001;
+	public Deck _deck = null;
 
 	// Use this for initialization
 	void Start () {
@@ -24,6 +25,10 @@ public class TestMainOohiraManager : MonoBehaviour {
 			GameObject cardObj = Instantiate (prefab, Vector3.zero, Quaternion.identity);
 			CardMain card = cardObj.GetComponent<CardMain> ();
 			card.loadID = _id;
+		}
+
+		if (Input.GetKeyDown (KeyCode.C)) {
+			_deck.Draw ();
 		}
 	}
 }
