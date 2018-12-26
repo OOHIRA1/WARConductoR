@@ -3,25 +3,64 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Participant : MonoBehaviour {
+
+	//バトルの結果
+	enum BATTLE_RESULT {
+		NOT_BATTLE,
+		BOTH_DEATH,
+		PLAYER_WIN,
+		PLAYER_DEFEAT,
+		BOTH_ALIVE,
+	}
+
 	[ SerializeField ] Field _field			= null;
 	[ SerializeField ] Point _active_point	= null;
 	[ SerializeField ] Point _life_point	= null;
 
 	//カードを移動させる-----------------------------------------------------------------------------------------------------------------------------
-	public void CardMove( CardMain card, Square now_square, Square touch_square, string player ) {
+	public void CardMove( CardMain card, Square now_square, Square move_square, string player ) {
 		List< Square > squares = new List< Square >( );
 
 		//移動できるマスだけ格納
 		squares = MovePossibleSquare( card, now_square, player );
 
+		BATTLE_RESULT result = BATTLE_RESULT.NOT_BATTLE;
 		//移動できるマスの中に移動したいマスがあるか探す
 		for ( int i = 0; i < squares.Count; i++ ) { 
-			if ( squares[ i ].Index == touch_square.Index ) {										//あったら移動する
-				card.gameObject.transform.position = touch_square.gameObject.transform.position;
+			if ( squares[ i ].Index == move_square.Index ) {										//あったら移動する
+				if ( !IsOnCardType( "Player2", squares[ i ] ) ) {
+					result = Battle( card, squares[ i ].On_Card );
+					Debug.Log( result );
+				}
 
-				now_square.On_Card = null;															//現在のマスから乗っていたカードを外す
-				touch_square.On_Card = card;														//移動したマスにカードを乗せる
+				//戦闘の結果によって移動処理を変える
+				switch( result ) { 
+					case BATTLE_RESULT.BOTH_DEATH:
+						now_square.On_Card = null;
+						move_square.On_Card = null;
+						break;
+
+					case BATTLE_RESULT.NOT_BATTLE:
+					case BATTLE_RESULT.PLAYER_WIN:
+						now_square.On_Card = null;
+						move_square.On_Card = card;
+						card.gameObject.transform.position = move_square.transform.position;
+						break;
+
+					case BATTLE_RESULT.PLAYER_DEFEAT:
+						now_square.On_Card = null;
+						break;
+
+					case BATTLE_RESULT.BOTH_ALIVE:
+						break;
+
+					default:
+						Debug.Log( "予期せぬ勝敗が起きている" );
+						return;
+				}
 				_active_point.DecreasePoint( card._cardDates.move_ap );
+				//now_square.On_Card = null;														//現在のマスから乗っていたカードを外す
+				//move_square.On_Card = card;														//移動したマスにカードを乗せる
 				return;
 			}
 		}
@@ -132,20 +171,38 @@ public class Participant : MonoBehaviour {
 	}
 	//------------------------------------
 
-	//マスにあるカードが誰のカードか調べる関数-----------
+	//マスにカードがあったら自分のじゃないかを調べる関数-----------
 	bool IsOnCardType( string player, Square square ) {
 		if ( IsOnCard( square ) ) {
 			CardMain on_card = square.On_Card;
-			if ( on_card.gameObject.tag != player ) { 
-				return true;
+			if ( on_card.gameObject.tag == player ) { 
+				return false;
 			} else {
-				return false;	
+				return true;	
 			}
 		}
 
 		return true;
 	}
 	//----------------------------------------------------
+
+
+	//カードの戦闘------------------------------------------------------------------------------------------------
+	BATTLE_RESULT Battle( CardMain player_card, CardMain enemy_card ) { 
+		player_card.Damage( enemy_card._cardDates.attack_point );
+		enemy_card.Damage( player_card._cardDates.attack_point );
+
+		if ( player_card._cardDates.hp == 0 && enemy_card._cardDates.hp == 0 ) return BATTLE_RESULT.BOTH_DEATH;	
+
+		if ( enemy_card._cardDates.hp == 0 ) return BATTLE_RESULT.PLAYER_WIN;
+
+		if ( player_card._cardDates.hp == 0 ) return BATTLE_RESULT.PLAYER_DEFEAT;
+
+		if ( player_card._cardDates.hp > 0 && enemy_card._cardDates.hp > 0 ) return BATTLE_RESULT.BOTH_ALIVE;
+
+		return BATTLE_RESULT.NOT_BATTLE;
+	}
+	//-----------------------------------------------------------------------------------------------------------
 }
 
 

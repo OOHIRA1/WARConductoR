@@ -124,10 +124,9 @@ public class MainSceneManeger : MonoBehaviour {
 				_player1.CardMove( _card, _now_square, square, "Player1" );	//移動できるかどうかを判定し移動できたら移動する
 			}
 
-			//情報リセット-------
+			//情報リセット
 			_card = null;
 			_now_square = null;
-			//-------------------
 
 			_status = STATUS.IDLE;
 			return;
@@ -138,10 +137,9 @@ public class MainSceneManeger : MonoBehaviour {
 			_return_button.SetActive( false );
 			_player1.SquareChangeColor( squares, false );	//色をもとに戻す
 
-			//情報リセット-----------
+			//情報リセット
 			_card = null;
 			_now_square = null;
-			//-------------------
 
 			_status = STATUS.IDLE;
 			return;
@@ -165,7 +163,6 @@ public class MainSceneManeger : MonoBehaviour {
 			_now_square = null;
 			return;
 		}
-		
 	}
 
 	void CardDetailsPrint( ) {
@@ -200,7 +197,7 @@ public class MainSceneManeger : MonoBehaviour {
 			if ( _card.gameObject.tag == "Player1" ) {
 				_return_button.SetActive( true );
 
-				//APが消費する分あって攻撃するマスにカードがあったら
+				//効果の種類によって処理を変える
 				switch ( _card._cardDates.effect_type ) { 
 					case CardMain.EFFECT_TYPE.ATTACK:	
 						if ( _player1.DecreaseActivePointConfirmation( _card._cardDates.effect_ap ) && 
@@ -387,6 +384,7 @@ public class MainSceneManeger : MonoBehaviour {
 			//_return_button.SetActive( false );
 			_effect_button.SetActive( false );
 
+			//効果の種類によって処理を変える
 			switch ( _card._cardDates.effect_type ) { 
 				case CardMain.EFFECT_TYPE.ATTACK:	
 					_status = STATUS.EFFECT_ATTACK;

@@ -490,7 +490,7 @@ GameObject:
   - component: {fileID: 158759833}
   m_Layer: 10
   m_Name: dummy_dead_man (1)
-  m_TagString: Player1
+  m_TagString: Player2
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -805,7 +805,7 @@ MonoBehaviour:
   _actionCount: 0
   _cardDates:
     hp: 3
-    max_hp: 3
+    max_hp: 1000
     attack_point: 2
     directions: 0700000002000000
     distance: 1
@@ -813,10 +813,10 @@ MonoBehaviour:
     effect_direction: 0700000002000000
     effect_ap: 2
     effect_ditance: 1
-    effect_damage: 2
+    effect_damage: 100
     effect_recovery_point: 2
     mp: 0
-    effect_type: 2
+    effect_type: 0
 --- !u!1 &237354372
 GameObject:
   m_ObjectHideFlags: 0
