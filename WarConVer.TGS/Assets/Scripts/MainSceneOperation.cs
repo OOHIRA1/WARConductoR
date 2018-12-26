@@ -7,6 +7,8 @@ public class MainSceneOperation : MonoBehaviour {
 	bool _return_button		   = false; 
 	bool _move_button		   = false;
 	bool _direct_attack_button = false;
+	bool _effect_button		   = false;
+	bool _effect_yes_button	   = false;
 
 	public bool MouseTouch( ) {
 		if ( Input.GetMouseButtonDown( 0 ) ) {
@@ -65,6 +67,41 @@ public class MainSceneOperation : MonoBehaviour {
 	//動くボタンがクリックされたら呼ぶ関数
 	public void ClickDirectAttackButton( ) {
 		_direct_attack_button = true;
+	}
+	//----------------------------------------------
+
+
+	//効果ボタン判定--------------------------------
+	//効果ボタンが押されたかどうかの判定
+	public bool EffectButton( ) {
+		if ( _effect_button ) { 
+			_effect_button = false;
+			return true;
+		} else { 
+			return false;	
+		}
+	}
+
+	//効果ボタンがクリックされたら呼ぶ関数
+	public void ClickEffectButton( ) {
+		_effect_button = true;
+	}
+	//----------------------------------------------
+
+	//効果了承ボタン判定--------------------------------
+	//効果了承ボタンが押されたかどうかの判定
+	public bool EffectYesButton( ) {
+		if ( _effect_yes_button ) { 
+			_effect_yes_button = false;
+			return true;
+		} else { 
+			return false;	
+		}
+	}
+
+	//効果了承ボタンがクリックされたら呼ぶ関数
+	public void ClickEffectYesButton( ) {
+		_effect_yes_button = true;
 	}
 	//----------------------------------------------
 
