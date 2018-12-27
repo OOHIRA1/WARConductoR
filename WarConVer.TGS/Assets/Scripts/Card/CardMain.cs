@@ -69,7 +69,7 @@ public class CardMain : MonoBehaviour {
 
 	//--カードデータを読み込む関数
 	void Load( ) {
-		_cardSpriteRenderer.sprite = (Sprite)Resources.Load<Sprite> ("Card/" + _loadID);//カード画像の読み込み
+		//_cardSpriteRenderer.sprite = (Sprite)Resources.Load<Sprite> ("Card/" + _loadID);//カード画像の読み込み
 		_cardData = _cardDataLoader.GetCardDataFromID ( _loadID );
 	}
 

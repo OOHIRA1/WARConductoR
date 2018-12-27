@@ -12,6 +12,7 @@ public class MainSceneManeger : MonoBehaviour {
 		EFFECT_ATTACK,
 		EFFECT_MOVE,
 		EEFECT_RECOVERY,
+		CARD_SUMMON,
 	}
 
 	[ SerializeField ] MainSceneOperation _main_scene_operation = null;
@@ -33,11 +34,14 @@ public class MainSceneManeger : MonoBehaviour {
 	[ SerializeField ] GameObject _canvas			  = null;	//生成したあとに子にするため
 	GameObject _details = null;									//生成した詳細画像を格納するため
 
+	CardMain _hand_card = null;
+	Vector3 _hand_card_pos = Vector3.zero;
+
 	//テスト用
-	[ SerializeField ] Square _now_square = null;
-	[ SerializeField ] CardMain _card = null;
-	[ SerializeField ] CardMain _enemy_card = null;
-	[ SerializeField ] Square _enemy_square = null;
+	[ SerializeField ] Square _now_square    = null;
+	[ SerializeField ] CardMain _card		 = null;
+	[ SerializeField ] CardMain _enemy_card  = null;
+	[ SerializeField ] Square _enemy_square  = null;
 
 
 	void Start( ) {
@@ -76,7 +80,7 @@ public class MainSceneManeger : MonoBehaviour {
 
 		switch ( _status ) {
 			case STATUS.IDLE:
-				CardDetailsPrint( );
+				IdleStatis( );
 				return;
 
 			case STATUS.CARD_DETAILS:
@@ -101,6 +105,10 @@ public class MainSceneManeger : MonoBehaviour {
 
 			case STATUS.EEFECT_RECOVERY:
 				RecoveryEffect( );
+				return;
+
+			case STATUS.CARD_SUMMON:
+				SummonStatus( );
 				return;
 
 			default:
@@ -165,36 +173,56 @@ public class MainSceneManeger : MonoBehaviour {
 		}
 	}
 
-	void CardDetailsPrint( ) {
+	void IdleStatis( ) {
 
 		if ( _main_scene_operation.MouseTouch( ) ) {
+			FieldCardTouch( );
+			HandCardTouch( );
+		}
 
-			//カードとそのマスの取得---------------------------------------------------
-			_now_square = _ray_shooter.RayCastSquare( );
-			if ( _now_square == null ) return;
-			_card = _now_square.On_Card;
-			if ( _card == null ) return;
-			//--------------------------------------------------------------------------
+	}
 
-			//カードの詳細画像の表示(生成)-------------------------------------------------------------------------------------------------
-			//カードの詳細プレハブの取得
-			_details = Instantiate( _card_details_image, transform.position, Quaternion.identity );
-			Text attack_point = _details.transform.Find( "Attack_Point_Background/Attack_Point" ).GetComponent< Text >( );
-			Text hit_point = _details.transform.Find( "Hit_Point_Background/Hit_Point" ).GetComponent< Text >( );
+	void FieldCardTouch( ) { 
+		//カードとそのマスの取得---------------------------------------------------
+		_now_square = _ray_shooter.RayCastSquare( );
+		if ( _now_square == null ) return;
+		_card = _now_square.On_Card;
+		if ( _card == null ) return;
+		//--------------------------------------------------------------------------
+		
+		ShowCardDetails( );	//カードの詳細画像の表示(生成)
+		ShowCardOperationUI( );	//プレイヤーによって表示するUI
+		
+		_status = STATUS.CARD_DETAILS;
+	}
 
-			//画像などの情報読み込み
-			_details.GetComponent< Image >( ).sprite = _card.Card_Sprite_Renderer.sprite;
-			attack_point.text = _card._cardDates.attack_point.ToString( );
-			hit_point.text = _card._cardDates.hp.ToString( );
+	void HandCardTouch( ) { 
+		_hand_card = _ray_shooter.RayCastHandCard( );
+		if ( _hand_card == null ) return;
+		_hand_card_pos = _hand_card.transform.position;
+		_hand_card.gameObject.GetComponent< BoxCollider2D >( ).enabled = false;
+		_status = STATUS.CARD_SUMMON;
+	}
 
-			//位置をずらしている
-			_details.transform.parent = _canvas.transform;
-			RectTransform details_pos = _details.GetComponent< RectTransform >( );
-			details_pos.localPosition = new Vector3( -210, 0, 0 );	//あとでこの部分の処理は修正するだろうからマジックナンバーを放置
-			//------------------------------------------------------------------------------------------------------------------------------
+	void ShowCardDetails( ) { 
+		//カードの詳細プレハブの取得
+		_details = Instantiate( _card_details_image, transform.position, Quaternion.identity );
+		Text attack_point = _details.transform.Find( "Attack_Point_Background/Attack_Point" ).GetComponent< Text >( );
+		Text hit_point = _details.transform.Find( "Hit_Point_Background/Hit_Point" ).GetComponent< Text >( );
 
-			//プレイヤーによって表示するUI-------------------------------------------------------
-			if ( _card.gameObject.tag == "Player1" ) {
+		//画像などの情報読み込み
+		_details.GetComponent< Image >( ).sprite = _card.Card_Sprite_Renderer.sprite;
+		attack_point.text = _card._cardDates.attack_point.ToString( );
+		hit_point.text = _card._cardDates.hp.ToString( );
+
+		//位置をずらしている
+		_details.transform.parent = _canvas.transform;
+		RectTransform details_pos = _details.GetComponent< RectTransform >( );
+		details_pos.localPosition = new Vector3( -210, 0, 0 );	//あとでこの部分の処理は修正するだろうからマジックナンバーを放置
+	}
+
+	void ShowCardOperationUI( ) { 
+		if ( _card.gameObject.tag == "Player1" ) {
 				_return_button.SetActive( true );
 
 				//効果の種類によって処理を変える
@@ -241,11 +269,43 @@ public class MainSceneManeger : MonoBehaviour {
 			if ( _card.gameObject.tag == "Player2" ) { 
 				_return_button.SetActive( true );
 			}
-			//-------------------------------------------------------------------------------------
+	}
 
-			_status = STATUS.CARD_DETAILS;
+
+	void SummonStatus( ) {
+		List< Square > squares = _player1.SummonSquare( "Player1" );
+		_player1.SquareChangeColor( squares, true );
+		_hand_card.transform.position = _main_scene_operation.getWorldMousePos( );
+
+		if ( !_main_scene_operation.MouseConsecutivelyTouch( ) ) {
+			Square square = _ray_shooter.RayCastSquare( );
+
+			if ( square == null ) {
+				_player1.SquareChangeColor( squares, false );
+				_hand_card.transform.position = _hand_card_pos;
+				_hand_card.gameObject.GetComponent< BoxCollider2D >( ).enabled = true;
+				_status = STATUS.IDLE;
+				return;
+			}
+
+			for ( int i = 0; i < squares.Count; i++ ) { 
+				if ( square.Index == squares[ i ].Index ) { 
+					_player1.SquareChangeColor( squares, false );
+					_player1.Summon( _hand_card, square, "Player1" );
+					_hand_card = null;
+					_status = STATUS.IDLE;
+					return;
+				}
+			}
+
+			_player1.SquareChangeColor( squares, false );
+			_hand_card.transform.position = _hand_card_pos;
+			_hand_card.gameObject.GetComponent< BoxCollider2D >( ).enabled = true;
+			_status = STATUS.IDLE;
 		}
 	}
+
+
 
 	void AttackEffect( ) {
 		List< Square > squares = _player1.AttackEffectPossibleOnCardSquare( _card, _now_square );
@@ -411,6 +471,7 @@ public class MainSceneManeger : MonoBehaviour {
 		}
 		//------------------------------------------------
 	}
+
 }
 
 //ボタンの参照とって表示を切り替えたりする場所はどこ？

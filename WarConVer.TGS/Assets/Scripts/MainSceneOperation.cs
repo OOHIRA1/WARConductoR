@@ -18,6 +18,21 @@ public class MainSceneOperation : MonoBehaviour {
 		}
 	}
 
+	public bool MouseConsecutivelyTouch( ) { 
+		if ( Input.GetMouseButton( 0 ) ) { 
+			return true;	
+		} else { 
+			return false;	
+		}
+	}
+
+	public Vector3 getWorldMousePos( ) { 
+		Vector3 mouse_pos = Input.mousePosition;
+		Vector3 world_pos = Camera.main.ScreenToWorldPoint( mouse_pos );		//マウスのScreen座標をWorld座標に変換
+		world_pos.z = 0;
+		return world_pos;
+	}
+
 	//戻るボタン判定--------------------------------
 	//戻るボタンが押されたかどうかの判定
 	public bool ReturnButton( ) {

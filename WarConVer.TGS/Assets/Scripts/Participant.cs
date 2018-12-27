@@ -13,9 +13,18 @@ public class Participant : MonoBehaviour {
 		BOTH_ALIVE,
 	}
 
-	[ SerializeField ] Field _field			= null;
-	[ SerializeField ] Point _active_point	= null;
-	[ SerializeField ] Point _life_point	= null;
+	[ SerializeField ] Field _field			  = null;
+	[ SerializeField ] Point _active_point	  = null;
+	[ SerializeField ] Point _life_point	  = null;
+
+	//テスト用
+	[ SerializeField ] GameObject _field_card = null;
+
+	void Start( ) {
+		if ( _field == null )		 Debug.Log( "Fieldの参照がないです" );
+		if ( _active_point == null ) Debug.Log( "ActivePointの参照がないです" );
+		if ( _life_point == null )	 Debug.Log( "LifePointの参照がないです" );
+	}
 
 	//カードを移動させる-----------------------------------------------------------------------------------------------------------------------------
 	public void CardMove( CardMain card, Square now_square, Square move_square, string player ) {
@@ -27,7 +36,7 @@ public class Participant : MonoBehaviour {
 		BATTLE_RESULT result = BATTLE_RESULT.NOT_BATTLE;
 		//移動できるマスの中に移動したいマスがあるか探す
 		for ( int i = 0; i < squares.Count; i++ ) { 
-			if ( squares[ i ].Index == move_square.Index ) {										//あったら移動する
+			if ( squares[ i ].Index == move_square.Index ) {
 				if ( !IsOnCardType( "Player2", squares[ i ] ) ) {
 					result = Battle( card, squares[ i ].On_Card );
 					Debug.Log( result );
@@ -122,7 +131,7 @@ public class Participant : MonoBehaviour {
 
 
 	//移動できる場所を事前に調べる関数-------------------------------------------------------------------------------------------------
-	public List< Square > MovePossibleSquare ( CardMain card, Square now_square, string player ) { 
+	public List< Square > MovePossibleSquare( CardMain card, Square now_square, string player ) { 
 		List< Square > squares = new List< Square >( );
 
 		//移動できるマスだけ格納
@@ -142,7 +151,7 @@ public class Participant : MonoBehaviour {
 
 
 	//攻撃するマスにカードがあるマスを事前に調べる関数-----------------------------------------------------------------------------------
-	public List< Square > AttackEffectPossibleOnCardSquare ( CardMain card, Square now_square ) { 
+	public List< Square > AttackEffectPossibleOnCardSquare( CardMain card, Square now_square ) { 
 		List< Square > squares = new List< Square >( );
 
 		//移動できるマスだけ格納
@@ -159,6 +168,51 @@ public class Participant : MonoBehaviour {
 		return squares;
 	}
 	//------------------------------------------------------------------------------------------------------------------------------------
+
+	public List< Square > SummonSquare( string player ) { 
+		List< Square > squares = new List< Square >( );
+		
+		if ( player == "Player1" ) { 
+			for ( int i = 0; i < _field.Max_Index; i++ ) { 
+				Square square = _field.getSquare( i + 1 );
+
+				if ( ( square.Index - 1 ) / 4 != 4 )  continue;
+				if ( square.On_Card != null ) continue;
+
+				squares.Add( square );
+			}		
+		}
+		
+		//if ( player == "Player2" ) { }
+
+		return squares;
+	}
+
+
+	public void Summon( CardMain card, Square square, string player ) {
+		List< Square > squares = new List< Square >( );
+		squares = SummonSquare( player );
+
+		for ( int i = 0; i < squares.Count; i++ ) { 
+			if ( square.Index == squares[ i ].Index ) { 
+				GameObject obj = Instantiate( _field_card, square.transform.position, Quaternion.identity );
+
+				CardMain field_card = obj.GetComponent< CardMain >( );
+				field_card._cardDates = card._cardDates;
+
+				SpriteRenderer sprite = obj.GetComponent< SpriteRenderer >( );
+				SpriteRenderer card_sprite = card.gameObject.GetComponent< SpriteRenderer >( );
+				sprite.sprite = card_sprite.sprite;
+
+				Destroy( card.gameObject );
+
+				square.On_Card = field_card;
+				return;
+			}
+		}
+	}
+
+
 
 	//マスにカードが存在するかどうか------
 	bool IsOnCard( Square square ) { 
@@ -194,11 +248,11 @@ public class Participant : MonoBehaviour {
 
 		if ( player_card._cardDates.hp == 0 && enemy_card._cardDates.hp == 0 ) return BATTLE_RESULT.BOTH_DEATH;	
 
-		if ( enemy_card._cardDates.hp == 0 ) return BATTLE_RESULT.PLAYER_WIN;
+		if ( enemy_card._cardDates.hp == 0 )								   return BATTLE_RESULT.PLAYER_WIN;
 
-		if ( player_card._cardDates.hp == 0 ) return BATTLE_RESULT.PLAYER_DEFEAT;
+		if ( player_card._cardDates.hp == 0 )								   return BATTLE_RESULT.PLAYER_DEFEAT;
 
-		if ( player_card._cardDates.hp > 0 && enemy_card._cardDates.hp > 0 ) return BATTLE_RESULT.BOTH_ALIVE;
+		if ( player_card._cardDates.hp > 0 && enemy_card._cardDates.hp > 0 )   return BATTLE_RESULT.BOTH_ALIVE;
 
 		return BATTLE_RESULT.NOT_BATTLE;
 	}
