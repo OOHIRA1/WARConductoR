@@ -7,6 +7,8 @@ public class MainSceneOperation : MonoBehaviour {
 	bool _return_button		   = false; 
 	bool _move_button		   = false;
 	bool _direct_attack_button = false;
+	bool _effect_button		   = false;
+	bool _effect_yes_button	   = false;
 
 	public bool MouseTouch( ) {
 		if ( Input.GetMouseButtonDown( 0 ) ) {
@@ -14,6 +16,21 @@ public class MainSceneOperation : MonoBehaviour {
 		} else { 
 			return false;	
 		}
+	}
+
+	public bool MouseConsecutivelyTouch( ) { 
+		if ( Input.GetMouseButton( 0 ) ) { 
+			return true;	
+		} else { 
+			return false;	
+		}
+	}
+
+	public Vector3 getWorldMousePos( ) { 
+		Vector3 mouse_pos = Input.mousePosition;
+		Vector3 world_pos = Camera.main.ScreenToWorldPoint( mouse_pos );		//マウスのScreen座標をWorld座標に変換
+		world_pos.z = 0;
+		return world_pos;
 	}
 
 	//戻るボタン判定--------------------------------
@@ -65,6 +82,41 @@ public class MainSceneOperation : MonoBehaviour {
 	//動くボタンがクリックされたら呼ぶ関数
 	public void ClickDirectAttackButton( ) {
 		_direct_attack_button = true;
+	}
+	//----------------------------------------------
+
+
+	//効果ボタン判定--------------------------------
+	//効果ボタンが押されたかどうかの判定
+	public bool EffectButton( ) {
+		if ( _effect_button ) { 
+			_effect_button = false;
+			return true;
+		} else { 
+			return false;	
+		}
+	}
+
+	//効果ボタンがクリックされたら呼ぶ関数
+	public void ClickEffectButton( ) {
+		_effect_button = true;
+	}
+	//----------------------------------------------
+
+	//効果了承ボタン判定--------------------------------
+	//効果了承ボタンが押されたかどうかの判定
+	public bool EffectYesButton( ) {
+		if ( _effect_yes_button ) { 
+			_effect_yes_button = false;
+			return true;
+		} else { 
+			return false;	
+		}
+	}
+
+	//効果了承ボタンがクリックされたら呼ぶ関数
+	public void ClickEffectYesButton( ) {
+		_effect_yes_button = true;
 	}
 	//----------------------------------------------
 

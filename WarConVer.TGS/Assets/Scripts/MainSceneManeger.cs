@@ -9,6 +9,10 @@ public class MainSceneManeger : MonoBehaviour {
 		CARD_MOVE,
 		CARD_DETAILS,
 		DIRECT_ATTACK,
+		EFFECT_ATTACK,
+		EFFECT_MOVE,
+		EEFECT_RECOVERY,
+		CARD_SUMMON,
 	}
 
 	[ SerializeField ] MainSceneOperation _main_scene_operation = null;
@@ -22,22 +26,31 @@ public class MainSceneManeger : MonoBehaviour {
 	[ SerializeField ] GameObject _return_button		= null;
 	[ SerializeField ] GameObject _move_button			= null;
 	[ SerializeField ] GameObject _direct_attack_button = null;
+	[ SerializeField ] GameObject _effect_button		= null;
+	[ SerializeField ] GameObject _effect_yes_buuton	= null;
 
 	//詳細系
 	[ SerializeField ] GameObject _card_details_image = null;	//生成する詳細画像のプレハブ
 	[ SerializeField ] GameObject _canvas			  = null;	//生成したあとに子にするため
 	GameObject _details = null;									//生成した詳細画像を格納するため
 
+	CardMain _hand_card = null;
+	Vector3 _hand_card_pos = Vector3.zero;
+
 	//テスト用
-	[ SerializeField ] Square _now_square = null;
-	[ SerializeField ] CardMain _card = null;
+	[ SerializeField ] Square _now_square    = null;
+	[ SerializeField ] CardMain _card		 = null;
+	[ SerializeField ] CardMain _enemy_card  = null;
+	[ SerializeField ] Square _enemy_square  = null;
 
 
 	void Start( ) {
 		_now_square.On_Card = _card;
 		_card.gameObject.transform.position = _now_square.transform.position;
-		_card = null;
-		_now_square = null;
+		_enemy_card.transform.position = _enemy_square.transform.position;
+		_enemy_square.On_Card = _enemy_card;
+		//_card = null;
+		//_now_square = null;
 
 		if ( _main_scene_operation == null ) { 
 			Debug.Log( "[エラー]MainSceneOperationが参照を取れていない" );	
@@ -65,10 +78,9 @@ public class MainSceneManeger : MonoBehaviour {
 			return;
 		}
 
-		testCardDamage( );
 		switch ( _status ) {
 			case STATUS.IDLE:
-				CardDetailsPrint( );
+				IdleStatis( );
 				return;
 
 			case STATUS.CARD_DETAILS:
@@ -83,23 +95,46 @@ public class MainSceneManeger : MonoBehaviour {
 				DirectAttack( );
 				return;
 
+			case STATUS.EFFECT_ATTACK:
+				AttackEffect( );
+				return;
+
+			case STATUS.EFFECT_MOVE:
+				MoveEffect( );
+				return;
+
+			case STATUS.EEFECT_RECOVERY:
+				RecoveryEffect( );
+				return;
+
+			case STATUS.CARD_SUMMON:
+				SummonStatus( );
+				return;
+
+			default:
+				Debug.Log( "存在しないステータスです" );
+				return;
 		}
 	}
 	
 	//カード移動状態
 	void CardMoveStatus( ) {
-		_player1.SquareChangeColor( _now_square, _card._cardDates.directions, _card._cardDates.distance, true );		//移動できるマスの色を変える
+		List< Square > squares = _player1.MovePossibleSquare( _card, _now_square, "Player1" );
+
+		_player1.SquareChangeColor( squares, true );		//移動できるマスの色を変える
 
 		if ( _main_scene_operation.MouseTouch( ) ) {
 			Square square = _ray_shooter.RayCastSquare( );	//マウスをクリックしたらレイを飛ばしてマスを取得する
-			_player1.CardMove( _card, _now_square, _card._cardDates.directions,_card._cardDates.distance, square, _card._cardDates.move_ap );	//移動できるかどうかを判定し移動できたら移動する
-			_player1.SquareChangeColor( _now_square, _card._cardDates.directions, _card._cardDates.distance, false );	//色をもとに戻す
+			_player1.SquareChangeColor( squares, false );	//色をもとに戻す
 			_return_button.SetActive( false );
 
-			//情報リセット-------
+			if ( square != null ) {
+				_player1.CardMove( _card, _now_square, square, "Player1" );	//移動できるかどうかを判定し移動できたら移動する
+			}
+
+			//情報リセット
 			_card = null;
 			_now_square = null;
-			//-------------------
 
 			_status = STATUS.IDLE;
 			return;
@@ -108,12 +143,11 @@ public class MainSceneManeger : MonoBehaviour {
 		//戻るボタンを押したら-----------------------------------------------------------------------------------------
 		if ( _main_scene_operation.ReturnButton( ) ) {
 			_return_button.SetActive( false );
-			_player1.SquareChangeColor( _now_square, _card._cardDates.directions, _card._cardDates.distance, false );	//色をもとに戻す
+			_player1.SquareChangeColor( squares, false );	//色をもとに戻す
 
-			//情報リセット-----------
+			//情報リセット
 			_card = null;
 			_now_square = null;
-			//-------------------
 
 			_status = STATUS.IDLE;
 			return;
@@ -137,57 +171,230 @@ public class MainSceneManeger : MonoBehaviour {
 			_now_square = null;
 			return;
 		}
-		
 	}
 
-	void CardDetailsPrint( ) {
+	void IdleStatis( ) {
 
 		if ( _main_scene_operation.MouseTouch( ) ) {
+			FieldCardTouch( );
+			HandCardTouch( );
+		}
 
-			//カードとそのマスの取得---------------------------------------------------
-			_now_square = _ray_shooter.RayCastSquare( );
-			if ( _now_square == null ) return;
-			_card = _now_square.On_Card;
-			if ( _card == null ) return;
-			//--------------------------------------------------------------------------
+	}
 
-			//カードの詳細画像の表示(生成)-------------------------------------------------------------------------------------------------
-			//カードの詳細プレハブの取得
-			_details = Instantiate( _card_details_image, transform.position, Quaternion.identity );
-			Text attack_point = _details.transform.Find( "Attack_Point_Background/Attack_Point" ).GetComponent< Text >( );
-			Text hit_point = _details.transform.Find( "Hit_Point_Background/Hit_Point" ).GetComponent< Text >( );
+	void FieldCardTouch( ) { 
+		//カードとそのマスの取得---------------------------------------------------
+		_now_square = _ray_shooter.RayCastSquare( );
+		if ( _now_square == null ) return;
+		_card = _now_square.On_Card;
+		if ( _card == null ) return;
+		//--------------------------------------------------------------------------
+		
+		ShowCardDetails( );	//カードの詳細画像の表示(生成)
+		ShowCardOperationUI( );	//プレイヤーによって表示するUI
+		
+		_status = STATUS.CARD_DETAILS;
+	}
 
-			//画像などの情報読み込み
-			_details.GetComponent< Image >( ).sprite = _card.Card_Sprite_Renderer.sprite;
-			attack_point.text = _card._cardDates.attack_point.ToString( );
-			hit_point.text = _card._cardDates.hp.ToString( );
+	void HandCardTouch( ) { 
+		_hand_card = _ray_shooter.RayCastHandCard( );
+		if ( _hand_card == null ) return;
+		_hand_card_pos = _hand_card.transform.position;
+		_hand_card.gameObject.GetComponent< BoxCollider2D >( ).enabled = false;
+		_status = STATUS.CARD_SUMMON;
+	}
 
-			//位置をずらしている
-			_details.transform.parent = _canvas.transform;
-			RectTransform details_pos = _details.GetComponent< RectTransform >( );
-			details_pos.localPosition = new Vector3( -210, 0, 0 );	//あとでこの部分の処理は修正するだろうからマジックナンバーを放置
-			//------------------------------------------------------------------------------------------------------------------------------
+	void ShowCardDetails( ) { 
+		//カードの詳細プレハブの取得
+		_details = Instantiate( _card_details_image, transform.position, Quaternion.identity );
+		Text attack_point = _details.transform.Find( "Attack_Point_Background/Attack_Point" ).GetComponent< Text >( );
+		Text hit_point = _details.transform.Find( "Hit_Point_Background/Hit_Point" ).GetComponent< Text >( );
 
-			//プレイヤーによって表示するUI-------------------------------------------------------
-			if ( _card.gameObject.tag == "Player1" ) {
+		//画像などの情報読み込み
+		_details.GetComponent< Image >( ).sprite = _card.Card_Sprite_Renderer.sprite;
+		attack_point.text = _card._cardDates.attack_point.ToString( );
+		hit_point.text = _card._cardDates.hp.ToString( );
+
+		//位置をずらしている
+		_details.transform.parent = _canvas.transform;
+		RectTransform details_pos = _details.GetComponent< RectTransform >( );
+		details_pos.localPosition = new Vector3( -210, 0, 0 );	//あとでこの部分の処理は修正するだろうからマジックナンバーを放置
+	}
+
+	void ShowCardOperationUI( ) { 
+		if ( _card.gameObject.tag == "Player1" ) {
 				_return_button.SetActive( true );
-				if ( _player1.DecreaseActivePointConfirmation( _card._cardDates.move_ap ) ) {	//APが消費する分あったら
+
+				//効果の種類によって処理を変える
+				switch ( _card._cardDates.effect_type ) { 
+					case CardMain.EFFECT_TYPE.ATTACK:	
+						if ( _player1.DecreaseActivePointConfirmation( _card._cardDates.effect_ap ) && 
+							 _player1.AttackEffectPossibleOnCardSquare( _card, _now_square ).Count > 0 ) {
+							_effect_button.SetActive( true );
+						}
+						break;
+
+					case CardMain.EFFECT_TYPE.MOVE:
+						if ( _player1.DecreaseActivePointConfirmation( _card._cardDates.effect_ap ) && 
+							 _player1.MovePossibleSquare( _card, _now_square, "Player1" ).Count > 0 ) {
+							_effect_button.SetActive( true );
+						}
+						break;
+
+					case CardMain.EFFECT_TYPE.RECOVERY:
+						if ( _player1.DecreaseActivePointConfirmation( _card._cardDates.effect_ap ) && 
+							 _card._cardDates.hp < _card._cardDates.max_hp ) {
+							_effect_button.SetActive( true );
+						}
+						break;
+
+					default:
+						Debug.Log( "想定していない効果がボタン表示に来ています" );
+						break;
+				}
+
+				//APが消費する分あって移動できるマスがあったら
+				if ( _player1.DecreaseActivePointConfirmation( _card._cardDates.move_ap ) && 
+					 _player1.MovePossibleSquare( _card, _now_square, "Player1" ).Count > 0 ) {
+
 					_move_button.SetActive( true );
+
 					if ( ( _now_square.Index - 1 ) / 4 == 0 ) {								//一列目にいたら//修正するだろうからマジックナンバーを放置
 						_direct_attack_button.SetActive( true );
 					}
+
 				}
 			}
 
 			if ( _card.gameObject.tag == "Player2" ) { 
 				_return_button.SetActive( true );
 			}
-			//-------------------------------------------------------------------------------------
+	}
 
-			_status = STATUS.CARD_DETAILS;
+
+	void SummonStatus( ) {
+		List< Square > squares = _player1.SummonSquare( "Player1" );
+		_player1.SquareChangeColor( squares, true );
+		_hand_card.transform.position = _main_scene_operation.getWorldMousePos( );
+
+		if ( !_main_scene_operation.MouseConsecutivelyTouch( ) ) {
+			Square square = _ray_shooter.RayCastSquare( );
+
+			if ( square == null ) {
+				_player1.SquareChangeColor( squares, false );
+				_hand_card.transform.position = _hand_card_pos;
+				_hand_card.gameObject.GetComponent< BoxCollider2D >( ).enabled = true;
+				_status = STATUS.IDLE;
+				return;
+			}
+
+			for ( int i = 0; i < squares.Count; i++ ) { 
+				if ( square.Index == squares[ i ].Index ) { 
+					_player1.SquareChangeColor( squares, false );
+					_player1.Summon( _hand_card, square, "Player1" );
+					_hand_card = null;
+					_status = STATUS.IDLE;
+					return;
+				}
+			}
+
+			_player1.SquareChangeColor( squares, false );
+			_hand_card.transform.position = _hand_card_pos;
+			_hand_card.gameObject.GetComponent< BoxCollider2D >( ).enabled = true;
+			_status = STATUS.IDLE;
 		}
 	}
 
+
+
+	void AttackEffect( ) {
+		List< Square > squares = _player1.AttackEffectPossibleOnCardSquare( _card, _now_square );
+		Debug.Log( squares.Count );
+		_player1.SquareChangeColor( squares, true );
+
+		if ( _main_scene_operation.ReturnButton( ) ) {
+			_player1.SquareChangeColor( squares, false );
+			_return_button.SetActive( false );
+			_effect_yes_buuton.SetActive( false );
+
+			_card = null;
+			_now_square = null;
+
+			_status = STATUS.IDLE;
+			return;
+		}
+		
+		if ( _main_scene_operation.EffectYesButton( ) ) {
+			_player1.SquareChangeColor( squares, false );
+			_return_button.SetActive( false );
+			_effect_yes_buuton.SetActive( false );
+			_player1.UseEffect( _card, _now_square );
+
+			_card = null;
+			_now_square = null;
+
+			_status = STATUS.IDLE;
+			return;
+		}
+		
+	}
+
+	void MoveEffect( ) {
+		List< Square > squares = _player1.MovePossibleSquare( _card, _now_square, "Player1" );
+
+		_player1.SquareChangeColor( squares, true );
+
+		if ( _main_scene_operation.MouseTouch( ) ) {
+			Square square = _ray_shooter.RayCastSquare( );		//マウスをクリックしたらレイを飛ばしてマスを取得する
+			_player1.SquareChangeColor( squares, false );	//色をもとに戻す
+			_return_button.SetActive( false );
+
+			if ( square != null ) {
+				_player1.UseEffect( _card, _now_square, square, "Player1" );	//移動できるかどうかを判定し移動できたら移動する
+			}
+			_card = null;
+			_now_square = null;
+
+			_status = STATUS.IDLE;
+			return;
+		}
+
+		if ( _main_scene_operation.ReturnButton( ) ) {
+			_player1.SquareChangeColor( squares, false );
+			_return_button.SetActive( false );
+
+			_card = null;
+			_now_square = null;
+
+			_status = STATUS.IDLE;
+			return;
+		}
+	}
+
+	void RecoveryEffect( ) {
+		if ( _main_scene_operation.ReturnButton( ) ) {
+			_return_button.SetActive( false );
+			_effect_yes_buuton.SetActive( false );
+
+			_card = null;
+			_now_square = null;
+
+			_status = STATUS.IDLE;
+			return;
+		}
+		
+		if ( _main_scene_operation.EffectYesButton( ) ) {
+			_return_button.SetActive( false );
+			_effect_yes_buuton.SetActive( false );
+			_player1.UseEffect( _card );
+
+			_card = null;
+			_now_square = null;
+
+			_status = STATUS.IDLE;
+			return;
+		}
+	}
 	void CardDetailsStatus( ) { 
 
 		//戻るボタンを押したら--------------------------
@@ -195,6 +402,7 @@ public class MainSceneManeger : MonoBehaviour {
 			_return_button.SetActive( false );
 			_move_button.SetActive( false );
 			_direct_attack_button.SetActive( false );
+			_effect_button.SetActive( false );
 			_status = STATUS.IDLE;
 			Destroy( _details );
 			_details = null;
@@ -208,6 +416,7 @@ public class MainSceneManeger : MonoBehaviour {
 		if ( _main_scene_operation.MoveButton( ) ) { 
 			_move_button.SetActive( false );
 			_direct_attack_button.SetActive( false );
+			_effect_button.SetActive( false );
 			_status = STATUS.CARD_MOVE;
 			Destroy( _details );
 			_details = null;
@@ -220,22 +429,49 @@ public class MainSceneManeger : MonoBehaviour {
 			_move_button.SetActive( false );
 			_direct_attack_button.SetActive( false );
 			_return_button.SetActive( false );
+			_effect_button.SetActive( false );
 			_status = STATUS.DIRECT_ATTACK;
 			Destroy( _details );
 			_details = null;
 			return;
 		}
 		//-----------------------------------------------
+
+		//効果ボタンを押したら----------------------------
+		if ( _main_scene_operation.EffectButton( ) ) { 
+			_move_button.SetActive( false );
+			_direct_attack_button.SetActive( false );
+			//_return_button.SetActive( false );
+			_effect_button.SetActive( false );
+
+			//効果の種類によって処理を変える
+			switch ( _card._cardDates.effect_type ) { 
+				case CardMain.EFFECT_TYPE.ATTACK:	
+					_status = STATUS.EFFECT_ATTACK;
+					_effect_yes_buuton.SetActive( true );
+					break;
+
+				case CardMain.EFFECT_TYPE.MOVE:
+					_status = STATUS.EFFECT_MOVE;
+					break;
+
+				case CardMain.EFFECT_TYPE.RECOVERY:
+					_status = STATUS.EEFECT_RECOVERY;
+					_effect_yes_buuton.SetActive( true );
+					break;
+
+				default:
+					Debug.Log( "想定していない効果がステータスに来ています" );
+					break;
+			}
+
+			Destroy( _details );
+			_details = null;
+			return;
+		}
+		//------------------------------------------------
 	}
 
-	void testCardDamage( ) { 
-		if ( Input.GetKeyDown( KeyCode.A ) ) { 
-			if ( _card == null ) return;
-				_card._cardDates.hp--;
-			if ( _card._cardDates.hp < 0 ) _card._cardDates.hp = 0;
-			
-		}
-	}
 }
 
 //ボタンの参照とって表示を切り替えたりする場所はどこ？

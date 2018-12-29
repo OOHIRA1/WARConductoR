@@ -14,13 +14,28 @@ public class CardMain : MonoBehaviour {
 	const int _MAX_ACTION_COUNT = 3;							//移動回数の最大値
 
 	//テスト用----------------------------------------------
+	public enum EFFECT_TYPE { 
+		ATTACK,
+		MOVE,
+		RECOVERY,
+	} 
+
 	[System.Serializable]
 	public struct CardDates {
+		public int hp;
+		public int max_hp;
+		public int attack_point;
 		public Field.DIRECTION[ ] directions;
 		public int distance;
 		public int move_ap;
-		public int hp;
-		public int attack_point;
+		public Field.DIRECTION[ ] effect_direction;
+		public int effect_ap;
+		public int effect_ditance;
+		public int effect_damage;
+		public int effect_recovery_point;
+		public int mp;
+		public EFFECT_TYPE effect_type;
+		
 	}
 	public CardDates _cardDates = new CardDates( );
 	//-------------------------------------------------------
@@ -43,7 +58,7 @@ public class CardMain : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		_cardSpriteRenderer = GetComponent<SpriteRenderer> ();
+		_cardSpriteRenderer = GetComponent<SpriteRenderer>();
 		_cardDataLoader = GameObject.Find ("CardDataLoader").GetComponent<CardDataLoader>();
 		Load ();//カードデータの読み込み
 		Debug.Log (_cardData);
@@ -54,14 +69,33 @@ public class CardMain : MonoBehaviour {
 
 	//--カードデータを読み込む関数
 	void Load( ) {
-		_cardSpriteRenderer.sprite = (Sprite)Resources.Load<Sprite> ("Card/" + _loadID);//カード画像の読み込み
+		//_cardSpriteRenderer.sprite = (Sprite)Resources.Load<Sprite> ("Card/" + _loadID);//カード画像の読み込み
 		_cardData = _cardDataLoader.GetCardDataFromID ( _loadID );
 	}
 
 
-	//==========================================================================================================
+	//================================================b==========================================================
 	//public関数
 
+	//ダメージ-----------------------------------
+	public void Damage( int decrease_point  ) { 
+		_cardDates.hp -= decrease_point;
+
+		if ( _cardDates.hp < 0 ) { 
+			_cardDates.hp = 0;	
+		}
+
+		//HPが０だったら破壊される
+		if ( _cardDates.hp == 0 ) { 
+			Death( );	
+		}
+	}
+	//------------------------------------------
+
+	//破壊
+	public void Death( ) {
+		Destroy( this.gameObject );	
+	} 
 
 	//===========================================================================================================
 	//===========================================================================================================

@@ -15,9 +15,18 @@ public class Field : MonoBehaviour {
 	}
 
 	Square[ ] _squares = new Square[ 20 ];		//マス
+	int _max_index = 0; 
+
+	public int Max_Index {
+		get{ return _max_index; }	
+	}
 
 	void Awake( ) {
 		_squares = this.gameObject.GetComponentsInChildren< Square >( );
+	}
+
+	void Start( ) { 
+		_max_index = _squares.Length;	
 	}
 
 	//Strategyパターンでマスを調べるアルゴリズムを変更している (Commandパターンかも？)-----
@@ -59,6 +68,10 @@ public class Field : MonoBehaviour {
 	}
 	//------------------------------------------------------------------------------------
 
+	public Square getSquare( int index ) { 
+		return _squares[ index - 1 ];
+	}
+
 	//現在のマスから指定した範囲のマスの色を赤くする
 	public void ShowRange( List< Square > squares, bool value ) { 
 		for ( int i = 0; i < squares.Count; i++ ) { 
@@ -66,3 +79,5 @@ public class Field : MonoBehaviour {
 		}
 	}
 }
+
+//インスペクター上のIndexと配列のIndexがずれているせいでIndexを合わせるためにいろんなことろで無駄な計算をしている(Index - 1, Index + 1 など)
