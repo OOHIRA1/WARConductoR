@@ -85,7 +85,7 @@ public class CardMain : MonoBehaviour {
 			_cardDates.hp = 0;	
 		}
 
-		//HPが０だったら破壊される
+		//HPが０になったら破壊する
 		if ( _cardDates.hp == 0 ) { 
 			Death( );	
 		}

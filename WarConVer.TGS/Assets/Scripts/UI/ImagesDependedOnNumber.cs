@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public abstract class ImagesDependedOnNumber : MonoBehaviour {
 	protected Point _point = null;
-	protected GameObject[ ] _image = null;	//Scene上にあるImage配列
+	protected SpriteRenderer[ ] _image = null;	//Scene上にあるImage配列
 
 	void Update( ) {
 		UpdateteImages( );

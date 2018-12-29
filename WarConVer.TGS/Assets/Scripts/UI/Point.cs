@@ -3,21 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Point : MonoBehaviour {
-	[ SerializeField ] int _max_point = 0;
+	[ SerializeField ] int _initial_point = 0;
 	int _point_num = 0;
 
-	public int Max_Point {
-		get { return _max_point; }
-		set { _max_point = value; }
+	public int Initial_Point {
+		get { return _initial_point; }
+		private set { _initial_point = value; }
 	}
 
 	public int Point_Num { 
 		get { return _point_num; }
-		set { _point_num = value; }
+		private set { _point_num = value; }
 	}
 
 	void Start( ) {
-		Point_Num = _max_point;
+		Point_Num = Initial_Point;
 	}
 
 	//ポイントを減らす------------------------
@@ -30,6 +30,10 @@ public class Point : MonoBehaviour {
 		Point_Num -= point;	
 	}
 	//----------------------------------------
+
+	public void addPoint( int point ) { 
+		Point_Num += point;	
+	}
 
 	//減らすポイントが今あるポイントより多いかどうかを調べる
 	public bool DecreasePointConfirmation( int point ) { 

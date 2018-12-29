@@ -78,6 +78,7 @@ public class MainSceneManeger : MonoBehaviour {
 			return;
 		}
 
+		TestCemetary( );
 		switch ( _status ) {
 			case STATUS.IDLE:
 				IdleStatis( );
@@ -119,7 +120,7 @@ public class MainSceneManeger : MonoBehaviour {
 	
 	//カード移動状態
 	void CardMoveStatus( ) {
-		List< Square > squares = _player1.MovePossibleSquare( _card, _now_square, "Player1" );
+		List< Square > squares = _player1.MovePossibleSquare( _card, _now_square );
 
 		_player1.SquareChangeColor( squares, true );		//移動できるマスの色を変える
 
@@ -129,7 +130,7 @@ public class MainSceneManeger : MonoBehaviour {
 			_return_button.SetActive( false );
 
 			if ( square != null ) {
-				_player1.CardMove( _card, _now_square, square, "Player1" );	//移動できるかどうかを判定し移動できたら移動する
+				_player1.CardMove( _card, _now_square, square );	//移動できるかどうかを判定し移動できたら移動する
 			}
 
 			//情報リセット
@@ -236,7 +237,7 @@ public class MainSceneManeger : MonoBehaviour {
 
 					case CardMain.EFFECT_TYPE.MOVE:
 						if ( _player1.DecreaseActivePointConfirmation( _card._cardDates.effect_ap ) && 
-							 _player1.MovePossibleSquare( _card, _now_square, "Player1" ).Count > 0 ) {
+							 _player1.MovePossibleSquare( _card, _now_square ).Count > 0 ) {
 							_effect_button.SetActive( true );
 						}
 						break;
@@ -255,7 +256,7 @@ public class MainSceneManeger : MonoBehaviour {
 
 				//APが消費する分あって移動できるマスがあったら
 				if ( _player1.DecreaseActivePointConfirmation( _card._cardDates.move_ap ) && 
-					 _player1.MovePossibleSquare( _card, _now_square, "Player1" ).Count > 0 ) {
+					 _player1.MovePossibleSquare( _card, _now_square ).Count > 0 ) {
 
 					_move_button.SetActive( true );
 
@@ -309,7 +310,6 @@ public class MainSceneManeger : MonoBehaviour {
 
 	void AttackEffect( ) {
 		List< Square > squares = _player1.AttackEffectPossibleOnCardSquare( _card, _now_square );
-		Debug.Log( squares.Count );
 		_player1.SquareChangeColor( squares, true );
 
 		if ( _main_scene_operation.ReturnButton( ) ) {
@@ -340,7 +340,7 @@ public class MainSceneManeger : MonoBehaviour {
 	}
 
 	void MoveEffect( ) {
-		List< Square > squares = _player1.MovePossibleSquare( _card, _now_square, "Player1" );
+		List< Square > squares = _player1.MovePossibleSquare( _card, _now_square );
 
 		_player1.SquareChangeColor( squares, true );
 
@@ -350,7 +350,7 @@ public class MainSceneManeger : MonoBehaviour {
 			_return_button.SetActive( false );
 
 			if ( square != null ) {
-				_player1.UseEffect( _card, _now_square, square, "Player1" );	//移動できるかどうかを判定し移動できたら移動する
+				_player1.UseEffect( _card, _now_square, square );	//移動できるかどうかを判定し移動できたら移動する
 			}
 			_card = null;
 			_now_square = null;
@@ -470,6 +470,12 @@ public class MainSceneManeger : MonoBehaviour {
 			return;
 		}
 		//------------------------------------------------
+	}
+
+	void TestCemetary( ) { 
+		if ( Input.GetKeyDown( KeyCode.C ) ) { 
+			_player1.TestCemetary( );	
+		}	
 	}
 
 }

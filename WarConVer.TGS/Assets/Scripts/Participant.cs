@@ -16,28 +16,30 @@ public class Participant : MonoBehaviour {
 	[ SerializeField ] Field _field			  = null;
 	[ SerializeField ] Point _active_point	  = null;
 	[ SerializeField ] Point _life_point	  = null;
+	[ SerializeField ] Point _cemetary_point  = null;
 
 	//テスト用
 	[ SerializeField ] GameObject _field_card = null;
 
 	void Start( ) {
-		if ( _field == null )		 Debug.Log( "Fieldの参照がないです" );
-		if ( _active_point == null ) Debug.Log( "ActivePointの参照がないです" );
-		if ( _life_point == null )	 Debug.Log( "LifePointの参照がないです" );
+		if ( _field == null )		   Debug.Log( "Fieldの参照がないです" );
+		if ( _active_point == null )   Debug.Log( "ActivePointの参照がないです" );
+		if ( _life_point == null )	   Debug.Log( "LifePointの参照がないです" );
+		if ( _cemetary_point == null ) Debug.Log( "CemetaryPointの参照がないです" );
 	}
 
 	//カードを移動させる-----------------------------------------------------------------------------------------------------------------------------
-	public void CardMove( CardMain card, Square now_square, Square move_square, string player ) {
+	public void CardMove( CardMain card, Square now_square, Square move_square ) {
 		List< Square > squares = new List< Square >( );
 
 		//移動できるマスだけ格納
-		squares = MovePossibleSquare( card, now_square, player );
+		squares = MovePossibleSquare( card, now_square );
 
 		BATTLE_RESULT result = BATTLE_RESULT.NOT_BATTLE;
 		//移動できるマスの中に移動したいマスがあるか探す
 		for ( int i = 0; i < squares.Count; i++ ) { 
 			if ( squares[ i ].Index == move_square.Index ) {
-				if ( !IsOnCardType( "Player2", squares[ i ] ) ) {
+				if ( !IsOnCardType( "Player2", squares[ i ] ) ) {	//相手カードだったときの判定はどうやってやろう？
 					result = Battle( card, squares[ i ].On_Card );
 					Debug.Log( result );
 				}
@@ -68,8 +70,6 @@ public class Participant : MonoBehaviour {
 						return;
 				}
 				_active_point.DecreasePoint( card._cardDates.move_ap );
-				//now_square.On_Card = null;														//現在のマスから乗っていたカードを外す
-				//move_square.On_Card = card;														//移動したマスにカードを乗せる
 				return;
 			}
 		}
@@ -77,11 +77,13 @@ public class Participant : MonoBehaviour {
 	}
 	//----------------------------------------------------------------------------------------------------------------------------------------------
 
-
+	
+	//ダイレクトアタック処理--------------------------------------------------
 	public void DirectAttack( Participant opponent_player, int move_ap ) {
 		_active_point.DecreasePoint( move_ap );
 		opponent_player._life_point.DecreasePoint( 1 );
 	}
+	//-----------------------------------------------------------------------
 
 
 	//アクティブポイントが足りてるかどうかを判定する-----------
@@ -116,8 +118,8 @@ public class Participant : MonoBehaviour {
 
 
 	//移動効果(オーバロード)-----------------------------------------------------------------------------------------------------------------------
-	public void UseEffect( CardMain card, Square now_square, Square touch_square, string player ) { 
-		CardMove( card, now_square, touch_square, player );
+	public void UseEffect( CardMain card, Square now_square, Square touch_square ) { 
+		CardMove( card, now_square, touch_square );
 	}
 	//---------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -131,7 +133,7 @@ public class Participant : MonoBehaviour {
 
 
 	//移動できる場所を事前に調べる関数-------------------------------------------------------------------------------------------------
-	public List< Square > MovePossibleSquare( CardMain card, Square now_square, string player ) { 
+	public List< Square > MovePossibleSquare( CardMain card, Square now_square ) { 
 		List< Square > squares = new List< Square >( );
 
 		//移動できるマスだけ格納
@@ -139,7 +141,7 @@ public class Participant : MonoBehaviour {
 			Square square = _field.SquareInThatDirection( now_square, card._cardDates.directions[ i ], card._cardDates.distance );
 
 			if ( square != null ) {
-				if ( IsOnCardType( player, square ) ) {
+				if ( IsOnCardType( card.gameObject.tag, square ) ) {
 					squares.Add( square );
 				}
 			}
@@ -169,6 +171,7 @@ public class Participant : MonoBehaviour {
 	}
 	//------------------------------------------------------------------------------------------------------------------------------------
 
+	//召喚できるマスを事前に調べる関数-----------------------------
 	public List< Square > SummonSquare( string player ) { 
 		List< Square > squares = new List< Square >( );
 		
@@ -187,8 +190,10 @@ public class Participant : MonoBehaviour {
 
 		return squares;
 	}
+	//--------------------------------------------------------------
 
-
+	
+	//召喚処理-----------------------------------------------------------------------------------------------
 	public void Summon( CardMain card, Square square, string player ) {
 		List< Square > squares = new List< Square >( );
 		squares = SummonSquare( player );
@@ -211,7 +216,7 @@ public class Participant : MonoBehaviour {
 			}
 		}
 	}
-
+	//-----------------------------------------------------------------------------------------------------------
 
 
 	//マスにカードが存在するかどうか------
@@ -225,7 +230,7 @@ public class Participant : MonoBehaviour {
 	}
 	//------------------------------------
 
-	//マスにカードがあったら自分のじゃないかを調べる関数-----------
+	//マスにカードがあったら自分のじゃないかを調べる関数---
 	bool IsOnCardType( string player, Square square ) {
 		if ( IsOnCard( square ) ) {
 			CardMain on_card = square.On_Card;
@@ -257,7 +262,14 @@ public class Participant : MonoBehaviour {
 		return BATTLE_RESULT.NOT_BATTLE;
 	}
 	//-----------------------------------------------------------------------------------------------------------
+
+
+	public void TestCemetary( ) { 
+		_cemetary_point.addPoint( 1 );
+	}
 }
 
 
 //カードが存在するか、カードのtypeが何か、事前に調べる関数は別クラスにしたほうがいいかも。ブリッジバターンとかいいかも？
+//Handクラスのカードを使う関数のやり方を聞いてからSummon関数を修正すること
+//相手のカードを破壊したとき墓地を増やすのはだれ？
