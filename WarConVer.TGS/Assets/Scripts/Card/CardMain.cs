@@ -22,6 +22,7 @@ public class CardMain : MonoBehaviour {
 
 	[System.Serializable]
 	public struct CardDates {
+		public int id;
 		public int hp;
 		public int max_hp;
 		public int attack_point;

@@ -5,6 +5,7 @@ using UnityEngine;
 public class RayShooter {
 	const float RAY_DIR = 100f;
 
+	//マスだけを取得するRayを飛ばす----------------------------------------------------------------------------------------
 	public Square RayCastSquare( ) {
 		Vector3 mouse_pos = Input.mousePosition;
 		//mouse_pos.z = 10f;
@@ -19,7 +20,10 @@ public class RayShooter {
 		Debug.Log( hit.collider.gameObject.ToString( ) );
 		return hit.collider.gameObject.GetComponent< Square >( );
 	}
+	//----------------------------------------------------------------------------------------------------------------------
 
+
+	//手札のカードだけを取得するRayを飛ばす-----------------------------------------------------------------------------------
 	public CardMain RayCastHandCard( ) { 
 		Vector3 mouse_pos = Input.mousePosition;
 		Vector3 world_pos = Camera.main.ScreenToWorldPoint( mouse_pos );		//マウスのScreen座標をWorld座標に変換
@@ -33,4 +37,5 @@ public class RayShooter {
 		Debug.Log( hit.collider.gameObject.ToString( ) );
 		return hit.collider.gameObject.GetComponent< CardMain >( );
 	}
+	//----------------------------------------------------------------------------------------------------------------------
 }

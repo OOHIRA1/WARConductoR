@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 212409116590496510}
   - component: {fileID: 114791133932176068}
   m_Layer: 10
-  m_Name: dummy_field_card
+  m_Name: player1_dummy_field_card
   m_TagString: Player1
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -66,6 +66,7 @@ MonoBehaviour:
     _necessaryAPForEffect: 0
   _actionCount: 0
   _cardDates:
+    id: 0
     hp: 0
     max_hp: 0
     attack_point: 0

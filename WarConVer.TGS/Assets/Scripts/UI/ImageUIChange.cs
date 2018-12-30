@@ -10,7 +10,7 @@ public class ImageUIChange : ImagesDependedOnNumber {
 	void Awake( ) {
 		_point = this.GetComponent< Point >( );
 
-		//子になるゲームオブジェクトを取得する----------------------------------------
+		//子になるゲームオブジェクトを取得する
 		_image = new SpriteRenderer[ _point.Initial_Point ];
 		var child_images = gameObject.GetComponentInChildren< Transform >( );
 		if ( child_images == null ) { 
@@ -24,7 +24,6 @@ public class ImageUIChange : ImagesDependedOnNumber {
 			index++;
 		}
 		if ( _image[ _point.Initial_Point - 1 ] == null ) Debug.Log( "[エラー]画像が少ない" );
-		//---------------------------------------------------------------------------
 	}
 
 	void Start( ) {
@@ -33,7 +32,7 @@ public class ImageUIChange : ImagesDependedOnNumber {
 
 	//基底クラスのUpdateを呼ぶ
 
-	//残りAPに応じて画像の表示を変化させる--------
+	//残りAPに応じて画像の表示を変化させる
 	public override void UpdateteImages( ) {
 		int decrease_num = _point.Initial_Point - _point.Point_Num;
 
@@ -47,5 +46,4 @@ public class ImageUIChange : ImagesDependedOnNumber {
 			_image[ i ].gameObject.SetActive( false ); 
 		}
 	}
-	//--------------------------------------------
 }

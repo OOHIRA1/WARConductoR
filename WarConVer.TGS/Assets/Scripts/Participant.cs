@@ -17,6 +17,7 @@ public class Participant : MonoBehaviour {
 	[ SerializeField ] Point _active_point	  = null;
 	[ SerializeField ] Point _life_point	  = null;
 	[ SerializeField ] Point _cemetary_point  = null;
+	[ SerializeField ] Hand  _hand			  = null;
 
 	//テスト用
 	[ SerializeField ] GameObject _field_card = null;
@@ -186,7 +187,16 @@ public class Participant : MonoBehaviour {
 			}		
 		}
 		
-		//if ( player == "Player2" ) { }
+		if ( player == "Player2" ) { 
+			for ( int i = 0; i < _field.Max_Index; i++ ) { 
+				Square square = _field.getSquare( i + 1 );
+
+				if ( ( square.Index - 1 ) / 4 != 0 )  continue;
+				if ( square.On_Card != null ) continue;
+
+				squares.Add( square );
+			}		
+		}
 
 		return squares;
 	}
@@ -199,17 +209,16 @@ public class Participant : MonoBehaviour {
 		squares = SummonSquare( player );
 
 		for ( int i = 0; i < squares.Count; i++ ) { 
-			if ( square.Index == squares[ i ].Index ) { 
-				GameObject obj = Instantiate( _field_card, square.transform.position, Quaternion.identity );
-
-				CardMain field_card = obj.GetComponent< CardMain >( );
+			if ( square.Index == squares[ i ].Index ) {
+				_hand.UseHandCard( card );
+				GameObject field_card_obj = Instantiate( _field_card, square.transform.position, Quaternion.identity );	//生成はHnadがやるプレイヤーがやる？
+			
+				CardMain field_card = field_card_obj.GetComponent< CardMain >( );
 				field_card._cardDates = card._cardDates;
 
-				SpriteRenderer sprite = obj.GetComponent< SpriteRenderer >( );
-				SpriteRenderer card_sprite = card.gameObject.GetComponent< SpriteRenderer >( );
-				sprite.sprite = card_sprite.sprite;
-
-				Destroy( card.gameObject );
+				SpriteRenderer field_card_sprite = field_card_obj.GetComponent< SpriteRenderer >( );
+				SpriteRenderer sprite = card.gameObject.GetComponent< SpriteRenderer >( );
+				field_card_sprite.sprite = sprite.sprite;
 
 				square.On_Card = field_card;
 				return;
@@ -217,6 +226,10 @@ public class Participant : MonoBehaviour {
 		}
 	}
 	//-----------------------------------------------------------------------------------------------------------
+
+	public void Draw( CardMain card ) { 
+		_hand.IncreaseHand( card );
+	}
 
 
 	//マスにカードが存在するかどうか------
@@ -226,7 +239,6 @@ public class Participant : MonoBehaviour {
 		} else { 
 			return false;	
 		}
-		
 	}
 	//------------------------------------
 

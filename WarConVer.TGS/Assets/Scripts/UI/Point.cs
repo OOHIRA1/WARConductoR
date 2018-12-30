@@ -35,7 +35,7 @@ public class Point : MonoBehaviour {
 		Point_Num += point;	
 	}
 
-	//減らすポイントが今あるポイントより多いかどうかを調べる
+	//減らすポイントが今あるポイントより多いかどうかを調べる--
 	public bool DecreasePointConfirmation( int point ) { 
 		if ( point > Point_Num ) { 
 			return false;	
@@ -43,5 +43,5 @@ public class Point : MonoBehaviour {
 			return true;	
 		}
 	}
-
+	//--------------------------------------------------------
 }

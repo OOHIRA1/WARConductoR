@@ -42,6 +42,7 @@ public class MainSceneManeger : MonoBehaviour {
 	[ SerializeField ] CardMain _card		 = null;
 	[ SerializeField ] CardMain _enemy_card  = null;
 	[ SerializeField ] Square _enemy_square  = null;
+	[ SerializeField ] CardMain _draw_card   = null;
 
 
 	void Start( ) {
@@ -49,8 +50,6 @@ public class MainSceneManeger : MonoBehaviour {
 		_card.gameObject.transform.position = _now_square.transform.position;
 		_enemy_card.transform.position = _enemy_square.transform.position;
 		_enemy_square.On_Card = _enemy_card;
-		//_card = null;
-		//_now_square = null;
 
 		if ( _main_scene_operation == null ) { 
 			Debug.Log( "[エラー]MainSceneOperationが参照を取れていない" );	
@@ -64,6 +63,7 @@ public class MainSceneManeger : MonoBehaviour {
 			Debug.Log( "[エラー]Participant(Player2)が参照を取れていない" );	
 		}
 	}
+
 	
 	void Update( ) {
 		if ( _main_scene_operation == null ) {
@@ -79,6 +79,7 @@ public class MainSceneManeger : MonoBehaviour {
 		}
 
 		TestCemetary( );
+		TestDraw( );
 		switch ( _status ) {
 			case STATUS.IDLE:
 				IdleStatis( );
@@ -118,62 +119,9 @@ public class MainSceneManeger : MonoBehaviour {
 		}
 	}
 	
-	//カード移動状態
-	void CardMoveStatus( ) {
-		List< Square > squares = _player1.MovePossibleSquare( _card, _now_square );
 
-		_player1.SquareChangeColor( squares, true );		//移動できるマスの色を変える
 
-		if ( _main_scene_operation.MouseTouch( ) ) {
-			Square square = _ray_shooter.RayCastSquare( );	//マウスをクリックしたらレイを飛ばしてマスを取得する
-			_player1.SquareChangeColor( squares, false );	//色をもとに戻す
-			_return_button.SetActive( false );
-
-			if ( square != null ) {
-				_player1.CardMove( _card, _now_square, square );	//移動できるかどうかを判定し移動できたら移動する
-			}
-
-			//情報リセット
-			_card = null;
-			_now_square = null;
-
-			_status = STATUS.IDLE;
-			return;
-		}
-
-		//戻るボタンを押したら-----------------------------------------------------------------------------------------
-		if ( _main_scene_operation.ReturnButton( ) ) {
-			_return_button.SetActive( false );
-			_player1.SquareChangeColor( squares, false );	//色をもとに戻す
-
-			//情報リセット
-			_card = null;
-			_now_square = null;
-
-			_status = STATUS.IDLE;
-			return;
-		}
-		//--------------------------------------------------------------------------------------------------------------
-	}
-
-	void DirectAttack( ) { 
-		if ( _card.gameObject.tag == "Player1" ) { 
-			_player1.DirectAttack( _player2, _card._cardDates.move_ap );
-			_status = STATUS.IDLE;
-			_card = null;
-			_now_square = null;
-			return;
-		}
-
-		if ( _card.gameObject.tag == "Player2" ) { 
-			_player2.DirectAttack( _player1, _card._cardDates.move_ap );
-			_status = STATUS.IDLE;
-			_card = null;
-			_now_square = null;
-			return;
-		}
-	}
-
+	//待機状態-----------------------------------------
 	void IdleStatis( ) {
 
 		if ( _main_scene_operation.MouseTouch( ) ) {
@@ -182,21 +130,26 @@ public class MainSceneManeger : MonoBehaviour {
 		}
 
 	}
+	//--------------------------------------------------
 
+	
+	//フィールドのカードがタッチされたら処理------------------------
 	void FieldCardTouch( ) { 
-		//カードとそのマスの取得---------------------------------------------------
+		//カードとそのマスの取得
 		_now_square = _ray_shooter.RayCastSquare( );
 		if ( _now_square == null ) return;
 		_card = _now_square.On_Card;
 		if ( _card == null ) return;
-		//--------------------------------------------------------------------------
 		
 		ShowCardDetails( );	//カードの詳細画像の表示(生成)
 		ShowCardOperationUI( );	//プレイヤーによって表示するUI
 		
 		_status = STATUS.CARD_DETAILS;
 	}
+	//---------------------------------------------------------------
 
+
+	//手札のカードがタッチされたら処理-------------------------------------------
 	void HandCardTouch( ) { 
 		_hand_card = _ray_shooter.RayCastHandCard( );
 		if ( _hand_card == null ) return;
@@ -204,7 +157,10 @@ public class MainSceneManeger : MonoBehaviour {
 		_hand_card.gameObject.GetComponent< BoxCollider2D >( ).enabled = false;
 		_status = STATUS.CARD_SUMMON;
 	}
+	//---------------------------------------------------------------------------
 
+
+	//フィールドカードの詳細画像表示----------------------------------------------------------------------------------------------------
 	void ShowCardDetails( ) { 
 		//カードの詳細プレハブの取得
 		_details = Instantiate( _card_details_image, transform.position, Quaternion.identity );
@@ -221,7 +177,10 @@ public class MainSceneManeger : MonoBehaviour {
 		RectTransform details_pos = _details.GetComponent< RectTransform >( );
 		details_pos.localPosition = new Vector3( -210, 0, 0 );	//あとでこの部分の処理は修正するだろうからマジックナンバーを放置
 	}
+	//---------------------------------------------------------------------------------------------------------------------------
 
+
+	//フィールドカードの操作系UIの表示処理----------------------------------------------------------------------------
 	void ShowCardOperationUI( ) { 
 		if ( _card.gameObject.tag == "Player1" ) {
 				_return_button.SetActive( true );
@@ -271,8 +230,145 @@ public class MainSceneManeger : MonoBehaviour {
 				_return_button.SetActive( true );
 			}
 	}
+	//------------------------------------------------------------------------------------------------------------------
+
+	
+	//ボタン操作処理------------------------------------------------------------
+	void CardDetailsStatus( ) { 
+
+		//戻るボタンを押したら
+		if ( _main_scene_operation.ReturnButton( ) ) { 
+			_return_button.SetActive( false );
+			_move_button.SetActive( false );
+			_direct_attack_button.SetActive( false );
+			_effect_button.SetActive( false );
+			_status = STATUS.IDLE;
+			Destroy( _details );
+			_details = null;
+			_card = null;
+			_now_square = null;
+			return;
+		}
+
+		//移動ボタンを押したら
+		if ( _main_scene_operation.MoveButton( ) ) { 
+			_move_button.SetActive( false );
+			_direct_attack_button.SetActive( false );
+			_effect_button.SetActive( false );
+			_status = STATUS.CARD_MOVE;
+			Destroy( _details );
+			_details = null;
+			return;
+		}
+
+		//攻撃ボタンを押したら
+		if ( _main_scene_operation.DirectAttackButton( ) ) {
+			_move_button.SetActive( false );
+			_direct_attack_button.SetActive( false );
+			_return_button.SetActive( false );
+			_effect_button.SetActive( false );
+			_status = STATUS.DIRECT_ATTACK;
+			Destroy( _details );
+			_details = null;
+			return;
+		}
+
+		//効果ボタンを押したら
+		if ( _main_scene_operation.EffectButton( ) ) { 
+			_move_button.SetActive( false );
+			_direct_attack_button.SetActive( false );
+			_effect_button.SetActive( false );
+
+			//効果の種類によって処理を変える
+			switch ( _card._cardDates.effect_type ) { 
+				case CardMain.EFFECT_TYPE.ATTACK:	
+					_status = STATUS.EFFECT_ATTACK;
+					_effect_yes_buuton.SetActive( true );
+					break;
+
+				case CardMain.EFFECT_TYPE.MOVE:
+					_status = STATUS.EFFECT_MOVE;
+					break;
+
+				case CardMain.EFFECT_TYPE.RECOVERY:
+					_status = STATUS.EEFECT_RECOVERY;
+					_effect_yes_buuton.SetActive( true );
+					break;
+
+				default:
+					Debug.Log( "想定していない効果がステータスに来ています" );
+					break;
+			}
+
+			Destroy( _details );
+			_details = null;
+			return;
+		}
+	}
+	//--------------------------------------------------------------------------------
+
+	
+	//カード移動状態処理----------------------------------------------------------------------------------------------------------------
+	void CardMoveStatus( ) {
+		List< Square > squares = _player1.MovePossibleSquare( _card, _now_square );
+
+		_player1.SquareChangeColor( squares, true );		//移動できるマスの色を変える
+
+		if ( _main_scene_operation.MouseTouch( ) ) {
+			Square square = _ray_shooter.RayCastSquare( );	//マウスをクリックしたらレイを飛ばしてマスを取得する
+			_player1.SquareChangeColor( squares, false );	//色をもとに戻す
+			_return_button.SetActive( false );
+
+			if ( square != null ) {
+				_player1.CardMove( _card, _now_square, square );	//移動できるかどうかを判定し移動できたら移動する
+			}
+
+			//情報リセット
+			_card = null;
+			_now_square = null;
+
+			_status = STATUS.IDLE;
+			return;
+		}
+
+		//戻るボタンを押したら
+		if ( _main_scene_operation.ReturnButton( ) ) {
+			_return_button.SetActive( false );
+			_player1.SquareChangeColor( squares, false );	//色をもとに戻す
+
+			//情報リセット
+			_card = null;
+			_now_square = null;
+
+			_status = STATUS.IDLE;
+			return;
+		}
+	}
+	//--------------------------------------------------------------------------------------------------------------------------
 
 
+	//ダイレクトアタック処理----------------------------------------------------
+	void DirectAttack( ) { 
+		if ( _card.gameObject.tag == "Player1" ) { 
+			_player1.DirectAttack( _player2, _card._cardDates.move_ap );
+			_status = STATUS.IDLE;
+			_card = null;
+			_now_square = null;
+			return;
+		}
+
+		if ( _card.gameObject.tag == "Player2" ) { 
+			_player2.DirectAttack( _player1, _card._cardDates.move_ap );
+			_status = STATUS.IDLE;
+			_card = null;
+			_now_square = null;
+			return;
+		}
+	}
+	//--------------------------------------------------------------------------
+
+	
+	//召喚状態処理----------------------------------------------------------------------
 	void SummonStatus( ) {
 		List< Square > squares = _player1.SummonSquare( "Player1" );
 		_player1.SquareChangeColor( squares, true );
@@ -305,9 +401,10 @@ public class MainSceneManeger : MonoBehaviour {
 			_status = STATUS.IDLE;
 		}
 	}
+	//--------------------------------------------------------------------------------------
 
 
-
+	//攻撃効果中処理------------------------------------------------------------------------------
 	void AttackEffect( ) {
 		List< Square > squares = _player1.AttackEffectPossibleOnCardSquare( _card, _now_square );
 		_player1.SquareChangeColor( squares, true );
@@ -338,7 +435,10 @@ public class MainSceneManeger : MonoBehaviour {
 		}
 		
 	}
+	//--------------------------------------------------------------------------------------------
 
+
+	//移動効果中処理---------------------------------------------------------------------------------
 	void MoveEffect( ) {
 		List< Square > squares = _player1.MovePossibleSquare( _card, _now_square );
 
@@ -370,7 +470,10 @@ public class MainSceneManeger : MonoBehaviour {
 			return;
 		}
 	}
+	//---------------------------------------------------------------------------------------------------
 
+
+	//回復効果中処理----------------------------------------------
 	void RecoveryEffect( ) {
 		if ( _main_scene_operation.ReturnButton( ) ) {
 			_return_button.SetActive( false );
@@ -395,86 +498,20 @@ public class MainSceneManeger : MonoBehaviour {
 			return;
 		}
 	}
-	void CardDetailsStatus( ) { 
+	//--------------------------------------------------------------
 
-		//戻るボタンを押したら--------------------------
-		if ( _main_scene_operation.ReturnButton( ) ) { 
-			_return_button.SetActive( false );
-			_move_button.SetActive( false );
-			_direct_attack_button.SetActive( false );
-			_effect_button.SetActive( false );
-			_status = STATUS.IDLE;
-			Destroy( _details );
-			_details = null;
-			_card = null;
-			_now_square = null;
-			return;
-		}
-		//----------------------------------------------
 
-		//移動ボタンを押したら--------------------------
-		if ( _main_scene_operation.MoveButton( ) ) { 
-			_move_button.SetActive( false );
-			_direct_attack_button.SetActive( false );
-			_effect_button.SetActive( false );
-			_status = STATUS.CARD_MOVE;
-			Destroy( _details );
-			_details = null;
-			return;
-		}
-		//-----------------------------------------------
-
-		//攻撃ボタンを押したら--------------------------
-		if ( _main_scene_operation.DirectAttackButton( ) ) {
-			_move_button.SetActive( false );
-			_direct_attack_button.SetActive( false );
-			_return_button.SetActive( false );
-			_effect_button.SetActive( false );
-			_status = STATUS.DIRECT_ATTACK;
-			Destroy( _details );
-			_details = null;
-			return;
-		}
-		//-----------------------------------------------
-
-		//効果ボタンを押したら----------------------------
-		if ( _main_scene_operation.EffectButton( ) ) { 
-			_move_button.SetActive( false );
-			_direct_attack_button.SetActive( false );
-			//_return_button.SetActive( false );
-			_effect_button.SetActive( false );
-
-			//効果の種類によって処理を変える
-			switch ( _card._cardDates.effect_type ) { 
-				case CardMain.EFFECT_TYPE.ATTACK:	
-					_status = STATUS.EFFECT_ATTACK;
-					_effect_yes_buuton.SetActive( true );
-					break;
-
-				case CardMain.EFFECT_TYPE.MOVE:
-					_status = STATUS.EFFECT_MOVE;
-					break;
-
-				case CardMain.EFFECT_TYPE.RECOVERY:
-					_status = STATUS.EEFECT_RECOVERY;
-					_effect_yes_buuton.SetActive( true );
-					break;
-
-				default:
-					Debug.Log( "想定していない効果がステータスに来ています" );
-					break;
-			}
-
-			Destroy( _details );
-			_details = null;
-			return;
-		}
-		//------------------------------------------------
-	}
+	
 
 	void TestCemetary( ) { 
 		if ( Input.GetKeyDown( KeyCode.C ) ) { 
 			_player1.TestCemetary( );	
+		}	
+	}
+
+	void TestDraw( ) { 
+		if ( Input.GetKeyDown( KeyCode.D ) ) { 
+			_player1.Draw( _draw_card );	
 		}	
 	}
 
@@ -489,3 +526,7 @@ public class MainSceneManeger : MonoBehaviour {
 //例えば移動ボタンが押されたときに通知してさらにカード詳細状態だったら処理する。逆にマウスがクリックされたときにカード詳細状態だったら処理しないなど
 
 //今現在、普通によくないプログラム。あっちこっち変更しないといけなくて可読性もよくない。条件分岐もありすぎてごり押し感半端ない
+
+//今のやり方だと自分の今操作状態のプレイヤーを確認する必要がある(文字列でPlayer1とかやってるところをターンで変えらるようにする)
+
+//手札のカードの詳細も見れたほうがいいが判定どうしよう？
