@@ -16,8 +16,8 @@ public class Point : MonoBehaviour {
 		private set { _point_num = value; }
 	}
 
-	void Start( ) {
-		Point_Num = Initial_Point;
+	void Awake( ) {
+		Point_Num = Initial_Point;	//他のクラスのStartでPoint_Numを見たいためAwakeで処理
 	}
 
 	//ポイントを減らす------------------------

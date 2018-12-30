@@ -36,6 +36,8 @@ public class NumberUIChange : ImagesDependedOnNumber {
 
 	void Start( ) {
 		_previous_point = _point.Point_Num;	
+		
+		ChangeImage( );
 	}
 
 	public override void UpdateteImages( ) {
@@ -45,8 +47,11 @@ public class NumberUIChange : ImagesDependedOnNumber {
 			_previous_point = _point.Point_Num;	
 		}
 
-		if ( _point.Point_Num < 0 || _point.Point_Num > 99 ) return;
+		ChangeImage( );
+	}
 
+	void ChangeImage( ) { 
+		if ( _point.Point_Num < 0 || _point.Point_Num > 99 ) return;
 
 		if ( _point.Point_Num < 10 ) { 
 			_image[ ( int )DIGIT.ONE_PLACE ].sprite  = _numbers[ _point.Point_Num ];
@@ -62,6 +67,7 @@ public class NumberUIChange : ImagesDependedOnNumber {
 			_image[ ( int )DIGIT.ONE_PLACE ].sprite  = _numbers[ one_place ];
 			_image[ ( int )DIGIT.TENS_PLACE ].sprite = _numbers[ tens_place ];
 		}
-	}
+	} 
+
 }
 //マジックナンバーだけどどうしようか

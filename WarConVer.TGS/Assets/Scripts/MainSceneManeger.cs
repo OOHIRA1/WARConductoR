@@ -153,6 +153,7 @@ public class MainSceneManeger : MonoBehaviour {
 	void HandCardTouch( ) { 
 		_hand_card = _ray_shooter.RayCastHandCard( );
 		if ( _hand_card == null ) return;
+
 		_hand_card_pos = _hand_card.transform.position;
 		_hand_card.gameObject.GetComponent< BoxCollider2D >( ).enabled = false;
 		_status = STATUS.CARD_SUMMON;
@@ -370,11 +371,21 @@ public class MainSceneManeger : MonoBehaviour {
 	
 	//召喚状態処理----------------------------------------------------------------------
 	void SummonStatus( ) {
-		List< Square > squares = _player1.SummonSquare( "Player1" );
-		_player1.SquareChangeColor( squares, true );
 		_hand_card.transform.position = _main_scene_operation.getWorldMousePos( );
+		List< Square > squares = _player1.SummonSquare( "Player1" );
+
+		if ( _player1.DecreaseMPointConfirmation( _hand_card._cardDates.mp ) ) { 
+			_player1.SquareChangeColor( squares, true );
+		}
 
 		if ( !_main_scene_operation.MouseConsecutivelyTouch( ) ) {
+			if ( !_player1.DecreaseMPointConfirmation( _hand_card._cardDates.mp ) ) {
+				_hand_card.transform.position = _hand_card_pos;
+				_hand_card.gameObject.GetComponent< BoxCollider2D >( ).enabled = true;
+				_status = STATUS.IDLE;
+				return;
+			}
+
 			Square square = _ray_shooter.RayCastSquare( );
 
 			if ( square == null ) {
@@ -394,6 +405,8 @@ public class MainSceneManeger : MonoBehaviour {
 					return;
 				}
 			}
+
+
 
 			_player1.SquareChangeColor( squares, false );
 			_hand_card.transform.position = _hand_card_pos;

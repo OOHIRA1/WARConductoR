@@ -17,6 +17,7 @@ public class Participant : MonoBehaviour {
 	[ SerializeField ] Point _active_point	  = null;
 	[ SerializeField ] Point _life_point	  = null;
 	[ SerializeField ] Point _cemetary_point  = null;
+	[ SerializeField ] Point _m_point		  = null;
 	[ SerializeField ] Hand  _hand			  = null;
 
 	//テスト用
@@ -70,6 +71,7 @@ public class Participant : MonoBehaviour {
 						Debug.Log( "予期せぬ勝敗が起きている" );
 						return;
 				}
+
 				_active_point.DecreasePoint( card._cardDates.move_ap );
 				return;
 			}
@@ -90,6 +92,13 @@ public class Participant : MonoBehaviour {
 	//アクティブポイントが足りてるかどうかを判定する-----------
 	public bool  DecreaseActivePointConfirmation( int point ) { 
 		return _active_point.DecreasePointConfirmation( point );
+	}
+	//---------------------------------------------------------
+
+	
+	//MPが足りてるかどうかを判定する--------------------------
+	public bool DecreaseMPointConfirmation( int point ) { 
+		return _m_point.DecreasePointConfirmation( point );	
 	}
 	//---------------------------------------------------------
 
@@ -220,6 +229,7 @@ public class Participant : MonoBehaviour {
 				SpriteRenderer sprite = card.gameObject.GetComponent< SpriteRenderer >( );
 				field_card_sprite.sprite = sprite.sprite;
 
+				_m_point.DecreasePoint( card._cardDates.mp );
 				square.On_Card = field_card;
 				return;
 			}
