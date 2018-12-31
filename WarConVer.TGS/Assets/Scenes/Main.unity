@@ -603,7 +603,7 @@ MonoBehaviour:
     effect_direction: 0200000003000000050000000800000007000000060000000400000001000000
     effect_ap: 0
     effect_ditance: 2
-    effect_damage: 2
+    effect_damage: 100
     effect_recovery_point: 0
     mp: 0
     effect_type: 1
@@ -881,11 +881,11 @@ MonoBehaviour:
     id: 0
     hp: 3
     max_hp: 1000
-    attack_point: 2
+    attack_point: 10
     directions: 070000000200000005000000
     distance: 1
     move_ap: 1
-    effect_direction: 0700000002000000
+    effect_direction: 06000000020000000400000007000000
     effect_ap: 2
     effect_ditance: 1
     effect_damage: 100
@@ -6945,7 +6945,7 @@ MonoBehaviour:
     hp: 10
     max_hp: 10
     attack_point: 10
-    directions: 0400000005000000
+    directions: 040000000500000004000000
     distance: 1
     move_ap: 1
     effect_direction: 0200000007000000
