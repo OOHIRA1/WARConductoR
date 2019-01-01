@@ -3,20 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Point : MonoBehaviour {
-	[ SerializeField ] int _initialPoint = 0;	//初期の値
-	int _point = 0;
+	const int MAX_MAGIC_POINT = 12;
 
-	public int Initial_Point {
-		get { return _initialPoint; }
+	[ SerializeField ] int _maxPoint = 0;	//最大値
+	[ SerializeField ] int _point = 0;
+
+	public int Max_Point {
+		get { return _maxPoint; }
 	}
 
 	public int Point_Num { 
 		get { return _point; }
-		private set { _point = value; }
-	}
-
-	void Awake( ) {
-		Point_Num = Initial_Point;	//他のクラスのStartでPoint_Numを見たいためAwakeで処理
 	}
 
 	//ポイントを減らす------------------------
@@ -26,14 +23,18 @@ public class Point : MonoBehaviour {
 			return;	
 		}
 		
-		Point_Num -= point;	
+		_point -= point;	
 	}
 	//----------------------------------------
 
 	
 	//ポイントを増やす---------------------
-	public void IncreasePoint( int point ) { 
-		Point_Num += point;	
+	public void IncreasePoint( int point ) {
+		_point += point;	
+
+		if ( _point > _maxPoint ) { 
+			_point = _maxPoint;
+		}
 	}
 	//-------------------------------------
 
@@ -47,4 +48,17 @@ public class Point : MonoBehaviour {
 		}
 	}
 	//--------------------------------------------------------
+
+	//最大値を増やす--------------------------------
+	public void IncreaseMaxPoint( int point ) { 
+		_maxPoint += point;
+
+		if ( _maxPoint > MAX_MAGIC_POINT ) { 
+			_maxPoint = MAX_MAGIC_POINT;
+		}
+	}
+	//----------------------------------------------
 }
+
+//MPだけどうしても特別処理が必要。なんかいい方法ある？派生クラスつくる？
+//そうすればその種類でのPointしか使わない機能をまとめらるので奇麗かも？

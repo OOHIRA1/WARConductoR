@@ -30,18 +30,16 @@ public class MainSceneManeger : MonoBehaviour {
 	[ SerializeField ] GameObject _canvas			= null;	//生成したあとに子にするため
 
 	//テスト用
-	[ SerializeField ] Square	_nowSquare    = null;
+	[ SerializeField ] Square	_nowSquare    = null;//テスト用でSerializeField
 	[ SerializeField ] CardMain _card		  = null;
-	[ SerializeField ] CardMain _enemyCard    = null;
-	[ SerializeField ] Square   _enemySquare  = null;
 	[ SerializeField ] CardMain _drawCard	  = null;
 
 
 	void Start( ) {
 		_nowSquare.On_Card = _card;
 		_card.gameObject.transform.position = _nowSquare.transform.position;
-		_enemyCard.transform.position = _enemySquare.transform.position;
-		_enemySquare.On_Card = _enemyCard;
+
+		ReferenceCheck( );
 	}
 
 	
@@ -71,7 +69,7 @@ public class MainSceneManeger : MonoBehaviour {
 
 		switch ( _phaseStatus ) { 
 			case PHASE.START:
-				_phase = new StartPhase( );
+				_phase = new StartPhase( _player1 );
 				break;
 
 			case PHASE.DRAW:
@@ -82,7 +80,7 @@ public class MainSceneManeger : MonoBehaviour {
 				_phase = new MainPhase( _player1, _player2, _mainSceneOperation,
 										_returnButton, _moveButton, _directAttackButton, _effectButton, _effectYesBuuton,
 										_cardDetailsImage, _canvas,
-										_nowSquare, _card, _enemyCard, _enemySquare, _drawCard );
+										_nowSquare, _card, _drawCard );
 				break;
 
 			case PHASE.END:

@@ -278,7 +278,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03b9ee76ca2ae294e97ce6c2ca449174, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _initial_point: 6
+  _maxPoint: 6
+  _point: 6
 --- !u!114 &37914556
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1058,22 +1059,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07ca4862a50d3564f9d41182c8f7a0eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _main_scene_operation: {fileID: 1333382034}
+  _mainSceneOperation: {fileID: 1333382034}
   _player1: {fileID: 473805677}
   _player2: {fileID: 1256514221}
-  _return_button: {fileID: 1949290537}
-  _move_button: {fileID: 1474539973}
-  _direct_attack_button: {fileID: 1207233793}
-  _effect_button: {fileID: 1865975021}
-  _effect_yes_buuton: {fileID: 1421355633}
-  _card_details_image: {fileID: 1080583943361364, guid: 1ba175758612fc04183cefaae54a0da7,
+  _returnButton: {fileID: 1949290537}
+  _moveButton: {fileID: 1474539973}
+  _directAttackButton: {fileID: 1207233793}
+  _effectButton: {fileID: 1865975021}
+  _effectYesBuuton: {fileID: 1421355633}
+  _cardDetailsImage: {fileID: 1814826745150514, guid: addf016e4646cb1499f6b65f86a16274,
     type: 2}
   _canvas: {fileID: 987176840}
-  _now_square: {fileID: 1707606759}
+  _nowSquare: {fileID: 1707606759}
   _card: {fileID: 197566805}
-  _enemy_card: {fileID: 158759833}
-  _enemy_square: {fileID: 1316086120}
-  _draw_card: {fileID: 1976715242}
+  _drawCard: {fileID: 1976715242}
 --- !u!4 &237354374
 Transform:
   m_ObjectHideFlags: 0
@@ -1679,7 +1678,7 @@ GameObject:
   - component: {fileID: 473805677}
   m_Layer: 0
   m_Name: Player1
-  m_TagString: Untagged
+  m_TagString: Player1
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1708,14 +1707,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7321dfdbd73da046a4248188662f605, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _field: {fileID: 835475849}
-  _active_point: {fileID: 626025894}
-  _life_point: {fileID: 2103627544}
-  _cemetary_point: {fileID: 962235146}
-  _m_point: {fileID: 1512133953}
   _hand: {fileID: 743047483}
-  _field_card: {fileID: 1364945304883472, guid: af69bafb6bd108f4fb0cb9b34f47b427,
-    type: 2}
+  _activePoint: {fileID: 626025894}
+  _magicPoint: {fileID: 1512133953}
+  _lifePoint: {fileID: 2103627544}
+  _cemetaryPoint: {fileID: 962235146}
+  _field: {fileID: 835475849}
+  _fieldCard: {fileID: 1364945304883472, guid: af69bafb6bd108f4fb0cb9b34f47b427, type: 2}
 --- !u!1 &499325160
 GameObject:
   m_ObjectHideFlags: 0
@@ -2219,7 +2217,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03b9ee76ca2ae294e97ce6c2ca449174, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _initial_point: 6
+  _maxPoint: 6
+  _point: 6
 --- !u!1 &627405412
 GameObject:
   m_ObjectHideFlags: 0
@@ -2474,9 +2473,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbd21212d018ae3478917316f073d9ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _hand_card_obj: {fileID: 1358075807757910, guid: 8bca3f5c6dd3098418bdfb1cb5f0aaeb,
+  _handCardObj: {fileID: 1358075807757910, guid: 8bca3f5c6dd3098418bdfb1cb5f0aaeb,
     type: 2}
-  _sort_shift_pos: 1.8
+  _sortShiftPos: 1.5
 --- !u!4 &743047484
 Transform:
   m_ObjectHideFlags: 0
@@ -2524,9 +2523,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbd21212d018ae3478917316f073d9ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _hand_card_obj: {fileID: 1358075807757910, guid: 8bca3f5c6dd3098418bdfb1cb5f0aaeb,
+  _handCardObj: {fileID: 1358075807757910, guid: 8bca3f5c6dd3098418bdfb1cb5f0aaeb,
     type: 2}
-  _sort_shift_pos: 1.8
+  _sortShiftPos: 1.5
 --- !u!4 &750422030
 Transform:
   m_ObjectHideFlags: 0
@@ -3124,7 +3123,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03b9ee76ca2ae294e97ce6c2ca449174, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _initial_point: 0
+  _maxPoint: 10
+  _point: 0
 --- !u!114 &962235147
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4219,13 +4219,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7321dfdbd73da046a4248188662f605, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _hand: {fileID: 750422029}
+  _activePoint: {fileID: 37914555}
+  _magicPoint: {fileID: 1765459212}
+  _lifePoint: {fileID: 1330729852}
+  _cemetaryPoint: {fileID: 1256974571}
   _field: {fileID: 835475849}
-  _active_point: {fileID: 37914555}
-  _life_point: {fileID: 1330729852}
-  _cemetary_point: {fileID: 0}
-  _m_point: {fileID: 0}
-  _hand: {fileID: 0}
-  _field_card: {fileID: 0}
+  _fieldCard: {fileID: 1884116939736334, guid: a57506c16f88ff54495a62718f4a44a5, type: 2}
 --- !u!4 &1256514222
 Transform:
   m_ObjectHideFlags: 0
@@ -4327,7 +4327,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03b9ee76ca2ae294e97ce6c2ca449174, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _initial_point: 0
+  _maxPoint: 10
+  _point: 0
 --- !u!114 &1256974572
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4702,7 +4703,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03b9ee76ca2ae294e97ce6c2ca449174, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _initial_point: 5
+  _maxPoint: 5
+  _point: 5
 --- !u!114 &1330729853
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5930,7 +5932,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03b9ee76ca2ae294e97ce6c2ca449174, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _initial_point: 4
+  _maxPoint: 4
+  _point: 4
 --- !u!114 &1512133954
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6581,7 +6584,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03b9ee76ca2ae294e97ce6c2ca449174, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _initial_point: 4
+  _maxPoint: 4
+  _point: 4
 --- !u!114 &1765459213
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7883,7 +7887,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03b9ee76ca2ae294e97ce6c2ca449174, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _initial_point: 5
+  _maxPoint: 5
+  _point: 5
 --- !u!114 &2103627545
 MonoBehaviour:
   m_ObjectHideFlags: 0

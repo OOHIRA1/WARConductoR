@@ -4,12 +4,12 @@ using UnityEngine;
 using UnityEngine.Assertions;
 
 public class Participant : MonoBehaviour {
-	[ SerializeField ] Hand  _hand			  = null;
-	[ SerializeField ] Point _activePoint	  = null;
-	[ SerializeField ] Point _magicPoint		  = null;
-	[ SerializeField ] Point _lifePoint	  = null;
-	[ SerializeField ] Point _cemetaryPoint  = null;
-	[ SerializeField ] Field _field			  = null;
+	[ SerializeField ] Hand  _hand			= null;
+	[ SerializeField ] Point _activePoint	= null;
+	[ SerializeField ] Point _magicPoint    = null;
+	[ SerializeField ] Point _lifePoint	    = null;
+	[ SerializeField ] Point _cemetaryPoint = null;
+	[ SerializeField ] Field _field			= null;
 
 	List< CardMain > _cardInField  = new List< CardMain >( );			//フィールドの自分のカードの参照
 	CardDamageManager _cardDamageManager = new CardDamageManager( );

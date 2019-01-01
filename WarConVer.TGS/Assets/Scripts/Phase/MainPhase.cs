@@ -15,57 +15,54 @@ public class MainPhase : Phase {
 		CARD_SUMMON,
 	}
 
-	MainSceneOperation _main_scene_operation = null;
+	MainSceneOperation _mainSceneOperation = null;
 	
-	MAIN_PHASE_STATUS _main_phase_status = MAIN_PHASE_STATUS.IDLE;
-	RayShooter _ray_shooter = new RayShooter( );
-	CardMain _hand_card = null;
-	Vector3 _hand_card_pos = Vector3.zero;
+	MAIN_PHASE_STATUS _mainPhaseStatus = MAIN_PHASE_STATUS.IDLE;
+	Square _nowSquare    = null;
+	RayShooter _rayShooter = new RayShooter( );
+	CardMain _handCard = null;
+	Participant _enemyPlayer = null;
+	Vector3 _handCardPos = Vector3.zero;
 
 	//ボタン
-	GameObject _return_button		 = null;
-	GameObject _move_button			 = null;
-	GameObject _direct_attack_button = null;
-	GameObject _effect_button		 = null;
-	GameObject _effect_yes_buuton	 = null;
+	GameObject _returnButton		 = null;
+	GameObject _moveButton			 = null;
+	GameObject _directAttackButton = null;
+	GameObject _effectButton		 = null;
+	GameObject _effectYesBuuton	 = null;
 
 	//詳細系
-	GameObject _card_details_image = null;	//生成する詳細画像のプレハブ
+	GameObject _cardDetailsImage = null;	//生成する詳細画像のプレハブ
 	GameObject _canvas			   = null;	//生成したあとに子にするため
 	GameObject _details			   = null;	//生成した詳細画像を格納するため
 
 
 	//テスト用
-	[ SerializeField ] Square _now_square    = null;
-	[ SerializeField ] CardMain _card		 = null;
-	[ SerializeField ] CardMain _enemy_card  = null;
-	[ SerializeField ] Square _enemy_square  = null;
-	[ SerializeField ] CardMain _draw_card   = null;
+	CardMain _card		 = null;
+	CardMain _drawCard   = null;
 
 
-	public MainPhase( Participant player1, Participant player2, MainSceneOperation main_scene_qperation, 
-					  GameObject return_button, GameObject move_button, GameObject direct_attack_button, GameObject effect_button, GameObject effect_yes_button, 
-					  GameObject card_ditails_image, GameObject canvas,
-					  Square now_square, CardMain card, CardMain enemy_card, Square enemy_square, CardMain draw_card ) {
+	public MainPhase( Participant turnPlayer, Participant enemyPlayer, MainSceneOperation mainSceneQperation, 
+					  GameObject returnButton, GameObject moveButton, GameObject directAttackButton, GameObject effectButton, GameObject effectYesButton, 
+					  GameObject cardDitailsImage, GameObject canvas,
+					  Square nowSquare, CardMain card, CardMain drawCard ) {
 
-		_player1 = player1;
-		_player2 = player2;
-		_main_scene_operation = main_scene_qperation;
+		_turnPlayer = turnPlayer;
+		_enemyPlayer = enemyPlayer;
+		_nowSquare = nowSquare;
+		_mainSceneOperation = mainSceneQperation;
 
-		_return_button = return_button;
-		_move_button = move_button;
-		_direct_attack_button = direct_attack_button;
-		_effect_button = effect_button;
-		_effect_yes_buuton = effect_yes_button;
+		_returnButton = returnButton;
+		_moveButton = moveButton;
+		_directAttackButton = directAttackButton;
+		_effectButton = effectButton;
+		_effectYesBuuton = effectYesButton;
 
-		_card_details_image = card_ditails_image;
+		_cardDetailsImage = cardDitailsImage;
 		_canvas = canvas;
 
-		_now_square = now_square;
 		_card = card;
-		_enemy_card = enemy_card;
-		_enemy_square = enemy_square;
-		_draw_card = draw_card;
+		_drawCard = drawCard;
 
 		Debug.Log( "メインフェーズ" );
 	}
@@ -73,7 +70,7 @@ public class MainPhase : Phase {
 
 	public override void PhaseUpdate( ) {
 		TestDraw( );
-		switch ( _main_phase_status ) {
+		switch ( _mainPhaseStatus ) {
 			case MAIN_PHASE_STATUS.IDLE:
 				IdleStatis( );
 				return;
@@ -115,7 +112,7 @@ public class MainPhase : Phase {
 	//待機状態-----------------------------------------
 	void IdleStatis( ) {
 
-		if ( _main_scene_operation.MouseTouch( ) ) {
+		if ( _mainSceneOperation.MouseTouch( ) ) {
 			FieldCardTouch( );
 			HandCardTouch( );
 		}
@@ -127,27 +124,27 @@ public class MainPhase : Phase {
 	//フィールドのカードがタッチされたら処理------------------------
 	void FieldCardTouch( ) { 
 		//カードとそのマスの取得
-		_now_square = _ray_shooter.RayCastSquare( );
-		if ( _now_square == null ) return;
-		_card = _now_square.On_Card;
+		_nowSquare = _rayShooter.RayCastSquare( );
+		if ( _nowSquare == null ) return;
+		_card = _nowSquare.On_Card;
 		if ( _card == null ) return;
 		
 		ShowCardDetails( );	//カードの詳細画像の表示(生成)
 		ShowCardOperationUI( );	//プレイヤーによって表示するUI
 		
-		_main_phase_status = MAIN_PHASE_STATUS.CARD_DETAILS;
+		_mainPhaseStatus = MAIN_PHASE_STATUS.CARD_DETAILS;
 	}
 	//---------------------------------------------------------------
 
 
 	//手札のカードがタッチされたら処理-------------------------------------------
 	void HandCardTouch( ) { 
-		_hand_card = _ray_shooter.RayCastHandCard( );
-		if ( _hand_card == null ) return;
+		_handCard = _rayShooter.RayCastHandCard( );
+		if ( _handCard == null ) return;
 
-		_hand_card_pos = _hand_card.transform.position;
-		_hand_card.gameObject.GetComponent< BoxCollider2D >( ).enabled = false;
-		_main_phase_status = MAIN_PHASE_STATUS.CARD_SUMMON;
+		_handCardPos = _handCard.transform.position;
+		_handCard.gameObject.GetComponent< BoxCollider2D >( ).enabled = false;
+		_mainPhaseStatus = MAIN_PHASE_STATUS.CARD_SUMMON;
 	}
 	//---------------------------------------------------------------------------
 
@@ -155,48 +152,48 @@ public class MainPhase : Phase {
 	//フィールドカードの詳細画像表示----------------------------------------------------------------------------------------------------
 	void ShowCardDetails( ) { 
 		//カードの詳細プレハブの取得
-		_details = Object.Instantiate( _card_details_image, Vector3.zero, Quaternion.identity );
-		Text attack_point = _details.transform.Find( "Attack_Point_Background/Attack_Point" ).GetComponent< Text >( );
-		Text hit_point = _details.transform.Find( "Hit_Point_Background/Hit_Point" ).GetComponent< Text >( );
+		_details = Object.Instantiate( _cardDetailsImage, Vector3.zero, Quaternion.identity );
+		Text attackPoint = _details.transform.Find( "Attack_Point_Background/Attack_Point" ).GetComponent< Text >( );
+		Text hitPoint = _details.transform.Find( "Hit_Point_Background/Hit_Point" ).GetComponent< Text >( );
 
 		//画像などの情報読み込み
 		_details.GetComponent< Image >( ).sprite = _card.Card_Sprite_Renderer.sprite;
-		attack_point.text = _card._cardDates.attack_point.ToString( );
-		hit_point.text = _card._cardDates.hp.ToString( );
+		attackPoint.text = _card._cardDates.attack_point.ToString( );
+		hitPoint.text = _card._cardDates.hp.ToString( );
 
 		//位置をずらしている
 		_details.transform.parent = _canvas.transform;
-		RectTransform details_pos = _details.GetComponent< RectTransform >( );
-		details_pos.localPosition = new Vector3( -210, 0, 0 );	//あとでこの部分の処理は修正するだろうからマジックナンバーを放置
+		RectTransform detailsPos = _details.GetComponent< RectTransform >( );
+		detailsPos.localPosition = new Vector3( -210, 0, 0 );	//あとでこの部分の処理は修正するだろうからマジックナンバーを放置
 	}
 	//---------------------------------------------------------------------------------------------------------------------------
 
 
 	//フィールドカードの操作系UIの表示処理----------------------------------------------------------------------------
 	void ShowCardOperationUI( ) { 
-		if ( _card.gameObject.tag == "Player1" ) {
-				_return_button.SetActive( true );
+		if ( _card.gameObject.tag == _turnPlayer.gameObject.tag ) {
+				_returnButton.SetActive( true );
 
 				//効果の種類によって処理を変える
 				switch ( _card._cardDates.effect_type ) { 
 					case CardMain.EFFECT_TYPE.ATTACK:	
-						if ( _player1.DecreaseActivePointConfirmation( _card._cardDates.effect_ap ) && 
-							 _player1.AttackEffectPossibleOnCardSquare( _card, _now_square ).Count > 0 ) {
-							_effect_button.SetActive( true );
+						if ( _turnPlayer.DecreaseActivePointConfirmation( _card._cardDates.effect_ap ) && 
+							 _turnPlayer.AttackEffectPossibleOnCardSquare( _card, _nowSquare ).Count > 0 ) {
+							_effectButton.SetActive( true );
 						}
 						break;
 
 					case CardMain.EFFECT_TYPE.MOVE:
-						if ( _player1.DecreaseActivePointConfirmation( _card._cardDates.effect_ap ) && 
-							 _player1.MovePossibleSquare( _card, _now_square ).Count > 0 ) {
-							_effect_button.SetActive( true );
+						if ( _turnPlayer.DecreaseActivePointConfirmation( _card._cardDates.effect_ap ) && 
+							 _turnPlayer.MovePossibleSquare( _card, _nowSquare ).Count > 0 ) {
+							_effectButton.SetActive( true );
 						}
 						break;
 
 					case CardMain.EFFECT_TYPE.RECOVERY:
-						if ( _player1.DecreaseActivePointConfirmation( _card._cardDates.effect_ap ) && 
+						if ( _turnPlayer.DecreaseActivePointConfirmation( _card._cardDates.effect_ap ) && 
 							 _card._cardDates.hp < _card._cardDates.max_hp ) {
-							_effect_button.SetActive( true );
+							_effectButton.SetActive( true );
 						}
 						break;
 
@@ -206,20 +203,20 @@ public class MainPhase : Phase {
 				}
 
 				//APが消費する分あって移動できるマスがあったら
-				if ( _player1.DecreaseActivePointConfirmation( _card._cardDates.move_ap ) && 
-					 _player1.MovePossibleSquare( _card, _now_square ).Count > 0 ) {
+				if ( _turnPlayer.DecreaseActivePointConfirmation( _card._cardDates.move_ap ) && 
+					 _turnPlayer.MovePossibleSquare( _card, _nowSquare ).Count > 0 ) {
 
-					_move_button.SetActive( true );
+					_moveButton.SetActive( true );
 
-					if ( ( _now_square.Index - 1 ) / 4 == 0 ) {								//一列目にいたら//修正するだろうからマジックナンバーを放置
-						_direct_attack_button.SetActive( true );
+					if ( ( _nowSquare.Index - 1 ) / 4 == 0 ) {								//一列目にいたら//修正するだろうからマジックナンバーを放置
+						_directAttackButton.SetActive( true );
 					}
 
 				}
 			}
 
-			if ( _card.gameObject.tag == "Player2" ) { 
-				_return_button.SetActive( true );
+			if ( _card.gameObject.tag == _enemyPlayer.gameObject.tag ) { 
+				_returnButton.SetActive( true );
 			}
 	}
 	//------------------------------------------------------------------------------------------------------------------
@@ -229,62 +226,62 @@ public class MainPhase : Phase {
 	void CardDetailsStatus( ) { 
 
 		//戻るボタンを押したら
-		if ( _main_scene_operation.BackButtonClicked( ) ) { 
-			_return_button.SetActive( false );
-			_move_button.SetActive( false );
-			_direct_attack_button.SetActive( false );
-			_effect_button.SetActive( false );
-			_main_phase_status = MAIN_PHASE_STATUS.IDLE;
+		if ( _mainSceneOperation.BackButtonClicked( ) ) { 
+			_returnButton.SetActive( false );
+			_moveButton.SetActive( false );
+			_directAttackButton.SetActive( false );
+			_effectButton.SetActive( false );
+			_mainPhaseStatus = MAIN_PHASE_STATUS.IDLE;
 			Object.Destroy( _details );
 			_details = null;
 			_card = null;
-			_now_square = null;
+			_nowSquare = null;
 			return;
 		}
 
 		//移動ボタンを押したら
-		if ( _main_scene_operation.MoveButtonClicked( ) ) { 
-			_move_button.SetActive( false );
-			_direct_attack_button.SetActive( false );
-			_effect_button.SetActive( false );
-			_main_phase_status = MAIN_PHASE_STATUS.CARD_MOVE;
+		if ( _mainSceneOperation.MoveButtonClicked( ) ) { 
+			_moveButton.SetActive( false );
+			_directAttackButton.SetActive( false );
+			_effectButton.SetActive( false );
+			_mainPhaseStatus = MAIN_PHASE_STATUS.CARD_MOVE;
 			Object.Destroy( _details );
 			_details = null;
 			return;
 		}
 
 		//攻撃ボタンを押したら
-		if ( _main_scene_operation.AttackButtonClicked( ) ) {
-			_move_button.SetActive( false );
-			_direct_attack_button.SetActive( false );
-			_return_button.SetActive( false );
-			_effect_button.SetActive( false );
-			_main_phase_status = MAIN_PHASE_STATUS.DIRECT_ATTACK;
+		if ( _mainSceneOperation.AttackButtonClicked( ) ) {
+			_moveButton.SetActive( false );
+			_directAttackButton.SetActive( false );
+			_returnButton.SetActive( false );
+			_effectButton.SetActive( false );
+			_mainPhaseStatus = MAIN_PHASE_STATUS.DIRECT_ATTACK;
 			Object.Destroy( _details );
 			_details = null;
 			return;
 		}
 
 		//効果ボタンを押したら
-		if ( _main_scene_operation.EffectButtonClicked( ) ) { 
-			_move_button.SetActive( false );
-			_direct_attack_button.SetActive( false );
-			_effect_button.SetActive( false );
+		if ( _mainSceneOperation.EffectButtonClicked( ) ) { 
+			_moveButton.SetActive( false );
+			_directAttackButton.SetActive( false );
+			_effectButton.SetActive( false );
 
 			//効果の種類によって処理を変える
 			switch ( _card._cardDates.effect_type ) { 
 				case CardMain.EFFECT_TYPE.ATTACK:	
-					_main_phase_status = MAIN_PHASE_STATUS.EFFECT_ATTACK;
-					_effect_yes_buuton.SetActive( true );
+					_mainPhaseStatus = MAIN_PHASE_STATUS.EFFECT_ATTACK;
+					_effectYesBuuton.SetActive( true );
 					break;
 
 				case CardMain.EFFECT_TYPE.MOVE:
-					_main_phase_status = MAIN_PHASE_STATUS.EFFECT_MOVE;
+					_mainPhaseStatus = MAIN_PHASE_STATUS.EFFECT_MOVE;
 					break;
 
 				case CardMain.EFFECT_TYPE.RECOVERY:
-					_main_phase_status = MAIN_PHASE_STATUS.EEFECT_RECOVERY;
-					_effect_yes_buuton.SetActive( true );
+					_mainPhaseStatus = MAIN_PHASE_STATUS.EEFECT_RECOVERY;
+					_effectYesBuuton.SetActive( true );
 					break;
 
 				default:
@@ -302,37 +299,37 @@ public class MainPhase : Phase {
 	
 	//カード移動状態処理----------------------------------------------------------------------------------------------------------------
 	void MoveCardStatus( ) {
-		List< Square > squares = _player1.MovePossibleSquare( _card, _now_square );
+		List< Square > squares = _turnPlayer.MovePossibleSquare( _card, _nowSquare );
 
-		_player1.SquareChangeColor( squares, true );		//移動できるマスの色を変える
+		_turnPlayer.SquareChangeColor( squares, true );		//移動できるマスの色を変える
 
-		if ( _main_scene_operation.MouseTouch( ) ) {
-			Square square = _ray_shooter.RayCastSquare( );	//マウスをクリックしたらレイを飛ばしてマスを取得する
-			_player1.SquareChangeColor( squares, false );	//色をもとに戻す
-			_return_button.SetActive( false );
+		if ( _mainSceneOperation.MouseTouch( ) ) {
+			Square square = _rayShooter.RayCastSquare( );	//マウスをクリックしたらレイを飛ばしてマスを取得する
+			_turnPlayer.SquareChangeColor( squares, false );	//色をもとに戻す
+			_returnButton.SetActive( false );
 
 			if ( square != null ) {
-				_player1.MoveCard( _card, _now_square, square );	//移動できるかどうかを判定し移動できたら移動する
+				_turnPlayer.MoveCard( _card, _nowSquare, square );	//移動できるかどうかを判定し移動できたら移動する
 			}
 
 			//情報リセット
 			_card = null;
-			_now_square = null;
+			_nowSquare = null;
 
-			_main_phase_status = MAIN_PHASE_STATUS.IDLE;
+			_mainPhaseStatus = MAIN_PHASE_STATUS.IDLE;
 			return;
 		}
 
 		//戻るボタンを押したら
-		if ( _main_scene_operation.BackButtonClicked( ) ) {
-			_return_button.SetActive( false );
-			_player1.SquareChangeColor( squares, false );	//色をもとに戻す
+		if ( _mainSceneOperation.BackButtonClicked( ) ) {
+			_returnButton.SetActive( false );
+			_turnPlayer.SquareChangeColor( squares, false );	//色をもとに戻す
 
 			//情報リセット
 			_card = null;
-			_now_square = null;
+			_nowSquare = null;
 
-			_main_phase_status = MAIN_PHASE_STATUS.IDLE;
+			_mainPhaseStatus = MAIN_PHASE_STATUS.IDLE;
 			return;
 		}
 	}
@@ -341,68 +338,58 @@ public class MainPhase : Phase {
 
 	//ダイレクトアタック処理----------------------------------------------------
 	void DirectAttack( ) { 
-		if ( _card.gameObject.tag == "Player1" ) { 
-			_player1.DirectAttack( _player2, _card._cardDates.move_ap );
-			_main_phase_status = MAIN_PHASE_STATUS.IDLE;
+			_turnPlayer.DirectAttack( _enemyPlayer, _card._cardDates.move_ap );
+			_mainPhaseStatus = MAIN_PHASE_STATUS.IDLE;
 			_card = null;
-			_now_square = null;
+			_nowSquare = null;
 			return;
-		}
-
-		if ( _card.gameObject.tag == "Player2" ) { 
-			_player2.DirectAttack( _player1, _card._cardDates.move_ap );
-			_main_phase_status = MAIN_PHASE_STATUS.IDLE;
-			_card = null;
-			_now_square = null;
-			return;
-		}
 	}
 	//--------------------------------------------------------------------------
 
 	
 	//召喚状態処理----------------------------------------------------------------------
 	void SummonStatus( ) {
-		_hand_card.transform.position = _main_scene_operation.getWorldMousePos( );
-		List< Square > squares = _player1.SummonSquare( "Player1" );
+		_handCard.transform.position = _mainSceneOperation.getWorldMousePos( );
+		List< Square > squares = _turnPlayer.SummonSquare( _turnPlayer.gameObject.tag );
 
-		if ( _player1.DecreaseMPointConfirmation( _hand_card._cardDates.mp ) ) { 
-			_player1.SquareChangeColor( squares, true );
+		if ( _turnPlayer.DecreaseMPointConfirmation( _handCard._cardDates.mp ) ) { 
+			_turnPlayer.SquareChangeColor( squares, true );
 		}
 
-		if ( !_main_scene_operation.MouseConsecutivelyTouch( ) ) {
-			if ( !_player1.DecreaseMPointConfirmation( _hand_card._cardDates.mp ) ) {
-				_hand_card.transform.position = _hand_card_pos;
-				_hand_card.gameObject.GetComponent< BoxCollider2D >( ).enabled = true;
-				_main_phase_status = MAIN_PHASE_STATUS.IDLE;
+		if ( !_mainSceneOperation.MouseConsecutivelyTouch( ) ) {
+			if ( !_turnPlayer.DecreaseMPointConfirmation( _handCard._cardDates.mp ) ) {
+				_handCard.transform.position = _handCardPos;
+				_handCard.gameObject.GetComponent< BoxCollider2D >( ).enabled = true;
+				_mainPhaseStatus = MAIN_PHASE_STATUS.IDLE;
 				return;
 			}
 
-			Square square = _ray_shooter.RayCastSquare( );
+			Square square = _rayShooter.RayCastSquare( );
 
 			if ( square == null ) {
-				_player1.SquareChangeColor( squares, false );
-				_hand_card.transform.position = _hand_card_pos;
-				_hand_card.gameObject.GetComponent< BoxCollider2D >( ).enabled = true;
-				_main_phase_status = MAIN_PHASE_STATUS.IDLE;
+				_turnPlayer.SquareChangeColor( squares, false );
+				_handCard.transform.position = _handCardPos;
+				_handCard.gameObject.GetComponent< BoxCollider2D >( ).enabled = true;
+				_mainPhaseStatus = MAIN_PHASE_STATUS.IDLE;
 				return;
 			}
 
 			for ( int i = 0; i < squares.Count; i++ ) { 
 				if ( square.Index == squares[ i ].Index ) { 
-					_player1.SquareChangeColor( squares, false );
-					_player1.Summon( _hand_card, square, "Player1" );
-					_hand_card = null;
-					_main_phase_status = MAIN_PHASE_STATUS.IDLE;
+					_turnPlayer.SquareChangeColor( squares, false );
+					_turnPlayer.Summon( _handCard, square, _turnPlayer.gameObject.tag );
+					_handCard = null;
+					_mainPhaseStatus = MAIN_PHASE_STATUS.IDLE;
 					return;
 				}
 			}
 
 
 
-			_player1.SquareChangeColor( squares, false );
-			_hand_card.transform.position = _hand_card_pos;
-			_hand_card.gameObject.GetComponent< BoxCollider2D >( ).enabled = true;
-			_main_phase_status = MAIN_PHASE_STATUS.IDLE;
+			_turnPlayer.SquareChangeColor( squares, false );
+			_handCard.transform.position = _handCardPos;
+			_handCard.gameObject.GetComponent< BoxCollider2D >( ).enabled = true;
+			_mainPhaseStatus = MAIN_PHASE_STATUS.IDLE;
 		}
 	}
 	//--------------------------------------------------------------------------------------
@@ -410,31 +397,31 @@ public class MainPhase : Phase {
 
 	//攻撃効果中処理------------------------------------------------------------------------------
 	void AttackEffect( ) {
-		List< Square > squares = _player1.AttackEffectPossibleOnCardSquare( _card, _now_square );
-		_player1.SquareChangeColor( squares, true );
+		List< Square > squares = _turnPlayer.AttackEffectPossibleOnCardSquare( _card, _nowSquare );
+		_turnPlayer.SquareChangeColor( squares, true );
 
-		if ( _main_scene_operation.BackButtonClicked( ) ) {
-			_player1.SquareChangeColor( squares, false );
-			_return_button.SetActive( false );
-			_effect_yes_buuton.SetActive( false );
+		if ( _mainSceneOperation.BackButtonClicked( ) ) {
+			_turnPlayer.SquareChangeColor( squares, false );
+			_returnButton.SetActive( false );
+			_effectYesBuuton.SetActive( false );
 
 			_card = null;
-			_now_square = null;
+			_nowSquare = null;
 
-			_main_phase_status = MAIN_PHASE_STATUS.IDLE;
+			_mainPhaseStatus = MAIN_PHASE_STATUS.IDLE;
 			return;
 		}
 		
-		if ( _main_scene_operation.EffectYesButtonClicked( ) ) {
-			_player1.SquareChangeColor( squares, false );
-			_return_button.SetActive( false );
-			_effect_yes_buuton.SetActive( false );
-			_player1.UseEffect( _card, _now_square );
+		if ( _mainSceneOperation.EffectYesButtonClicked( ) ) {
+			_turnPlayer.SquareChangeColor( squares, false );
+			_returnButton.SetActive( false );
+			_effectYesBuuton.SetActive( false );
+			_turnPlayer.UseEffect( _card, _nowSquare );
 
 			_card = null;
-			_now_square = null;
+			_nowSquare = null;
 
-			_main_phase_status = MAIN_PHASE_STATUS.IDLE;
+			_mainPhaseStatus = MAIN_PHASE_STATUS.IDLE;
 			return;
 		}
 		
@@ -444,33 +431,33 @@ public class MainPhase : Phase {
 
 	//移動効果中処理---------------------------------------------------------------------------------
 	void MoveEffect( ) {
-		List< Square > squares = _player1.MovePossibleSquare( _card, _now_square );
+		List< Square > squares = _turnPlayer.MovePossibleSquare( _card, _nowSquare );
 
-		_player1.SquareChangeColor( squares, true );
+		_turnPlayer.SquareChangeColor( squares, true );
 
-		if ( _main_scene_operation.MouseTouch( ) ) {
-			Square square = _ray_shooter.RayCastSquare( );		//マウスをクリックしたらレイを飛ばしてマスを取得する
-			_player1.SquareChangeColor( squares, false );	//色をもとに戻す
-			_return_button.SetActive( false );
+		if ( _mainSceneOperation.MouseTouch( ) ) {
+			Square square = _rayShooter.RayCastSquare( );		//マウスをクリックしたらレイを飛ばしてマスを取得する
+			_turnPlayer.SquareChangeColor( squares, false );	//色をもとに戻す
+			_returnButton.SetActive( false );
 
 			if ( square != null ) {
-				_player1.UseEffect( _card, _now_square, square );	//移動できるかどうかを判定し移動できたら移動する
+				_turnPlayer.UseEffect( _card, _nowSquare, square );	//移動できるかどうかを判定し移動できたら移動する
 			}
 			_card = null;
-			_now_square = null;
+			_nowSquare = null;
 
-			_main_phase_status = MAIN_PHASE_STATUS.IDLE;
+			_mainPhaseStatus = MAIN_PHASE_STATUS.IDLE;
 			return;
 		}
 
-		if ( _main_scene_operation.BackButtonClicked( ) ) {
-			_player1.SquareChangeColor( squares, false );
-			_return_button.SetActive( false );
+		if ( _mainSceneOperation.BackButtonClicked( ) ) {
+			_turnPlayer.SquareChangeColor( squares, false );
+			_returnButton.SetActive( false );
 
 			_card = null;
-			_now_square = null;
+			_nowSquare = null;
 
-			_main_phase_status = MAIN_PHASE_STATUS.IDLE;
+			_mainPhaseStatus = MAIN_PHASE_STATUS.IDLE;
 			return;
 		}
 	}
@@ -479,26 +466,26 @@ public class MainPhase : Phase {
 
 	//回復効果中処理----------------------------------------------
 	void RecoveryEffect( ) {
-		if ( _main_scene_operation.BackButtonClicked( ) ) {
-			_return_button.SetActive( false );
-			_effect_yes_buuton.SetActive( false );
+		if ( _mainSceneOperation.BackButtonClicked( ) ) {
+			_returnButton.SetActive( false );
+			_effectYesBuuton.SetActive( false );
 
 			_card = null;
-			_now_square = null;
+			_nowSquare = null;
 
-			_main_phase_status = MAIN_PHASE_STATUS.IDLE;
+			_mainPhaseStatus = MAIN_PHASE_STATUS.IDLE;
 			return;
 		}
 		
-		if ( _main_scene_operation.EffectYesButtonClicked( ) ) {
-			_return_button.SetActive( false );
-			_effect_yes_buuton.SetActive( false );
-			_player1.UseEffect( _card );
+		if ( _mainSceneOperation.EffectYesButtonClicked( ) ) {
+			_returnButton.SetActive( false );
+			_effectYesBuuton.SetActive( false );
+			_turnPlayer.UseEffect( _card );
 
 			_card = null;
-			_now_square = null;
+			_nowSquare = null;
 
-			_main_phase_status = MAIN_PHASE_STATUS.IDLE;
+			_mainPhaseStatus = MAIN_PHASE_STATUS.IDLE;
 			return;
 		}
 	}
@@ -507,7 +494,7 @@ public class MainPhase : Phase {
 
 	void TestDraw( ) { 
 		if ( Input.GetKeyDown( KeyCode.D ) ) { 
-			_player1.Draw( _draw_card );	
+			_turnPlayer.Draw( _drawCard );	
 		}	
 	}
 }
