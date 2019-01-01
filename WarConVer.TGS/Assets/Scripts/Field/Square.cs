@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class Square : MonoBehaviour {
 	[ SerializeField ] int _index = 0;	//マスの通し番号
-	SpriteRenderer _sprite_renderer = null;
+	SpriteRenderer _spriteRenderer = null;
 	Color _red = Color.red;
-	Color originally_color = new Color( );
+	Color _originallyColor = new Color( );
 	CardMain _on_card = null;
 
 	public CardMain On_Card { 
@@ -14,24 +14,25 @@ public class Square : MonoBehaviour {
 		set { _on_card = value; }
 	}
 
+	public int Index {
+		get { return _index; }
+	}
+
+
 	void Awake( ) { 
-		_sprite_renderer = gameObject.GetComponent< SpriteRenderer >( );
+		_spriteRenderer = gameObject.GetComponent< SpriteRenderer >( );
 	}
 
 	void Start( ) {
-		originally_color = _sprite_renderer.color;
+		_originallyColor = _spriteRenderer.color;
 	}
 
-	public int Index {
-		get { return _index; }
-		private set { _index = value; }
-	}
 
-	public void ChangeColor( bool is_red_flag ) {
-		if ( is_red_flag ) { 
-			_sprite_renderer.color = _red;
+	public void ChangeColor( bool isRedFlag ) {
+		if ( isRedFlag ) { 
+			_spriteRenderer.color = _red;
 		} else { 
-			_sprite_renderer.color = originally_color;	
+			_spriteRenderer.color = _originallyColor;	
 		}
 	}
 }

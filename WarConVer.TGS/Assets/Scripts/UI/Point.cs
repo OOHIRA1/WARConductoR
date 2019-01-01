@@ -3,17 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Point : MonoBehaviour {
-	[ SerializeField ] int _initial_point = 0;
-	int _point_num = 0;
+	[ SerializeField ] int _initialPoint = 0;	//初期の値
+	int _point = 0;
 
 	public int Initial_Point {
-		get { return _initial_point; }
-		private set { _initial_point = value; }
+		get { return _initialPoint; }
 	}
 
 	public int Point_Num { 
-		get { return _point_num; }
-		private set { _point_num = value; }
+		get { return _point; }
+		private set { _point = value; }
 	}
 
 	void Awake( ) {
@@ -31,9 +30,13 @@ public class Point : MonoBehaviour {
 	}
 	//----------------------------------------
 
-	public void addPoint( int point ) { 
+	
+	//ポイントを増やす---------------------
+	public void IncreasePoint( int point ) { 
 		Point_Num += point;	
 	}
+	//-------------------------------------
+
 
 	//減らすポイントが今あるポイントより多いかどうかを調べる--
 	public bool DecreasePointConfirmation( int point ) { 

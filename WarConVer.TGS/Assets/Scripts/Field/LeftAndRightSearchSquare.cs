@@ -20,31 +20,31 @@ public class LeftAndRightSearchSquare : ISearchSquare {
 
 
 
-	public int SearchSquare( int now_square_index, Field.DIRECTION direction, int distance ) {
+	public int SearchSquare( int nowSquareIndex, Field.DIRECTION direction, int distance ) {
 		int index = 0;
 		switch ( direction ) { 
 			case Field.DIRECTION.LEFT:
-				index = now_square_index - ONE_SQUIRREL * distance;
+				index = nowSquareIndex - ONE_SQUIRREL * distance;
 
 				//今いる段の左端よりIndexが低くなったら-1を返す------------------------------------------------------------------------------------------------------
-				if ( ( now_square_index >= FIRST_ROW_FIRST_INDEX  && now_square_index <= FIRST_ROW_LAST_INDEX  ) && index < FIRST_ROW_FIRST_INDEX  ) return -1;
-				if ( ( now_square_index >= SECOND_ROW_FIRST_INDEX && now_square_index <= SECOND_ROW_LAST_INDEX ) && index < SECOND_ROW_FIRST_INDEX ) return -1;
-				if ( ( now_square_index >= THIRD_ROW_FIRST_INDEX  && now_square_index <= THIRD_ROW_LAST_INDEX  ) && index < THIRD_ROW_FIRST_INDEX  ) return -1;
-				if ( ( now_square_index >= FOURTH_ROW_FIRST_INDEX && now_square_index <= FOURTH_ROW_LAST_INDEX ) && index < FOURTH_ROW_FIRST_INDEX ) return -1;
-				if ( ( now_square_index >= FIFTH_ROW_FIRST_INDEX  && now_square_index <= FIFTH_ROW_LAST_INDEX  ) && index < FIFTH_ROW_FIRST_INDEX  ) return -1;
+				if ( ( nowSquareIndex >= FIRST_ROW_FIRST_INDEX  && nowSquareIndex <= FIRST_ROW_LAST_INDEX  ) && index < FIRST_ROW_FIRST_INDEX  ) return -1;
+				if ( ( nowSquareIndex >= SECOND_ROW_FIRST_INDEX && nowSquareIndex <= SECOND_ROW_LAST_INDEX ) && index < SECOND_ROW_FIRST_INDEX ) return -1;
+				if ( ( nowSquareIndex >= THIRD_ROW_FIRST_INDEX  && nowSquareIndex <= THIRD_ROW_LAST_INDEX  ) && index < THIRD_ROW_FIRST_INDEX  ) return -1;
+				if ( ( nowSquareIndex >= FOURTH_ROW_FIRST_INDEX && nowSquareIndex <= FOURTH_ROW_LAST_INDEX ) && index < FOURTH_ROW_FIRST_INDEX ) return -1;
+				if ( ( nowSquareIndex >= FIFTH_ROW_FIRST_INDEX  && nowSquareIndex <= FIFTH_ROW_LAST_INDEX  ) && index < FIFTH_ROW_FIRST_INDEX  ) return -1;
 				//---------------------------------------------------------------------------------------------------------------------------------------------------
 
 				return index;
 
 			case Field.DIRECTION.RIGHT:
-				index = now_square_index + ONE_SQUIRREL * distance;
+				index = nowSquareIndex + ONE_SQUIRREL * distance;
 				
 				//今いる段の右端よりIndexが大きくなったら-1を返す------------------------------------------------------------------------------------------------------
-				if ( ( now_square_index >= FIRST_ROW_FIRST_INDEX  && now_square_index <= FIRST_ROW_LAST_INDEX  ) && index > FIRST_ROW_LAST_INDEX  ) return -1;
-				if ( ( now_square_index >= SECOND_ROW_FIRST_INDEX && now_square_index <= SECOND_ROW_LAST_INDEX ) && index > SECOND_ROW_LAST_INDEX ) return -1;
-				if ( ( now_square_index >= THIRD_ROW_FIRST_INDEX  && now_square_index <= THIRD_ROW_LAST_INDEX  ) && index > THIRD_ROW_LAST_INDEX  ) return -1;
-				if ( ( now_square_index >= FOURTH_ROW_FIRST_INDEX && now_square_index <= FOURTH_ROW_LAST_INDEX ) && index > FOURTH_ROW_LAST_INDEX ) return -1;
-				if ( ( now_square_index >= FIFTH_ROW_FIRST_INDEX  && now_square_index <= FIFTH_ROW_LAST_INDEX  ) && index > FIFTH_ROW_LAST_INDEX  ) return -1;
+				if ( ( nowSquareIndex >= FIRST_ROW_FIRST_INDEX  && nowSquareIndex <= FIRST_ROW_LAST_INDEX  ) && index > FIRST_ROW_LAST_INDEX  ) return -1;
+				if ( ( nowSquareIndex >= SECOND_ROW_FIRST_INDEX && nowSquareIndex <= SECOND_ROW_LAST_INDEX ) && index > SECOND_ROW_LAST_INDEX ) return -1;
+				if ( ( nowSquareIndex >= THIRD_ROW_FIRST_INDEX  && nowSquareIndex <= THIRD_ROW_LAST_INDEX  ) && index > THIRD_ROW_LAST_INDEX  ) return -1;
+				if ( ( nowSquareIndex >= FOURTH_ROW_FIRST_INDEX && nowSquareIndex <= FOURTH_ROW_LAST_INDEX ) && index > FOURTH_ROW_LAST_INDEX ) return -1;
+				if ( ( nowSquareIndex >= FIFTH_ROW_FIRST_INDEX  && nowSquareIndex <= FIFTH_ROW_LAST_INDEX  ) && index > FIFTH_ROW_LAST_INDEX  ) return -1;
 				//---------------------------------------------------------------------------------------------------------------------------------------------------
 
 				return index;

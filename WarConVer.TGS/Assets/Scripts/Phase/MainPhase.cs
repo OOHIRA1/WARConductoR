@@ -83,7 +83,7 @@ public class MainPhase : Phase {
 				return;
 
 			case MAIN_PHASE_STATUS.CARD_MOVE:
-				CardMoveStatus( );
+				MoveCardStatus( );
 				return;
 
 			case MAIN_PHASE_STATUS.DIRECT_ATTACK:
@@ -229,7 +229,7 @@ public class MainPhase : Phase {
 	void CardDetailsStatus( ) { 
 
 		//戻るボタンを押したら
-		if ( _main_scene_operation.ReturnButton( ) ) { 
+		if ( _main_scene_operation.BackButtonClicked( ) ) { 
 			_return_button.SetActive( false );
 			_move_button.SetActive( false );
 			_direct_attack_button.SetActive( false );
@@ -243,7 +243,7 @@ public class MainPhase : Phase {
 		}
 
 		//移動ボタンを押したら
-		if ( _main_scene_operation.MoveButton( ) ) { 
+		if ( _main_scene_operation.MoveButtonClicked( ) ) { 
 			_move_button.SetActive( false );
 			_direct_attack_button.SetActive( false );
 			_effect_button.SetActive( false );
@@ -254,7 +254,7 @@ public class MainPhase : Phase {
 		}
 
 		//攻撃ボタンを押したら
-		if ( _main_scene_operation.DirectAttackButton( ) ) {
+		if ( _main_scene_operation.AttackButtonClicked( ) ) {
 			_move_button.SetActive( false );
 			_direct_attack_button.SetActive( false );
 			_return_button.SetActive( false );
@@ -266,7 +266,7 @@ public class MainPhase : Phase {
 		}
 
 		//効果ボタンを押したら
-		if ( _main_scene_operation.EffectButton( ) ) { 
+		if ( _main_scene_operation.EffectButtonClicked( ) ) { 
 			_move_button.SetActive( false );
 			_direct_attack_button.SetActive( false );
 			_effect_button.SetActive( false );
@@ -301,7 +301,7 @@ public class MainPhase : Phase {
 
 	
 	//カード移動状態処理----------------------------------------------------------------------------------------------------------------
-	void CardMoveStatus( ) {
+	void MoveCardStatus( ) {
 		List< Square > squares = _player1.MovePossibleSquare( _card, _now_square );
 
 		_player1.SquareChangeColor( squares, true );		//移動できるマスの色を変える
@@ -312,7 +312,7 @@ public class MainPhase : Phase {
 			_return_button.SetActive( false );
 
 			if ( square != null ) {
-				_player1.CardMove( _card, _now_square, square );	//移動できるかどうかを判定し移動できたら移動する
+				_player1.MoveCard( _card, _now_square, square );	//移動できるかどうかを判定し移動できたら移動する
 			}
 
 			//情報リセット
@@ -324,7 +324,7 @@ public class MainPhase : Phase {
 		}
 
 		//戻るボタンを押したら
-		if ( _main_scene_operation.ReturnButton( ) ) {
+		if ( _main_scene_operation.BackButtonClicked( ) ) {
 			_return_button.SetActive( false );
 			_player1.SquareChangeColor( squares, false );	//色をもとに戻す
 
@@ -413,7 +413,7 @@ public class MainPhase : Phase {
 		List< Square > squares = _player1.AttackEffectPossibleOnCardSquare( _card, _now_square );
 		_player1.SquareChangeColor( squares, true );
 
-		if ( _main_scene_operation.ReturnButton( ) ) {
+		if ( _main_scene_operation.BackButtonClicked( ) ) {
 			_player1.SquareChangeColor( squares, false );
 			_return_button.SetActive( false );
 			_effect_yes_buuton.SetActive( false );
@@ -425,7 +425,7 @@ public class MainPhase : Phase {
 			return;
 		}
 		
-		if ( _main_scene_operation.EffectYesButton( ) ) {
+		if ( _main_scene_operation.EffectYesButtonClicked( ) ) {
 			_player1.SquareChangeColor( squares, false );
 			_return_button.SetActive( false );
 			_effect_yes_buuton.SetActive( false );
@@ -463,7 +463,7 @@ public class MainPhase : Phase {
 			return;
 		}
 
-		if ( _main_scene_operation.ReturnButton( ) ) {
+		if ( _main_scene_operation.BackButtonClicked( ) ) {
 			_player1.SquareChangeColor( squares, false );
 			_return_button.SetActive( false );
 
@@ -479,7 +479,7 @@ public class MainPhase : Phase {
 
 	//回復効果中処理----------------------------------------------
 	void RecoveryEffect( ) {
-		if ( _main_scene_operation.ReturnButton( ) ) {
+		if ( _main_scene_operation.BackButtonClicked( ) ) {
 			_return_button.SetActive( false );
 			_effect_yes_buuton.SetActive( false );
 
@@ -490,7 +490,7 @@ public class MainPhase : Phase {
 			return;
 		}
 		
-		if ( _main_scene_operation.EffectYesButton( ) ) {
+		if ( _main_scene_operation.EffectYesButtonClicked( ) ) {
 			_return_button.SetActive( false );
 			_effect_yes_buuton.SetActive( false );
 			_player1.UseEffect( _card );

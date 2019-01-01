@@ -79,8 +79,8 @@ public class CardMain : MonoBehaviour {
 	//public関数
 
 	//ダメージ-----------------------------------
-	public void Damage( int decrease_point  ) { 
-		_cardDates.hp -= decrease_point;
+	public void Damage( int decreasePoint  ) { 
+		_cardDates.hp -= decreasePoint;
 
 		if ( _cardDates.hp < 0 ) { 
 			_cardDates.hp = 0;	

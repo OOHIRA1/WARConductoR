@@ -15,19 +15,53 @@ public class Field : MonoBehaviour {
 	}
 
 	Square[ ] _squares = new Square[ 20 ];		//マス
-	int _max_index = 0; 
+	int _maxIndex = 0; 
 
 	public int Max_Index {
-		get{ return _max_index; }	
+		get{ return _maxIndex; }
 	}
+
 
 	void Awake( ) {
 		_squares = this.gameObject.GetComponentsInChildren< Square >( );
 	}
 
 	void Start( ) { 
-		_max_index = _squares.Length;	
+		_maxIndex = _squares.Length;	
 	}
+
+
+	//指定した番号のマスを返す-------------
+	public Square getSquare( int index ) { 
+		return _squares[ index - 1 ];
+	}
+	//-------------------------------------
+
+
+	//現在のマスから指定した方向の指定した距離にあるマスを返す--------------------------------------
+	public Square SquareInThatDirection( Square nowSquare, DIRECTION direction, int distance ) {
+		if ( distance < 0 ) return null;
+
+		int index = 0;
+		ISearchSquare searchSquare = CreateISearchSquare( direction );
+		index = searchSquare.SearchSquare( nowSquare.Index, direction, distance );
+		if ( index == -1 ) {
+			return null;
+		} else { 
+			return _squares[ index - 1 ];
+		}
+	}
+	//---------------------------------------------------------------------------------------------
+
+
+	//現在のマスから指定した範囲のマスの色を赤くする----------------
+	public void ShowRange( List< Square > squares, bool value ) { 
+		for ( int i = 0; i < squares.Count; i++ ) { 
+			squares[ i ].ChangeColor( value );
+		}
+	}
+	//--------------------------------------------------------------
+
 
 	//Strategyパターンでマスを調べるアルゴリズムを変更している (Commandパターンかも？)-----
 	ISearchSquare CreateISearchSquare( DIRECTION direction ) { 
@@ -52,32 +86,6 @@ public class Field : MonoBehaviour {
 		}
 	}
 	//-------------------------------------------------------------------------------------
-
-	//現在のマスから指定した方向の指定した距離にあるマスを返す-----------------------------
-	public Square SquareInThatDirection( Square now_square, DIRECTION direction, int distance ) {
-		if ( distance < 0 ) return null;
-
-		int index = 0;
-		ISearchSquare search_square = CreateISearchSquare( direction );
-		index = search_square.SearchSquare( now_square.Index, direction, distance );
-		if ( index == -1 ) { 
-			return null;
-		} else { 
-			return _squares[ index - 1 ];
-		}
-	}
-	//------------------------------------------------------------------------------------
-
-	public Square getSquare( int index ) { 
-		return _squares[ index - 1 ];
-	}
-
-	//現在のマスから指定した範囲のマスの色を赤くする
-	public void ShowRange( List< Square > squares, bool value ) { 
-		for ( int i = 0; i < squares.Count; i++ ) { 
-			squares[ i ].ChangeColor( value );
-		}
-	}
 }
 
 //インスペクター上のIndexと配列のIndexがずれているせいでIndexを合わせるためにいろんなことろで無駄な計算をしている(Index - 1, Index + 1 など)

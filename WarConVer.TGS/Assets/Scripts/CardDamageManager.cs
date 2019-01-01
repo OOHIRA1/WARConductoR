@@ -12,56 +12,61 @@ public class CardDamageManager {
 		BOTH_ALIVE,
 	}
 
-
-	public void CardEffectDamage( Square on_card_square, int damage ) {
-		if ( on_card_square == null ) {
+	//攻撃効果のダメージによる処理----------------------------------------
+	public void CardEffectDamage( Square onCardSquare, int damage ) {
+		if ( onCardSquare == null ) {
 			Debug.Log( "[エラー]与えられたマスにカードがありません" );
 			return;
 		}
 
-		CardMain damage_card = on_card_square.On_Card;
-		damage_card.Damage( damage );
+		CardMain damageCard = onCardSquare.On_Card;
+		damageCard.Damage( damage );
 
-		if ( damage_card._cardDates.hp == 0 ) { 
-			damage_card.Death( );
-			on_card_square.On_Card = null;
+		if ( damageCard._cardDates.hp == 0 ) { 
+			damageCard.Death( );
+			onCardSquare.On_Card = null;
 		}
 	}
+	//-----------------------------------------------------------------
 
 
-	public BATTLE_RESULT CardBattleDamage( Square on_player_card_square, Square on_enemy_card_square ) {
-		if ( on_player_card_square == null || on_enemy_card_square == null ) { 
+	//戦闘のダメージ処理によって戦闘の結果を返す------------------------------------------------------
+	public BATTLE_RESULT CardBattleDamage( Square onPlayerCardSquare, Square onEnemyCardSquare ) {
+		if ( onPlayerCardSquare == null || onEnemyCardSquare == null ) { 
 			Debug.Log( "[エラー]与えられたマスにカードがありません" );
 			return BATTLE_RESULT.NOT_BATTLE;
 		}
 
-		CardMain player_card = on_player_card_square.On_Card;
-		CardMain enemy_card  = on_enemy_card_square.On_Card;
+		CardMain playerCard = onPlayerCardSquare.On_Card;
+		CardMain enemy_card  = onEnemyCardSquare.On_Card;
 
-		player_card.Damage( enemy_card._cardDates.attack_point );
-		enemy_card.Damage( player_card._cardDates.attack_point );
+		playerCard.Damage( enemy_card._cardDates.attack_point );
+		enemy_card.Damage( playerCard._cardDates.attack_point );
 
-		if ( player_card._cardDates.hp == 0 && enemy_card._cardDates.hp == 0 ) {
-			on_player_card_square.On_Card = null;
-			on_enemy_card_square.On_Card  = null;
+		if ( playerCard._cardDates.hp == 0 && enemy_card._cardDates.hp == 0 ) {
+			onPlayerCardSquare.On_Card = null;
+			onEnemyCardSquare.On_Card  = null;
 			return BATTLE_RESULT.BOTH_DEATH;
 		}
 
 		if ( enemy_card._cardDates.hp == 0 ) {	
-			on_enemy_card_square.On_Card = null;
+			onEnemyCardSquare.On_Card = null;
 			return BATTLE_RESULT.PLAYER_WIN;
 		}
 
-		if ( player_card._cardDates.hp == 0 ) {	
-			on_player_card_square.On_Card = null;
+		if ( playerCard._cardDates.hp == 0 ) {	
+			onEnemyCardSquare.On_Card = null;
 			return BATTLE_RESULT.PLAYER_DEFEAT;
 		}
 
-		if ( player_card._cardDates.hp > 0 && enemy_card._cardDates.hp > 0 ) {
+		if ( playerCard._cardDates.hp > 0 && enemy_card._cardDates.hp > 0 ) {
 			return BATTLE_RESULT.BOTH_ALIVE;
 		}
 
 		Debug.Log( "[エラー]戦闘の結果がおかしいです" );
 		return BATTLE_RESULT.NOT_BATTLE;
 	}
+	//------------------------------------------------------------------------------------------------------
 }
+
+//なんか一つの関数でいろんな別の処理してる気がするけどいいのかわからない

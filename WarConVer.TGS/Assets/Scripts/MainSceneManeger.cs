@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.Assertions;
 
 public class MainSceneManeger : MonoBehaviour {
 	enum PHASE { 
@@ -11,71 +11,50 @@ public class MainSceneManeger : MonoBehaviour {
 		END,
 	}
 
-	[ SerializeField ] MainSceneOperation _main_scene_operation = null;
+	[ SerializeField ] MainSceneOperation _mainSceneOperation = null;
 	[ SerializeField ] Participant _player1 = null;
 	[ SerializeField ] Participant _player2 = null;
 	
 	Phase _phase = null;
-	PHASE _phase_status = PHASE.START;
+	PHASE _phaseStatus = PHASE.START;
 
 	//ボタン
-	[ SerializeField ] GameObject _return_button		= null;
-	[ SerializeField ] GameObject _move_button			= null;
-	[ SerializeField ] GameObject _direct_attack_button = null;
-	[ SerializeField ] GameObject _effect_button		= null;
-	[ SerializeField ] GameObject _effect_yes_buuton	= null;
+	[ SerializeField ] GameObject _returnButton		= null;
+	[ SerializeField ] GameObject _moveButton		= null;
+	[ SerializeField ] GameObject _directAttackButton = null;
+	[ SerializeField ] GameObject _effectButton		= null;
+	[ SerializeField ] GameObject _effectYesBuuton	= null;
 
 	//詳細系
-	[ SerializeField ] GameObject _card_details_image = null;	//生成する詳細画像のプレハブ
-	[ SerializeField ] GameObject _canvas			  = null;	//生成したあとに子にするため
+	[ SerializeField ] GameObject _cardDetailsImage = null;	//生成する詳細画像のプレハブ
+	[ SerializeField ] GameObject _canvas			= null;	//生成したあとに子にするため
 
 	//テスト用
-	[ SerializeField ] Square _now_square    = null;
-	[ SerializeField ] CardMain _card		 = null;
-	[ SerializeField ] CardMain _enemy_card  = null;
-	[ SerializeField ] Square _enemy_square  = null;
-	[ SerializeField ] CardMain _draw_card   = null;
+	[ SerializeField ] Square	_nowSquare    = null;
+	[ SerializeField ] CardMain _card		  = null;
+	[ SerializeField ] CardMain _enemyCard    = null;
+	[ SerializeField ] Square   _enemySquare  = null;
+	[ SerializeField ] CardMain _drawCard	  = null;
 
 
 	void Start( ) {
-		_now_square.On_Card = _card;
-		_card.gameObject.transform.position = _now_square.transform.position;
-		_enemy_card.transform.position = _enemy_square.transform.position;
-		_enemy_square.On_Card = _enemy_card;
-
-		if ( _main_scene_operation == null ) { 
-			Debug.Log( "[エラー]MainSceneOperationが参照を取れていない" );	
-		}
-
-		if ( _player1 == null ) { 
-			Debug.Log( "[エラー]Participant(Player1)が参照を取れていない" );	
-		}
-
-		if ( _player2 == null ) { 
-			Debug.Log( "[エラー]Participant(Player2)が参照を取れていない" );	
-		}
+		_nowSquare.On_Card = _card;
+		_card.gameObject.transform.position = _nowSquare.transform.position;
+		_enemyCard.transform.position = _enemySquare.transform.position;
+		_enemySquare.On_Card = _enemyCard;
 	}
 
 	
 	void Update( ) {
-
-		if ( _main_scene_operation == null ) {
-			return;
-		}
-
-		if ( _player1 == null ) { 
-			return;
-		}
-
-		if ( _player2 == null ) { 
-			return;
-		}
+		if ( _mainSceneOperation == null ) return;
+		if ( _player1 == null ) return;
+		if ( _player2 == null ) return;
 
 		if ( Input.GetKeyDown( KeyCode.A ) ) {
 			ChangePhase( );
-			_phase_status++;
-			if ( ( int )_phase_status > ( int )PHASE.END ) { 
-				_phase_status = PHASE.START;	
+			_phaseStatus++;
+			if ( ( int )_phaseStatus > ( int )PHASE.END ) { 
+				_phaseStatus = PHASE.START;	
 			}
 		}
 
@@ -90,7 +69,7 @@ public class MainSceneManeger : MonoBehaviour {
 			_phase = null;	
 		}
 
-		switch ( _phase_status ) { 
+		switch ( _phaseStatus ) { 
 			case PHASE.START:
 				_phase = new StartPhase( );
 				break;
@@ -100,10 +79,10 @@ public class MainSceneManeger : MonoBehaviour {
 				break;
 
 			case PHASE.MAIN:
-				_phase = new MainPhase( _player1, _player2, _main_scene_operation,
-										_return_button, _move_button, _direct_attack_button, _effect_button, _effect_yes_buuton,
-										_card_details_image, _canvas,
-										_now_square, _card, _enemy_card, _enemy_square, _draw_card );
+				_phase = new MainPhase( _player1, _player2, _mainSceneOperation,
+										_returnButton, _moveButton, _directAttackButton, _effectButton, _effectYesBuuton,
+										_cardDetailsImage, _canvas,
+										_nowSquare, _card, _enemyCard, _enemySquare, _drawCard );
 				break;
 
 			case PHASE.END:
@@ -111,6 +90,12 @@ public class MainSceneManeger : MonoBehaviour {
 				break;
 			
 		}
+	}
+
+	void ReferenceCheck( ) { 
+		Assert.IsNotNull( _mainSceneOperation, "[エラー]MainSceneOperationが参照を取れていない" );
+		Assert.IsNotNull( _player1, "[エラー]Participant(Player1)が参照を取れていない" );
+		Assert.IsNotNull( _player2, "[エラー]Participant(Player2)が参照を取れていない" );
 	}
 }
 

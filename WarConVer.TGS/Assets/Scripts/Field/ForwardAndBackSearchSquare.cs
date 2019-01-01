@@ -17,32 +17,32 @@ public class ForwardAndBackSearchSquare : ISearchSquare {
 	const int FOURTH_ROW_LAST_INDEX = 16;
 	const int FIFTH_ROW_LAST_INDEX  = 20;
 
-	public int SearchSquare( int now_square_index, Field.DIRECTION direction, int distance ) {
+	public int SearchSquare( int nowSquareIndex, Field.DIRECTION direction, int distance ) {
 		int index = 0;
 
 		switch ( direction ) {
 			case Field.DIRECTION.FORWAED:
-				index = now_square_index - ONE_SQUIRREL * distance;
+				index = nowSquareIndex - ONE_SQUIRREL * distance;
 				
 				//今いる段によってdistanceが一定以上多かったら-1を返す--------------------------------------------------------------------------
-				if ( ( now_square_index >= FIRST_ROW_FIRST_INDEX  && now_square_index <= FIRST_ROW_LAST_INDEX  ) && distance > 0 ) return -1;
-				if ( ( now_square_index >= SECOND_ROW_FIRST_INDEX && now_square_index <= SECOND_ROW_LAST_INDEX ) && distance > 1 ) return -1;
-				if ( ( now_square_index >= THIRD_ROW_FIRST_INDEX  && now_square_index <= THIRD_ROW_LAST_INDEX  ) && distance > 2 ) return -1;
-				if ( ( now_square_index >= FOURTH_ROW_FIRST_INDEX && now_square_index <= FOURTH_ROW_LAST_INDEX ) && distance > 3 ) return -1;
-				if ( ( now_square_index >= FIFTH_ROW_FIRST_INDEX  && now_square_index <= FIFTH_ROW_LAST_INDEX  ) && distance > 4 ) return -1;
+				if ( ( nowSquareIndex >= FIRST_ROW_FIRST_INDEX  && nowSquareIndex <= FIRST_ROW_LAST_INDEX  ) && distance > 0 ) return -1;
+				if ( ( nowSquareIndex >= SECOND_ROW_FIRST_INDEX && nowSquareIndex <= SECOND_ROW_LAST_INDEX ) && distance > 1 ) return -1;
+				if ( ( nowSquareIndex >= THIRD_ROW_FIRST_INDEX  && nowSquareIndex <= THIRD_ROW_LAST_INDEX  ) && distance > 2 ) return -1;
+				if ( ( nowSquareIndex >= FOURTH_ROW_FIRST_INDEX && nowSquareIndex <= FOURTH_ROW_LAST_INDEX ) && distance > 3 ) return -1;
+				if ( ( nowSquareIndex >= FIFTH_ROW_FIRST_INDEX  && nowSquareIndex <= FIFTH_ROW_LAST_INDEX  ) && distance > 4 ) return -1;
 				//------------------------------------------------------------------------------------------------------------------------------
 				
 				return index;
 
 			case Field.DIRECTION.BACK:
-				index = now_square_index + ONE_SQUIRREL * distance;
+				index = nowSquareIndex + ONE_SQUIRREL * distance;
 				
 				//今いる段によってdistanceが一定以上多かったら-1を返す--------------------------------------------------------------------------
-				if ( ( now_square_index >= FIRST_ROW_FIRST_INDEX  && now_square_index <= FIRST_ROW_LAST_INDEX  ) && distance > 4 ) return -1;
-				if ( ( now_square_index >= SECOND_ROW_FIRST_INDEX && now_square_index <= SECOND_ROW_LAST_INDEX ) && distance > 3 ) return -1;
-				if ( ( now_square_index >= THIRD_ROW_FIRST_INDEX  && now_square_index <= THIRD_ROW_LAST_INDEX  ) && distance > 2 ) return -1;
-				if ( ( now_square_index >= FOURTH_ROW_FIRST_INDEX && now_square_index <= FOURTH_ROW_LAST_INDEX ) && distance > 1 ) return -1;
-				if ( ( now_square_index >= FIFTH_ROW_FIRST_INDEX  && now_square_index <= FIFTH_ROW_LAST_INDEX  ) && distance > 0 ) return -1;
+				if ( ( nowSquareIndex >= FIRST_ROW_FIRST_INDEX  && nowSquareIndex <= FIRST_ROW_LAST_INDEX  ) && distance > 4 ) return -1;
+				if ( ( nowSquareIndex >= SECOND_ROW_FIRST_INDEX && nowSquareIndex <= SECOND_ROW_LAST_INDEX ) && distance > 3 ) return -1;
+				if ( ( nowSquareIndex >= THIRD_ROW_FIRST_INDEX  && nowSquareIndex <= THIRD_ROW_LAST_INDEX  ) && distance > 2 ) return -1;
+				if ( ( nowSquareIndex >= FOURTH_ROW_FIRST_INDEX && nowSquareIndex <= FOURTH_ROW_LAST_INDEX ) && distance > 1 ) return -1;
+				if ( ( nowSquareIndex >= FIFTH_ROW_FIRST_INDEX  && nowSquareIndex <= FIFTH_ROW_LAST_INDEX  ) && distance > 0 ) return -1;
 				//------------------------------------------------------------------------------------------------------------------------------
 
 				return index;

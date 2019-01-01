@@ -5,15 +5,16 @@ using UnityEngine;
 public class Hand : MonoBehaviour {
 	const int MAX_HAND_NUM = 7;
 
-	[ SerializeField ] GameObject _hand_card_obj = null;
-	[ SerializeField ] float _sort_shift_pos = 0;
-	List< CardMain > _hand_card = new List< CardMain >( );
+	[ SerializeField ] GameObject _handCardObj = null;	//生成する手札のカードオブジェクト
+	[ SerializeField ] float _sortShiftPos = 0;
+	List< CardMain > _card  = new List< CardMain >( );
 
 
 	void Awake( ) {
-		var hand_cards = gameObject.GetComponentInChildren< Transform >( ); 
-		foreach( Transform card in hand_cards ) { 
-			_hand_card.Add( card.gameObject.GetComponent< CardMain >( ) );	
+		//とりあえず今は最初から設定されている手札を取得する(あとでこの処理はいらなくなるかも)
+		var handCards = gameObject.GetComponentInChildren< Transform >( ); 
+		foreach( Transform card in handCards ) { 
+			_card.Add( card.gameObject.GetComponent< CardMain >( ) );	
 		}
 	}
 
@@ -23,10 +24,10 @@ public class Hand : MonoBehaviour {
 
 	//手札を並べる------------------------------------------------------
 	void Sort( ) {
-		Vector3 card_pos = transform.position;
-		for ( int i = 0; i < _hand_card.Count; i++ ) {
-			_hand_card[ i ].gameObject.transform.position = card_pos;
-			card_pos.x += _sort_shift_pos;
+		Vector3 cardPos = transform.position;
+		for ( int i = 0; i < _card.Count; i++ ) {
+			_card[ i ].gameObject.transform.position = cardPos;
+			cardPos.x += _sortShiftPos;
 		}
 		
 	}
@@ -35,10 +36,10 @@ public class Hand : MonoBehaviour {
 
 	//手札を消費する-------------------------------------------------------------
 	public void UseHandCard( CardMain card ) {	//今のやりかたでは別にCsrdを返す理由が思いつかなかったのでvoidに変更
-		for ( int i = 0; i < _hand_card.Count; i++ ) { 
-			if ( _hand_card[ i ]._cardDates.id == card._cardDates.id ) {
-				Destroy( _hand_card[ i ].gameObject );
-				_hand_card.Remove( _hand_card[ i ] );
+		for ( int i = 0; i < _card.Count; i++ ) { 
+			if ( _card[ i ]._cardDates.id == card._cardDates.id ) {
+				Destroy( _card[ i ].gameObject );
+				_card.Remove( _card[ i ] );
 
 				Sort( );
 				return;
@@ -49,22 +50,22 @@ public class Hand : MonoBehaviour {
 	}
 	//---------------------------------------------------------------------------
 
-
+	
 	//手札を増やす(生成する)--------------------------------------------------------------------------------
 	public void IncreaseHand( CardMain card ) {
-		if ( _hand_card.Count == MAX_HAND_NUM ) return;
+		if ( _card.Count == MAX_HAND_NUM ) return;
 
-		GameObject hand_card_obj = Instantiate( _hand_card_obj, transform.position, Quaternion.identity );
+		GameObject handCardObj = Instantiate( _handCardObj, transform.position, Quaternion.identity );
 
-		CardMain hand_card = hand_card_obj.GetComponent< CardMain >( );
-		hand_card._cardDates = card._cardDates;
-		_hand_card.Add( hand_card );
+		CardMain handCard = handCardObj.GetComponent< CardMain >( );
+		handCard._cardDates = card._cardDates;
+		_card.Add( handCard );
 
-		SpriteRenderer hand_card_sprite = hand_card_obj.GetComponent< SpriteRenderer >( );
+		SpriteRenderer handCardSprite = handCardObj.GetComponent< SpriteRenderer >( );
 		SpriteRenderer sprite = card.GetComponent< SpriteRenderer >( );
-		hand_card_sprite.sprite = sprite.sprite;
+		handCardSprite.sprite = sprite.sprite;
 
-		hand_card_obj.transform.parent = this.transform;
+		handCardObj.transform.parent = this.transform;
 
 		Sort( );
 	}
