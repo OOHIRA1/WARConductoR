@@ -24,7 +24,7 @@ public class RayShooter {
 
 
 	//手札のカードだけを取得するRayを飛ばす-----------------------------------------------------------------------------------
-	public CardMain RayCastHandCard( ) { 
+	public CardMain RayCastHandCard( string player ) { 
 		Vector3 mousePos = Input.mousePosition;
 		Vector3 worldPos = Camera.main.ScreenToWorldPoint( mousePos );		//マウスのScreen座標をWorld座標に変換
 
@@ -32,7 +32,7 @@ public class RayShooter {
 
 		RaycastHit2D hit = Physics2D.Raycast( worldPos, new Vector3( 0, 0, RAY_DIR ), LayerMask.NameToLayer( "HandCard" ) );	//クリックされた場所から真っすぐにRawを飛ばす
 		if ( hit.collider == null ) return null;
-		if ( hit.collider.gameObject.tag != "HandCard" ) return null;
+		if ( hit.collider.gameObject.tag != player ) return null;
 
 		Debug.Log( hit.collider.gameObject.ToString( ) );
 		return hit.collider.gameObject.GetComponent< CardMain >( );

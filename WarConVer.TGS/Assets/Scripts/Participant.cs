@@ -136,8 +136,9 @@ public class Participant : MonoBehaviour {
 		List< Square > squares = new List< Square >( );
 
 		//移動できるマスだけ格納
-		for ( int i = 0; i < card._cardDates.directions.Length; i++ ) {
-			Square square = _field.SquareInThatDirection( nowSquare, card._cardDates.directions[ i ], card._cardDates.distance );
+		Field.DIRECTION[ ] directions = card.getDirections( card.gameObject.tag, card._cardDates.directions );
+		for ( int i = 0; i < directions.Length; i++ ) {
+			Square square = _field.SquareInThatDirection( nowSquare, directions[ i ], card._cardDates.distance );
 
 			if ( square != null ) {
 				if ( IsOnCardType( card.gameObject.tag, square ) ) {
@@ -151,13 +152,14 @@ public class Participant : MonoBehaviour {
 	//----------------------------------------------------------------------------------------------------------------------------------
 
 
-	//攻撃するマスにカードがあるマスを事前に調べる関数-----------------------------------------------------------------------------------
+	//攻撃効果をするマスにカードがあるマスを事前に調べる関数-----------------------------------------------------------------------------------
 	public List< Square > AttackEffectPossibleOnCardSquare( CardMain card, Square nowSquare ) { 
 		List< Square > squares = new List< Square >( );
 
 		//移動できるマスだけ格納
-		for ( int i = 0; i < card._cardDates.effect_direction.Length; i++ ) {
-			Square square = _field.SquareInThatDirection( nowSquare, card._cardDates.effect_direction[ i ], card._cardDates.effect_ditance );
+		Field.DIRECTION[ ] directions = card.getDirections( card.gameObject.tag, card._cardDates.effect_directions );
+		for ( int i = 0; i < directions.Length; i++ ) {
+			Square square = _field.SquareInThatDirection( nowSquare, directions[ i ], card._cardDates.effect_ditance );
 
 			if ( square != null ) {
 				if ( IsOnCard( square ) ) {

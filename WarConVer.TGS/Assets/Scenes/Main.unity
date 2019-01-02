@@ -568,7 +568,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &158759833
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -601,7 +601,7 @@ MonoBehaviour:
     directions: 0200000003000000050000000800000007000000060000000400000001000000
     distance: 1
     move_ap: 1
-    effect_direction: 0200000003000000050000000800000007000000060000000400000001000000
+    effect_directions: 
     effect_ap: 0
     effect_ditance: 2
     effect_damage: 100
@@ -886,7 +886,7 @@ MonoBehaviour:
     directions: 070000000200000005000000
     distance: 1
     move_ap: 1
-    effect_direction: 06000000020000000400000007000000
+    effect_directions: 0100000002000000030000000400000005000000060000000700000008000000
     effect_ap: 2
     effect_ditance: 1
     effect_damage: 100
@@ -906,7 +906,7 @@ GameObject:
   - component: {fileID: 226077764}
   m_Layer: 11
   m_Name: tefuta_card (3)
-  m_TagString: HandCard
+  m_TagString: Player2
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -981,7 +981,7 @@ MonoBehaviour:
     directions: 0400000005000000
     distance: 1
     move_ap: 1
-    effect_direction: 0200000007000000
+    effect_directions: 
     effect_ap: 2
     effect_ditance: 1
     effect_damage: 5
@@ -1087,145 +1087,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &313121248
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 313121249}
-  - component: {fileID: 313121252}
-  - component: {fileID: 313121251}
-  - component: {fileID: 313121250}
-  m_Layer: 11
-  m_Name: tefuta_card (6)
-  m_TagString: HandCard
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &313121249
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 313121248}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 10.46, y: 0.03999996, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 750422030}
-  m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &313121250
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 313121248}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.4, y: 2.04}
-    newSize: {x: 1.4, y: 2.04}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1.4, y: 2.04}
-  m_EdgeRadius: 0
---- !u!114 &313121251
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 313121248}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe523c41294e1d44a9629fd76f6b0ccf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _loadID: 0
-  _cardSpriteRenderer: {fileID: 0}
-  _cardDataLoader: {fileID: 0}
-  _cardData:
-    _id: 0
-    _attack: 0
-    _toughness: 0
-    _directionOfTravel: 0
-    _effect: 0
-    _necessaryMP: 0
-    _necessaryAP: 0
-    _necessaryAPForEffect: 0
-  _actionCount: 0
-  _cardDates:
-    id: 6
-    hp: 10
-    max_hp: 10
-    attack_point: 10
-    directions: 0400000005000000
-    distance: 1
-    move_ap: 1
-    effect_direction: 0200000007000000
-    effect_ap: 2
-    effect_ditance: 1
-    effect_damage: 5
-    effect_recovery_point: 0
-    mp: 0
-    effect_type: 0
---- !u!212 &313121252
-SpriteRenderer:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 313121248}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
-  m_SelectedEditorRenderState: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 785508b7330d6dc469755e7aba206164, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
-  m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 1.4, y: 2.04}
-  m_AdaptiveModeThreshold: 0.5
-  m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
 --- !u!1 &350364475 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1323167264529580, guid: 2ccdf2e3197e2e54da99afa3eb97bb18,
@@ -2336,7 +2197,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxHandNum: 6
-  _handCardObj: {fileID: 1358075807757910, guid: 8bca3f5c6dd3098418bdfb1cb5f0aaeb,
+  _handCardObj: {fileID: 1395104465592710, guid: a357919ae106db54984273cbd47aede1,
     type: 2}
   _sortShiftPos: 1.5
 --- !u!4 &743047484
@@ -2384,7 +2245,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxHandNum: 6
-  _handCardObj: {fileID: 1358075807757910, guid: 8bca3f5c6dd3098418bdfb1cb5f0aaeb,
+  _handCardObj: {fileID: 1066340349660994, guid: d2e544a4bfe9ba84fab64786a7e0083a,
     type: 2}
   _sortShiftPos: 1.5
 --- !u!4 &750422030
@@ -2401,9 +2262,6 @@ Transform:
   - {fileID: 1217917775}
   - {fileID: 1371734741}
   - {fileID: 226077763}
-  - {fileID: 1971040266}
-  - {fileID: 1912411669}
-  - {fileID: 313121249}
   m_Father: {fileID: 0}
   m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2770,7 +2628,7 @@ GameObject:
   - component: {fileID: 953972414}
   m_Layer: 11
   m_Name: tefuta_card (3)
-  m_TagString: HandCard
+  m_TagString: Player1
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2832,7 +2690,7 @@ MonoBehaviour:
     directions: 0400000005000000
     distance: 1
     move_ap: 1
-    effect_direction: 0200000007000000
+    effect_directions: 
     effect_ap: 2
     effect_ditance: 1
     effect_damage: 5
@@ -3193,7 +3051,7 @@ GameObject:
   - component: {fileID: 1042503409}
   m_Layer: 11
   m_Name: tefuta_card (2)
-  m_TagString: HandCard
+  m_TagString: Player1
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3255,7 +3113,7 @@ MonoBehaviour:
     directions: 0400000005000000
     distance: 1
     move_ap: 1
-    effect_direction: 0200000007000000
+    effect_directions: 
     effect_ap: 2
     effect_ditance: 1
     effect_damage: 5
@@ -3612,7 +3470,7 @@ GameObject:
   - component: {fileID: 1217917776}
   m_Layer: 11
   m_Name: tefuta_card (1)
-  m_TagString: HandCard
+  m_TagString: Player2
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3687,7 +3545,7 @@ MonoBehaviour:
     directions: 0400000005000000
     distance: 1
     move_ap: 1
-    effect_direction: 0200000007000000
+    effect_directions: 
     effect_ap: 2
     effect_ditance: 1
     effect_damage: 5
@@ -4806,7 +4664,7 @@ GameObject:
   - component: {fileID: 1371734742}
   m_Layer: 11
   m_Name: tefuta_card (2)
-  m_TagString: HandCard
+  m_TagString: Player2
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4881,7 +4739,7 @@ MonoBehaviour:
     directions: 0400000005000000
     distance: 1
     move_ap: 1
-    effect_direction: 0200000007000000
+    effect_directions: 
     effect_ap: 2
     effect_ditance: 1
     effect_damage: 5
@@ -5019,7 +4877,7 @@ GameObject:
   - component: {fileID: 1409626723}
   m_Layer: 11
   m_Name: tefuta_card (1)
-  m_TagString: HandCard
+  m_TagString: Player1
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5081,7 +4939,7 @@ MonoBehaviour:
     directions: 0400000005000000
     distance: 1
     move_ap: 1
-    effect_direction: 0200000007000000
+    effect_directions: 
     effect_ap: 2
     effect_ditance: 1
     effect_damage: 5
@@ -5948,7 +5806,7 @@ GameObject:
   - component: {fileID: 1623521711}
   m_Layer: 11
   m_Name: tefuta_card
-  m_TagString: HandCard
+  m_TagString: Player2
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6020,10 +5878,10 @@ MonoBehaviour:
     hp: 10
     max_hp: 10
     attack_point: 10
-    directions: 0400000005000000
+    directions: 0400000002000000
     distance: 1
     move_ap: 1
-    effect_direction: 0200000007000000
+    effect_directions: 02000000040000000100000006000000
     effect_ap: 2
     effect_ditance: 1
     effect_damage: 5
@@ -6364,8 +6222,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03b9ee76ca2ae294e97ce6c2ca449174, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxPoint: 4
-  _point: 4
+  _maxPoint: 3
+  _point: 3
 --- !u!114 &1765459213
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6695,7 +6553,7 @@ GameObject:
   - component: {fileID: 1906738638}
   m_Layer: 11
   m_Name: tefuta_card
-  m_TagString: HandCard
+  m_TagString: Player1
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6729,10 +6587,10 @@ MonoBehaviour:
     hp: 10
     max_hp: 10
     attack_point: 10
-    directions: 040000000500000004000000
+    directions: 040000000200000003000000
     distance: 1
     move_ap: 1
-    effect_direction: 0200000007000000
+    effect_directions: 01000000020000000800000004000000
     effect_ap: 2
     effect_ditance: 1
     effect_damage: 5
@@ -6821,145 +6679,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.4, y: 2.04}
   m_EdgeRadius: 0
---- !u!1 &1912411668
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 1912411669}
-  - component: {fileID: 1912411672}
-  - component: {fileID: 1912411671}
-  - component: {fileID: 1912411670}
-  m_Layer: 11
-  m_Name: tefuta_card (5)
-  m_TagString: HandCard
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1912411669
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1912411668}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 8.77, y: 0.03999996, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 750422030}
-  m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &1912411670
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1912411668}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.4, y: 2.04}
-    newSize: {x: 1.4, y: 2.04}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1.4, y: 2.04}
-  m_EdgeRadius: 0
---- !u!114 &1912411671
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1912411668}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe523c41294e1d44a9629fd76f6b0ccf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _loadID: 0
-  _cardSpriteRenderer: {fileID: 0}
-  _cardDataLoader: {fileID: 0}
-  _cardData:
-    _id: 0
-    _attack: 0
-    _toughness: 0
-    _directionOfTravel: 0
-    _effect: 0
-    _necessaryMP: 0
-    _necessaryAP: 0
-    _necessaryAPForEffect: 0
-  _actionCount: 0
-  _cardDates:
-    id: 5
-    hp: 10
-    max_hp: 10
-    attack_point: 10
-    directions: 0400000005000000
-    distance: 1
-    move_ap: 1
-    effect_direction: 0200000007000000
-    effect_ap: 2
-    effect_ditance: 1
-    effect_damage: 5
-    effect_recovery_point: 0
-    mp: 0
-    effect_type: 0
---- !u!212 &1912411672
-SpriteRenderer:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1912411668}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
-  m_SelectedEditorRenderState: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 785508b7330d6dc469755e7aba206164, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
-  m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 1.4, y: 2.04}
-  m_AdaptiveModeThreshold: 0.5
-  m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
 --- !u!1 &1934242627
 GameObject:
   m_ObjectHideFlags: 0
@@ -7155,145 +6874,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1949290537}
---- !u!1 &1971040265
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 1971040266}
-  - component: {fileID: 1971040269}
-  - component: {fileID: 1971040268}
-  - component: {fileID: 1971040267}
-  m_Layer: 11
-  m_Name: tefuta_card (4)
-  m_TagString: HandCard
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1971040266
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1971040265}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 6.9467235, y: 0.03999996, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 750422030}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &1971040267
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1971040265}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.4, y: 2.04}
-    newSize: {x: 1.4, y: 2.04}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1.4, y: 2.04}
-  m_EdgeRadius: 0
---- !u!114 &1971040268
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1971040265}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe523c41294e1d44a9629fd76f6b0ccf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _loadID: 0
-  _cardSpriteRenderer: {fileID: 0}
-  _cardDataLoader: {fileID: 0}
-  _cardData:
-    _id: 0
-    _attack: 0
-    _toughness: 0
-    _directionOfTravel: 0
-    _effect: 0
-    _necessaryMP: 0
-    _necessaryAP: 0
-    _necessaryAPForEffect: 0
-  _actionCount: 0
-  _cardDates:
-    id: 4
-    hp: 10
-    max_hp: 10
-    attack_point: 10
-    directions: 0400000005000000
-    distance: 1
-    move_ap: 1
-    effect_direction: 0200000007000000
-    effect_ap: 2
-    effect_ditance: 1
-    effect_damage: 5
-    effect_recovery_point: 0
-    mp: 0
-    effect_type: 0
---- !u!212 &1971040269
-SpriteRenderer:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1971040265}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
-  m_SelectedEditorRenderState: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 785508b7330d6dc469755e7aba206164, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
-  m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 1.4, y: 2.04}
-  m_AdaptiveModeThreshold: 0.5
-  m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
 --- !u!1 &1976715241
 GameObject:
   m_ObjectHideFlags: 0
@@ -7343,7 +6923,7 @@ MonoBehaviour:
     directions: 070000000200000005000000
     distance: 1
     move_ap: 1
-    effect_direction: 0700000002000000
+    effect_directions: 
     effect_ap: 2
     effect_ditance: 1
     effect_damage: 100

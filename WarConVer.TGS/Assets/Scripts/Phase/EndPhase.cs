@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class EndPhase : Phase {
-	bool _hand = false;
+	bool _didHandThrowAway = false;
 
 	RayShooter _rayShooter = new RayShooter( );
 	MainSceneOperation _mainSceneOperation = new MainSceneOperation( );
@@ -12,27 +12,27 @@ public class EndPhase : Phase {
 		_turnPlayer = turnPlayer;
 
 		if ( _turnPlayer.getHnadNum( ) <= _turnPlayer.getMaxHnadNum( ) ) { 
-			_hand = true;
+			_didHandThrowAway = true;
 		}
 
-		Debug.Log( "エンドフェーズ" );	
+		Debug.Log( _turnPlayer.gameObject.tag + "エンドフェーズ" );	
 	}
 
 	public override void PhaseUpdate( ) {
-		if ( _hand ) return;
+		if ( _didHandThrowAway ) return;
 
 		if ( _mainSceneOperation.MouseTouch( ) ) {
-			CardMain card = _rayShooter.RayCastHandCard( );
+			CardMain card = _rayShooter.RayCastHandCard( _turnPlayer.gameObject.tag );
 			if ( card == null ) return;
 			_turnPlayer.HandThrowAway( card );
 			if ( _turnPlayer.getHnadNum( ) == _turnPlayer.getMaxHnadNum( ) ) {
-				_hand = true;
+				_didHandThrowAway = true;
 			}
 		}
 	}
 
 	public override bool IsNextPhaseFlag( ) { 
-		return _hand;	
+		return _didHandThrowAway;	
 	}
 }
 

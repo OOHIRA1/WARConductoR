@@ -17,6 +17,8 @@ public class MainSceneManeger : MonoBehaviour {
 	
 	Phase _phase = null;
 	PHASE _phaseStatus = PHASE.START;
+	Participant _turnPlayer = null;		//そのターンのプレイヤー
+	Participant _enemyPlayer = null;	//そのターンのプレイヤーではないほう
 
 	//ボタン
 	[ SerializeField ] GameObject _returnButton		  = null;
@@ -44,6 +46,10 @@ public class MainSceneManeger : MonoBehaviour {
 		_nowSquare.On_Card = _card;
 		_card.gameObject.transform.position = _nowSquare.transform.position;
 
+		//ここは先行後攻を判別して入れ替えられるようにする。
+		_turnPlayer = _player1;	
+		_enemyPlayer = _player2;
+
 		ReferenceCheck( );
 	}
 
@@ -58,7 +64,8 @@ public class MainSceneManeger : MonoBehaviour {
 			_phaseStatus++;
 
 			if ( ( int )_phaseStatus > ( int )PHASE.END ) { 
-				_phaseStatus = PHASE.START;	
+				_phaseStatus = PHASE.START;
+				ChangePlayer( );
 			}
 				ChangePhase( );
 		}
@@ -75,28 +82,39 @@ public class MainSceneManeger : MonoBehaviour {
 		
 		switch ( _phaseStatus ) { 
 			case PHASE.START:
-				_phase = new StartPhase( _player1 );
+				_phase = new StartPhase( _turnPlayer );
 				break;
 
 			case PHASE.DRAW:
-				_phase = new DrawPhase( _player1, _drawCard );
+				_phase = new DrawPhase( _turnPlayer, _drawCard );	//多分,Deckクラスを送るのかな？
 				break;
 
 			case PHASE.MAIN:
-				_phase = new MainPhase( _player1, _player2, _mainSceneOperation,
+				_phase = new MainPhase( _turnPlayer, _enemyPlayer, _mainSceneOperation,
 										_returnButton, _moveButton, _directAttackButton, _effectButton, _effectYesBuuton, _turnEndButton,
 										_cardDetailsImage, _canvas,
 										_nowSquare, _card, _drawCard );
 				break;
 
 			case PHASE.END:
-				_phase = new EndPhase( _player1 );
+				_phase = new EndPhase( _turnPlayer );
 				break;
 
 			default:
 				Debug.Log( "フェーズが正しく動作していないです" );
 				return;
 			
+		}
+	}
+
+
+	void ChangePlayer( ) {
+		if ( _turnPlayer == _player1 ) { 
+			_turnPlayer = _player2;
+			_enemyPlayer = _player1;
+		} else { 
+			_turnPlayer = _player1;
+			_enemyPlayer = _player2;
 		}
 	}
 

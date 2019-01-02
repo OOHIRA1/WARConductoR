@@ -66,7 +66,7 @@ public class MainPhase : Phase {
 		_card = card;
 		_drawCard = drawCard;
 
-		Debug.Log( "メインフェーズ" );
+		Debug.Log( _turnPlayer.gameObject.tag + "メインフェーズ" );
 	}
 
 
@@ -154,7 +154,7 @@ public class MainPhase : Phase {
 
 	//手札のカードがタッチされたら処理-------------------------------------------
 	void HandCardTouch( ) { 
-		_handCard = _rayShooter.RayCastHandCard( );
+		_handCard = _rayShooter.RayCastHandCard( _turnPlayer.gameObject.tag );
 		if ( _handCard == null ) return;
 
 		_handCardPos = _handCard.transform.position;
@@ -218,16 +218,24 @@ public class MainPhase : Phase {
 				}
 
 				//APが消費する分あって移動できるマスがあったら
-				if ( _turnPlayer.DecreaseActivePointConfirmation( _card._cardDates.move_ap ) && 
+				if ( _turnPlayer.DecreaseActivePointConfirmation( _card._cardDates.move_ap ) &&
 					 _turnPlayer.MovePossibleSquare( _card, _nowSquare ).Count > 0 ) {
 
 					_moveButton.SetActive( true );
+				}
 
-					if ( ( _nowSquare.Index - 1 ) / 4 == 0 ) {								//一列目にいたら//修正するだろうからマジックナンバーを放置
+				//消費するAPがあって一番前にいたら攻撃ボタンを表示
+				if ( _turnPlayer.DecreaseActivePointConfirmation( _card._cardDates.move_ap ) ) {	
+
+					if ( ( ( _nowSquare.Index - 1 ) / 4 == 0 ) && _card.gameObject.tag == "Player1" ) {		//一列目にいたら//修正するだろうからマジックナンバーを放置
 						_directAttackButton.SetActive( true );
 					}
 
+					if ( ( ( _nowSquare.Index - 1 ) / 4 == 4 ) && _card.gameObject.tag == "Player2" ) {		//五列目にいたら//修正するだろうからマジックナンバーを放置
+						_directAttackButton.SetActive( true );
+					}
 				}
+
 			}
 
 			if ( _card.gameObject.tag == _enemyPlayer.gameObject.tag ) { 

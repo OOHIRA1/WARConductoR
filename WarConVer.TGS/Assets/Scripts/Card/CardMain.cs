@@ -29,7 +29,7 @@ public class CardMain : MonoBehaviour {
 		public Field.DIRECTION[ ] directions;
 		public int distance;
 		public int move_ap;
-		public Field.DIRECTION[ ] effect_direction;
+		public Field.DIRECTION[ ] effect_directions;
 		public int effect_ap;
 		public int effect_ditance;
 		public int effect_damage;
@@ -96,7 +96,59 @@ public class CardMain : MonoBehaviour {
 	//破壊
 	public void Death( ) {
 		Destroy( this.gameObject );	
-	} 
+	}
+
+
+	//プレイヤーによってカードの持っている向きを調整して返す処理------------------------------------
+	public Field.DIRECTION[ ] getDirections( string player, Field.DIRECTION[ ] directions ) {
+		if ( player == "Player1" ) {
+			return directions;
+		}
+
+		Field.DIRECTION[ ] player2Directions = new Field.DIRECTION[ directions.Length ];
+		for ( int i = 0; i < directions.Length; i++ ) { 
+		
+			switch( directions[ i ] ) { 
+				case Field.DIRECTION.LEFT_FORWARD:
+					player2Directions[ i ] = Field.DIRECTION.RIGHT_BACK;
+					break;
+
+				case Field.DIRECTION.FORWAED:
+					player2Directions[ i ] = Field.DIRECTION.BACK;
+					break;
+
+				case Field.DIRECTION.RIGHT_FORWARD:
+					player2Directions[ i ] = Field.DIRECTION.LEFT_BACK;
+					break;
+
+				case Field.DIRECTION.LEFT:
+					player2Directions[ i ] = Field.DIRECTION.RIGHT;
+					break;
+
+				case Field.DIRECTION.RIGHT:
+					player2Directions[ i ] = Field.DIRECTION.LEFT;
+					break;
+
+				case Field.DIRECTION.LEFT_BACK:
+					player2Directions[ i ] = Field.DIRECTION.RIGHT_FORWARD;
+					break;
+
+				case Field.DIRECTION.BACK:
+					player2Directions[ i ] = Field.DIRECTION.FORWAED;
+					break;
+
+				case Field.DIRECTION.RIGHT_BACK:
+					player2Directions[ i ] = Field.DIRECTION.LEFT_FORWARD;
+					break;
+				
+				default:
+					break;
+			}
+		}
+
+		return player2Directions;
+	}
+	//-----------------------------------------------------------------------------------------------
 
 	//===========================================================================================================
 	//===========================================================================================================

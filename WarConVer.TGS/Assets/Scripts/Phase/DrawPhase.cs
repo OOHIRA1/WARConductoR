@@ -10,7 +10,7 @@ public class DrawPhase : Phase {
 		_turnPlayer = turnPlayer;
 		_drawCard = drawCard;
 
-		Debug.Log( "ドローフェーズ" );	
+		Debug.Log( _turnPlayer.gameObject.tag + "ドローフェーズ" );	
 	}
 
 	public override void PhaseUpdate( ) {

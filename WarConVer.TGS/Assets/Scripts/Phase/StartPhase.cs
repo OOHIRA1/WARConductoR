@@ -7,7 +7,7 @@ public class StartPhase : Phase {
 	public StartPhase( Participant turnPlayer ) {
 		_turnPlayer = turnPlayer;
 
-		Debug.Log( "スタートフェーズ" );	
+		Debug.Log( _turnPlayer.gameObject.tag + "スタートフェーズ" );	
 	}
 
 	public override void PhaseUpdate( ) {
