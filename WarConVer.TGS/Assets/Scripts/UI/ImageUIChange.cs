@@ -38,8 +38,12 @@ public class ImageUIChange : ImagesDependedOnNumber {
 
 		if ( decreaseNum == _previousDecreaseNum ) return;	
 
-		for ( int i = 0; i < decreaseNum; i++ ) {
-			　_spriteRenderers[ i ].gameObject.SetActive( false ); 
+		for ( int i = 0; i < _spriteRenderers.Length; i++ ) {
+			if ( i < decreaseNum ) {
+				_spriteRenderers[ i ].gameObject.SetActive( false );
+			} else { 
+				_spriteRenderers[ i ].gameObject.SetActive( true );	
+			}
 		}
 
 		_previousDecreaseNum = decreaseNum;	

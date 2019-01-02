@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Point : MonoBehaviour {
 	const int MAX_MAGIC_POINT = 12;
@@ -52,7 +50,6 @@ public class Point : MonoBehaviour {
 	//最大値を増やす--------------------------------
 	public void IncreaseMaxPoint( int point ) { 
 		_maxPoint += point;
-
 		if ( _maxPoint > MAX_MAGIC_POINT ) { 
 			_maxPoint = MAX_MAGIC_POINT;
 		}

@@ -25,25 +25,26 @@ public class MainPhase : Phase {
 	Vector3 _handCardPos = Vector3.zero;
 
 	//ボタン
-	GameObject _returnButton		 = null;
-	GameObject _moveButton			 = null;
+	GameObject _returnButton	   = null;
+	GameObject _moveButton		   = null;
 	GameObject _directAttackButton = null;
-	GameObject _effectButton		 = null;
-	GameObject _effectYesBuuton	 = null;
+	GameObject _effectButton	   = null;
+	GameObject _effectYesBuuton	   = null;
+	GameObject _turnEndButton	   = null;
 
 	//詳細系
-	GameObject _cardDetailsImage = null;	//生成する詳細画像のプレハブ
+	GameObject _cardDetailsImage   = null;	//生成する詳細画像のプレハブ
 	GameObject _canvas			   = null;	//生成したあとに子にするため
 	GameObject _details			   = null;	//生成した詳細画像を格納するため
 
 
 	//テスト用
-	CardMain _card		 = null;
-	CardMain _drawCard   = null;
+	CardMain _card	   = null;
+	CardMain _drawCard = null;
 
 
 	public MainPhase( Participant turnPlayer, Participant enemyPlayer, MainSceneOperation mainSceneQperation, 
-					  GameObject returnButton, GameObject moveButton, GameObject directAttackButton, GameObject effectButton, GameObject effectYesButton, 
+					  GameObject returnButton, GameObject moveButton, GameObject directAttackButton, GameObject effectButton, GameObject effectYesButton, GameObject turnEndButton, 
 					  GameObject cardDitailsImage, GameObject canvas,
 					  Square nowSquare, CardMain card, CardMain drawCard ) {
 
@@ -57,6 +58,7 @@ public class MainPhase : Phase {
 		_directAttackButton = directAttackButton;
 		_effectButton = effectButton;
 		_effectYesBuuton = effectYesButton;
+		_turnEndButton = turnEndButton;
 
 		_cardDetailsImage = cardDitailsImage;
 		_canvas = canvas;
@@ -70,6 +72,8 @@ public class MainPhase : Phase {
 
 	public override void PhaseUpdate( ) {
 		TestDraw( );
+
+		ActiveTurnEndButton( );
 		switch ( _mainPhaseStatus ) {
 			case MAIN_PHASE_STATUS.IDLE:
 				IdleStatis( );
@@ -108,6 +112,17 @@ public class MainPhase : Phase {
 				return;
 		}
 	}
+	
+
+	public override bool IsNextPhaseFlag( ) {
+		if ( _mainSceneOperation.TurnEndButtonClicked( ) ) { 
+			_turnEndButton.SetActive( false );	
+			return true;
+		}
+
+		return false; 	
+	}
+
 
 	//待機状態-----------------------------------------
 	void IdleStatis( ) {
@@ -490,6 +505,17 @@ public class MainPhase : Phase {
 		}
 	}
 	//--------------------------------------------------------------
+
+	
+	void ActiveTurnEndButton( ) { 
+		if ( _mainPhaseStatus == MAIN_PHASE_STATUS.IDLE && !_turnEndButton.activeInHierarchy ) { 
+			_turnEndButton.SetActive( true );	
+		}
+
+		if ( _mainPhaseStatus != MAIN_PHASE_STATUS.IDLE ) { 
+			_turnEndButton.SetActive( false );	
+		}
+	}
 
 
 	void TestDraw( ) { 

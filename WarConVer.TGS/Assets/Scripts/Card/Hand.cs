@@ -3,11 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Hand : MonoBehaviour {
-	const int MAX_HAND_NUM = 7;
+	//const int MAX_ORVER_HAND_NUM = 1;	//手札が持てる最大数を超えて持てる枚数の最大値(_maxHn)
+	//const int MAX_HAND_NUM = 7;
 
+	[ SerializeField ] int _maxHandNum = 0;
 	[ SerializeField ] GameObject _handCardObj = null;	//生成する手札のカードオブジェクト
 	[ SerializeField ] float _sortShiftPos = 0;
 	List< CardMain > _card  = new List< CardMain >( );
+
+	public int Hnad_Num { 
+		get { return _card.Count; }
+	}
+
+	public int Max_Hnad_Num { 
+		get { return _maxHandNum; }	
+	}
 
 
 	void Awake( ) {
@@ -35,7 +45,7 @@ public class Hand : MonoBehaviour {
 
 
 	//手札を消費する-------------------------------------------------------------
-	public void UseHandCard( CardMain card ) {	//今のやりかたでは別にCsrdを返す理由が思いつかなかったのでvoidに変更
+	public void DecreaseHandCard( CardMain card ) {	//今のやりかたでは別にCsrdを返す理由が思いつかなかったのでvoidに変更
 		for ( int i = 0; i < _card.Count; i++ ) { 
 			if ( _card[ i ]._cardDates.id == card._cardDates.id ) {
 				Destroy( _card[ i ].gameObject );
@@ -53,7 +63,7 @@ public class Hand : MonoBehaviour {
 	
 	//手札を増やす(生成する)--------------------------------------------------------------------------------
 	public void IncreaseHand( CardMain card ) {
-		if ( _card.Count == MAX_HAND_NUM ) return;
+		//if ( _card.Count == _maxHandNum + 1 ) return;		//今のところ手札が持てる最大枚数より多くなるのは１枚までなので +1 している
 
 		GameObject handCardObj = Instantiate( _handCardObj, transform.position, Quaternion.identity );
 

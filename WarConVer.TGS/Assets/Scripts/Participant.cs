@@ -25,21 +25,6 @@ public class Participant : MonoBehaviour {
 		MyFieldCardsDeathCheck( );
 	}
 
-	void AddMyFieldCards( CardMain card ) { 
-		_cardInField.Add( card );
-	}
-
-	void MyFieldCardsDeathCheck( ) {
-		if ( _cardInField.Count == 0 ) return;
-		
-		for ( int i = 0; i < _cardInField.Count; i++ ) { 
-			if ( _cardInField[ i ] == null ) {
-				_cemetaryPoint.IncreasePoint( 1 );
-				_cardInField.Remove( _cardInField[ i ] );
-				i = 0;
-			}	
-		}
-	}
 
 	//カードを移動させる-----------------------------------------------------------------------------------------------------------------------------
 	public void MoveCard( CardMain card, Square nowSquare, Square moveSquare ) {
@@ -223,7 +208,7 @@ public class Participant : MonoBehaviour {
 
 		for ( int i = 0; i < squares.Count; i++ ) { 
 			if ( square.Index == squares[ i ].Index ) {
-				_hand.UseHandCard( card );
+				_hand.DecreaseHandCard( card );
 				GameObject fieldCardObj = Instantiate( _fieldCard, square.transform.position, Quaternion.identity );	//生成はHnadがやるプレイヤーがやる？
 			
 				CardMain fieldCard = fieldCardObj.GetComponent< CardMain >( );
@@ -242,12 +227,55 @@ public class Participant : MonoBehaviour {
 	}
 	//---------------------------------------------------------------------------------------------------------------------
 
+	
+	public void HandThrowAway( CardMain card ) { 
+		_hand.DecreaseHandCard( card );
+		_cemetaryPoint.IncreasePoint( 1 );
+	}
+
 
 	//ドロー処理---------------------------
 	public void Draw( CardMain card ) { 
 		_hand.IncreaseHand( card );
 	}
 	//-------------------------------------
+
+	
+	//AP,MP回復-------------------------------------------------
+	public void Refresh( ) { 
+		_activePoint.IncreasePoint( _activePoint.Max_Point );
+
+		_magicPoint.IncreaseMaxPoint( 1 );
+		_magicPoint.IncreasePoint( _magicPoint.Max_Point );
+	}
+	//----------------------------------------------------------
+
+
+	public int getHnadNum( ) { 
+		return _hand.Hnad_Num;	
+	}
+
+	public int getMaxHnadNum( ) { 
+		return _hand.Max_Hnad_Num;	
+	}
+
+
+
+	void AddMyFieldCards( CardMain card ) { 
+		_cardInField.Add( card );
+	}
+
+	void MyFieldCardsDeathCheck( ) {
+		if ( _cardInField.Count == 0 ) return;
+		
+		for ( int i = 0; i < _cardInField.Count; i++ ) { 
+			if ( _cardInField[ i ] == null ) {
+				_cemetaryPoint.IncreasePoint( 1 );
+				_cardInField.Remove( _cardInField[ i ] );
+				i = 0;
+			}	
+		}
+	}
 
 
 	//マスにカードが存在するかどうか------
@@ -274,6 +302,7 @@ public class Participant : MonoBehaviour {
 		return true;
 	}
 	//----------------------------------------------------
+	
 
 	void ReferenceCheck( ) { 
 		Assert.IsNotNull( _field, "Fieldの参照がないです" );

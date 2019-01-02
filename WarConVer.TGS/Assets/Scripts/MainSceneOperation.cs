@@ -9,6 +9,8 @@ public class MainSceneOperation : MonoBehaviour {
 	bool _attackButtonClicked    = false;
 	bool _effectButtonClicked    = false;
 	bool _effectYesButtonClicked = false;
+	bool _turnEndButtonClicked   = false;
+
 
 	public bool MouseTouch( ) {
 		if ( Input.GetMouseButtonDown( 0 ) ) {
@@ -122,6 +124,24 @@ public class MainSceneOperation : MonoBehaviour {
 	//効果了承ボタンがクリックされたら呼ぶ関数
 	public void ClickEffectYesButton( ) {
 		_effectYesButtonClicked = true;
+	}
+	//----------------------------------------------
+
+
+	//ターンエンドボタン判定--------------------------------
+	//ターンエンドボタンが押されたかどうかの判定
+	public bool TurnEndButtonClicked( ) {
+		if ( _turnEndButtonClicked ) { 
+			_turnEndButtonClicked = false;
+			return true;
+		} else { 
+			return false;	
+		}
+	}
+
+	//ターンエンドボタンがクリックされたら呼ぶ関数
+	public void ClickTurnEndButto( ) {
+		_turnEndButtonClicked = true;
 	}
 	//----------------------------------------------
 

@@ -9,5 +9,7 @@ public abstract class Phase {
 	protected Participant _turnPlayer;
 
 	public abstract void PhaseUpdate( );
+
+	public abstract bool IsNextPhaseFlag( );
 	
 }

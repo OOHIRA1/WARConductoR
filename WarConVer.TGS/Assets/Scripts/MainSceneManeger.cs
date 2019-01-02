@@ -19,11 +19,12 @@ public class MainSceneManeger : MonoBehaviour {
 	PHASE _phaseStatus = PHASE.START;
 
 	//ボタン
-	[ SerializeField ] GameObject _returnButton		= null;
-	[ SerializeField ] GameObject _moveButton		= null;
+	[ SerializeField ] GameObject _returnButton		  = null;
+	[ SerializeField ] GameObject _moveButton		  = null;
 	[ SerializeField ] GameObject _directAttackButton = null;
-	[ SerializeField ] GameObject _effectButton		= null;
-	[ SerializeField ] GameObject _effectYesBuuton	= null;
+	[ SerializeField ] GameObject _effectButton		  = null;
+	[ SerializeField ] GameObject _effectYesBuuton	  = null;
+	[ SerializeField ] GameObject _turnEndButton      = null;
 
 	//詳細系
 	[ SerializeField ] GameObject _cardDetailsImage = null;	//生成する詳細画像のプレハブ
@@ -34,6 +35,10 @@ public class MainSceneManeger : MonoBehaviour {
 	[ SerializeField ] CardMain _card		  = null;
 	[ SerializeField ] CardMain _drawCard	  = null;
 
+
+	private void Awake( ) {
+		_phase = new StartPhase( _player1 );
+	}
 
 	void Start( ) {
 		_nowSquare.On_Card = _card;
@@ -48,44 +53,49 @@ public class MainSceneManeger : MonoBehaviour {
 		if ( _player1 == null ) return;
 		if ( _player2 == null ) return;
 
-		if ( Input.GetKeyDown( KeyCode.A ) ) {
-			ChangePhase( );
+
+		if ( _phase.IsNextPhaseFlag( ) ) {
 			_phaseStatus++;
+
 			if ( ( int )_phaseStatus > ( int )PHASE.END ) { 
 				_phaseStatus = PHASE.START;	
 			}
+				ChangePhase( );
 		}
 
 		if ( _phase == null ) return;
 
 		_phase.PhaseUpdate( );
 
+
 	}
 
 	void ChangePhase( ) {
-		if ( _phase != null ) { 
-			_phase = null;	
-		}
-
+		if ( _phase != null ) _phase = null;	
+		
 		switch ( _phaseStatus ) { 
 			case PHASE.START:
 				_phase = new StartPhase( _player1 );
 				break;
 
 			case PHASE.DRAW:
-				_phase = new DrawPhase( );
+				_phase = new DrawPhase( _player1, _drawCard );
 				break;
 
 			case PHASE.MAIN:
 				_phase = new MainPhase( _player1, _player2, _mainSceneOperation,
-										_returnButton, _moveButton, _directAttackButton, _effectButton, _effectYesBuuton,
+										_returnButton, _moveButton, _directAttackButton, _effectButton, _effectYesBuuton, _turnEndButton,
 										_cardDetailsImage, _canvas,
 										_nowSquare, _card, _drawCard );
 				break;
 
 			case PHASE.END:
-				_phase = new EndPhase( );
+				_phase = new EndPhase( _player1 );
 				break;
+
+			default:
+				Debug.Log( "フェーズが正しく動作していないです" );
+				return;
 			
 		}
 	}
@@ -97,4 +107,4 @@ public class MainSceneManeger : MonoBehaviour {
 	}
 }
 
-//MainPhaseに送るプレイヤーの参照は一つにしてターンによって送る参照を切り替えるようにしたほうがいいかも？
+//MainPhaseに送るプレイヤーの参照は一つにしてターンによって送る参照を切り替えるようにしたほうがいいかも？いまそれでやってみてる
