@@ -13,9 +13,33 @@ public class Participant : MonoBehaviour {
 
 	List< CardMain > _cardInField  = new List< CardMain >( );			//フィールドの自分のカードの参照
 	CardDamageManager _cardDamageManager = new CardDamageManager( );
+	bool _loseFlag = false;
 
 	//テスト用
 	[ SerializeField ] GameObject _fieldCard = null;
+
+
+	public int Hand_Num { 
+		get{ return _hand.Hnad_Num; }
+	}
+
+	public int Max_Hnad_Num { 
+		get { return _hand.Max_Hnad_Num; }
+	}
+
+	public int Lefe_Point { 
+		get { return _lifePoint.Point_Num; }
+	}
+
+	public int Cemetary_Point { 
+		get { return _cemetaryPoint.Point_Num; }	
+	}
+
+	public bool Lose_Flag { 
+		get { return _loseFlag; }
+		set { _loseFlag = value; }
+	}
+
 
 	void Start( ) {
 		ReferenceCheck( );
@@ -27,7 +51,7 @@ public class Participant : MonoBehaviour {
 
 
 	//カードを移動させる-----------------------------------------------------------------------------------------------------------------------------
-	public void MoveCard( CardMain card, Square nowSquare, Square moveSquare ) {
+	public void MoveCard( CardMain card, Square nowSquare, Square moveSquare, bool isAddActionCount = false ) {
 		List< Square > squares = new List< Square >( );
 
 		//移動できるマスだけ格納
@@ -36,34 +60,38 @@ public class Participant : MonoBehaviour {
 		CardDamageManager.BATTLE_RESULT result = CardDamageManager.BATTLE_RESULT.NOT_BATTLE;
 		//移動できるマスの中に移動したいマスがあるか探す
 		for ( int i = 0; i < squares.Count; i++ ) { 
-			if ( squares[ i ].Index == moveSquare.Index ) {
-				if ( !IsOnCardType( "Player2", squares[ i ] ) ) {	//相手カードだったときの判定はどうやってやろう？
+			if ( squares[ i ].Index != moveSquare.Index ) continue;
+
+			if ( squares[ i ].On_Card != null ) {
+				if ( squares[ i ].On_Card.gameObject.tag != card.gameObject.tag ) {	//相手カードだったときの判定はどうやってやろう？
 					result = _cardDamageManager.CardBattleDamage( nowSquare, squares[ i ] );
 					Debug.Log( result );
 				}
-
-				//戦闘の結果によって移動処理を変える
-				switch( result ) { 
-					case CardDamageManager.BATTLE_RESULT.BOTH_DEATH:
-					case CardDamageManager.BATTLE_RESULT.PLAYER_DEFEAT:
-					case CardDamageManager.BATTLE_RESULT.BOTH_ALIVE:
-						break;
-
-					case CardDamageManager.BATTLE_RESULT.NOT_BATTLE:
-					case CardDamageManager.BATTLE_RESULT.PLAYER_WIN:
-						nowSquare.On_Card = null;
-						moveSquare.On_Card = card;
-						card.gameObject.transform.position = moveSquare.transform.position;
-						break;
-
-					default:
-						Debug.Log( "予期せぬ勝敗が起きている" );
-						return;
-				}
-
-				_activePoint.DecreasePoint( card._cardDates.move_ap );
-				return;
 			}
+
+			//戦闘の結果によって移動処理を変える
+			switch( result ) { 
+				case CardDamageManager.BATTLE_RESULT.BOTH_DEATH:
+				case CardDamageManager.BATTLE_RESULT.PLAYER_DEFEAT:
+				case CardDamageManager.BATTLE_RESULT.BOTH_ALIVE:
+					break;
+
+				case CardDamageManager.BATTLE_RESULT.NOT_BATTLE:
+				case CardDamageManager.BATTLE_RESULT.PLAYER_WIN:
+					nowSquare.On_Card = null;
+					moveSquare.On_Card = card;
+					card.gameObject.transform.position = moveSquare.transform.position;
+					break;
+
+				default:
+					Debug.Log( "予期せぬ勝敗が起きている" );
+					return;
+			}
+
+			if ( isAddActionCount ) card._cardDates.actionCount++;
+			_activePoint.DecreasePoint( card._cardDates.move_ap );
+			return;
+			
 		}
 		
 	}
@@ -140,11 +168,13 @@ public class Participant : MonoBehaviour {
 		for ( int i = 0; i < directions.Length; i++ ) {
 			Square square = _field.SquareInThatDirection( nowSquare, directions[ i ], card._cardDates.distance );
 
-			if ( square != null ) {
-				if ( IsOnCardType( card.gameObject.tag, square ) ) {
-					squares.Add( square );
-				}
+			if ( square == null ) continue;
+			if ( square.On_Card != null ) {
+				if ( square.On_Card.gameObject.tag == card.gameObject.tag ) continue;
 			}
+
+			squares.Add( square );
+				
 		}
 
 		return squares;
@@ -156,17 +186,17 @@ public class Participant : MonoBehaviour {
 	public List< Square > AttackEffectPossibleOnCardSquare( CardMain card, Square nowSquare ) { 
 		List< Square > squares = new List< Square >( );
 
-		//移動できるマスだけ格納
+		//攻撃できるマスだけ格納
 		Field.DIRECTION[ ] directions = card.getDirections( card.gameObject.tag, card._cardDates.effect_directions );
 		for ( int i = 0; i < directions.Length; i++ ) {
 			Square square = _field.SquareInThatDirection( nowSquare, directions[ i ], card._cardDates.effect_ditance );
 
-			if ( square != null ) {
-				if ( IsOnCard( square ) ) {
-					squares.Add( square );
-				}
-			}
+			if ( square == null ) continue;
+			if ( square.On_Card == null ) continue;
+			squares.Add( square );
+				
 		}
+
 		Debug.Log( squares );
 		return squares;
 	}
@@ -209,22 +239,22 @@ public class Participant : MonoBehaviour {
 		squares = SummonSquare( player );
 
 		for ( int i = 0; i < squares.Count; i++ ) { 
-			if ( square.Index == squares[ i ].Index ) {
-				_hand.DecreaseHandCard( card );
-				GameObject fieldCardObj = Instantiate( _fieldCard, square.transform.position, Quaternion.identity );	//生成はHnadがやるプレイヤーがやる？
+			if ( square.Index != squares[ i ].Index ) continue;
+
+			_hand.DecreaseHandCard( card );
+			GameObject fieldCardObj = Instantiate( _fieldCard, square.transform.position, Quaternion.identity );	//生成はHnadがやるプレイヤーがやる？
 			
-				CardMain fieldCard = fieldCardObj.GetComponent< CardMain >( );
-				fieldCard._cardDates = card._cardDates;
+			CardMain fieldCard = fieldCardObj.GetComponent< CardMain >( );
+			fieldCard._cardDates = card._cardDates;
 
-				SpriteRenderer fieldCardSprite = fieldCardObj.GetComponent< SpriteRenderer >( );
-				SpriteRenderer sprite = card.gameObject.GetComponent< SpriteRenderer >( );
-				fieldCardSprite.sprite = sprite.sprite;
+			SpriteRenderer fieldCardSprite = fieldCardObj.GetComponent< SpriteRenderer >( );
+			SpriteRenderer sprite = card.gameObject.GetComponent< SpriteRenderer >( );
+			fieldCardSprite.sprite = sprite.sprite;
 
-				_magicPoint.DecreasePoint( card._cardDates.mp );
-				square.On_Card = fieldCard;
-				AddMyFieldCards( fieldCard );
-				return;
-			}
+			_magicPoint.DecreasePoint( card._cardDates.mp );
+			square.On_Card = fieldCard;
+			AddMyFieldCards( fieldCard );
+			return;
 		}
 	}
 	//---------------------------------------------------------------------------------------------------------------------
@@ -252,13 +282,10 @@ public class Participant : MonoBehaviour {
 	}
 	//----------------------------------------------------------
 
-
-	public int getHnadNum( ) { 
-		return _hand.Hnad_Num;	
-	}
-
-	public int getMaxHnadNum( ) { 
-		return _hand.Max_Hnad_Num;	
+	public void CardRefresh( ) { 
+		for ( int i = 0; i < _cardInField.Count; i++ ) {
+			_cardInField[ i ]._cardDates.actionCount = 0;	
+		}	
 	}
 
 
@@ -271,39 +298,13 @@ public class Participant : MonoBehaviour {
 		if ( _cardInField.Count == 0 ) return;
 		
 		for ( int i = 0; i < _cardInField.Count; i++ ) { 
-			if ( _cardInField[ i ] == null ) {
-				_cemetaryPoint.IncreasePoint( 1 );
-				_cardInField.Remove( _cardInField[ i ] );
-				i = 0;
-			}	
+			if ( _cardInField[ i ] != null ) continue;
+			_cemetaryPoint.IncreasePoint( 1 );
+			_cardInField.Remove( _cardInField[ i ] );
+			i = 0;	
 		}
 	}
 
-
-	//マスにカードが存在するかどうか------
-	bool IsOnCard( Square square ) { 
-		if ( square.On_Card != null ) { 
-			return true;	
-		} else { 
-			return false;	
-		}
-	}
-	//------------------------------------
-
-	//マスにカードがあったら自分のじゃないかを調べる関数---
-	bool IsOnCardType( string player, Square square ) {
-		if ( IsOnCard( square ) ) {
-			CardMain onCard = square.On_Card;
-			if ( onCard.gameObject.tag == player ) {
-				return false;
-			} else {
-				return true;	
-			}
-		}
-
-		return true;
-	}
-	//----------------------------------------------------
 	
 
 	void ReferenceCheck( ) { 

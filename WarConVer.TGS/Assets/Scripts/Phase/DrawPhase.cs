@@ -14,14 +14,23 @@ public class DrawPhase : Phase {
 	}
 
 	public override void PhaseUpdate( ) {
-		if ( !_didDraw ) { 
-			_turnPlayer.Draw( _drawCard );
-			_didDraw = true;
-		}
+		if ( _didDraw ) return;
+ 
+		LoseTerms( );
+		_turnPlayer.Draw( _drawCard );
+		_didDraw = true;
+		
 		
 	}
 
 	public override bool IsNextPhaseFlag( ) { 
 		return _didDraw;	
+	}
+
+	void LoseTerms( ) { 
+		//デッキが０のときにカードをドローしたら
+		if ( false ) {
+			//_turnPlayer.Lose_Flag = true;
+		}
 	}
 }

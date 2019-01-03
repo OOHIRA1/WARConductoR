@@ -1,6 +1,6 @@
 ﻿
 //左右移動のアルゴリズムクラス
-public class LeftAndRightSearchSquare : ISearchSquare {
+public class LeftAndRightSearchSquare : I_SearchSquare {
 
 	const int ONE_SQUIRREL = 1;	//左右に進むときの１マスの大きさ
 

@@ -34,11 +34,13 @@ public class NumberUIChange : ImagesDependedOnNumber {
 		//---------------------------------------------------------------------------------------
 	}
 
+
 	void Start( ) {
 		_previousPoint = _point.Point_Num;	
 		
 		ChangeImage( );
 	}
+
 
 	public override void UpdateteImages( ) {
 		if ( _point.Point_Num == _previousPoint ) return;
@@ -47,6 +49,7 @@ public class NumberUIChange : ImagesDependedOnNumber {
 
 		_previousPoint = _point.Point_Num;	
 	}
+
 
 	void ChangeImage( ) { 
 		if ( _point.Point_Num < 0 || _point.Point_Num > 99 ) return;	//正の値と二桁まで対応

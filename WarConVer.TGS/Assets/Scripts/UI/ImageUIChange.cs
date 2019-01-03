@@ -26,11 +26,14 @@ public class ImageUIChange : ImagesDependedOnNumber {
 		if ( 　_spriteRenderers[ _point.Max_Point - 1 ] == null ) Debug.Log( "[エラー]画像が少ない" );
 	}
 
+
 	void Start( ) {
 		_previousDecreaseNum = _point.Max_Point - _point.Point_Num;
 	}
 
+
 	//基底クラスのUpdateを呼ぶ
+
 
 	//残りAPに応じて画像の表示を変化させる
 	public override void UpdateteImages( ) {

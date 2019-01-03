@@ -11,6 +11,12 @@ public class MainSceneManeger : MonoBehaviour {
 		END,
 	}
 
+	//テスト用(プレイヤー１を中心に考えている)
+	enum AHEAD_OR_REAR { 
+		AHEAD,
+		REAR
+	}
+
 	[ SerializeField ] MainSceneOperation _mainSceneOperation = null;
 	[ SerializeField ] Participant _player1 = null;
 	[ SerializeField ] Participant _player2 = null;
@@ -28,28 +34,24 @@ public class MainSceneManeger : MonoBehaviour {
 	[ SerializeField ] GameObject _effectYesBuuton	  = null;
 	[ SerializeField ] GameObject _turnEndButton      = null;
 
-	//詳細系
-	[ SerializeField ] GameObject _cardDetailsImage = null;	//生成する詳細画像のプレハブ
-	[ SerializeField ] GameObject _canvas			= null;	//生成したあとに子にするため
-
 	//テスト用
-	[ SerializeField ] Square	_nowSquare    = null;//テスト用でSerializeField
-	[ SerializeField ] CardMain _card		  = null;
 	[ SerializeField ] CardMain _drawCard	  = null;
-
+	[ SerializeField ] AHEAD_OR_REAR _aheadOrRear = AHEAD_OR_REAR.AHEAD;
 
 	private void Awake( ) {
-		_phase = new StartPhase( _player1 );
+		//先行後攻を判別して入れ替えられる。
+		if ( _aheadOrRear == AHEAD_OR_REAR.AHEAD ) {
+			_turnPlayer = _player1;	
+			_enemyPlayer = _player2;
+		} else { 
+			_turnPlayer = _player2;
+			_enemyPlayer = _player1;
+		}
+
+		_phase = new StartPhase( _turnPlayer );
 	}
 
 	void Start( ) {
-		_nowSquare.On_Card = _card;
-		_card.gameObject.transform.position = _nowSquare.transform.position;
-
-		//ここは先行後攻を判別して入れ替えられるようにする。
-		_turnPlayer = _player1;	
-		_enemyPlayer = _player2;
-
 		ReferenceCheck( );
 	}
 
@@ -59,6 +61,15 @@ public class MainSceneManeger : MonoBehaviour {
 		if ( _player1 == null ) return;
 		if ( _player2 == null ) return;
 
+		if ( _player1.Lose_Flag ) { 
+			Debug.Log( "Player2の勝ちです" );
+			return;
+		}
+
+		if ( _player2.Lose_Flag ) { 
+			Debug.Log( "Player1の勝ちです" );
+			return;
+		}
 
 		if ( _phase.IsNextPhaseFlag( ) ) {
 			_phaseStatus++;
@@ -67,7 +78,8 @@ public class MainSceneManeger : MonoBehaviour {
 				_phaseStatus = PHASE.START;
 				ChangePlayer( );
 			}
-				ChangePhase( );
+
+			ChangePhase( );
 		}
 
 		if ( _phase == null ) return;
@@ -92,8 +104,7 @@ public class MainSceneManeger : MonoBehaviour {
 			case PHASE.MAIN:
 				_phase = new MainPhase( _turnPlayer, _enemyPlayer, _mainSceneOperation,
 										_returnButton, _moveButton, _directAttackButton, _effectButton, _effectYesBuuton, _turnEndButton,
-										_cardDetailsImage, _canvas,
-										_nowSquare, _card, _drawCard );
+										_drawCard );
 				break;
 
 			case PHASE.END:
@@ -124,5 +135,3 @@ public class MainSceneManeger : MonoBehaviour {
 		Assert.IsNotNull( _player2, "[エラー]Participant(Player2)が参照を取れていない" );
 	}
 }
-
-//MainPhaseに送るプレイヤーの参照は一つにしてターンによって送る参照を切り替えるようにしたほうがいいかも？いまそれでやってみてる

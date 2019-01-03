@@ -1,6 +1,6 @@
 ﻿
 //上下移動のアルゴリズムクラス
-public class ForwardAndBackSearchSquare : ISearchSquare {
+public class ForwardAndBackSearchSquare : I_SearchSquare {
 	const int ONE_SQUIRREL = 4;	//前後に進むときの１マスの大きさ
 
 	//それぞれの段の右端のマスのIndex

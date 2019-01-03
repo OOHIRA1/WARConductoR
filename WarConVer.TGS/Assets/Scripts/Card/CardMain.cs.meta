@@ -5,7 +5,11 @@ licenseType: Free
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - _cardSpriteRenderer: {instanceID: 0}
+  - _cardDataLoader: {instanceID: 0}
+  - _cardDetailsImage: {fileID: 1080583943361364, guid: 1ba175758612fc04183cefaae54a0da7,
+      type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

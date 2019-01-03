@@ -15,14 +15,15 @@ public class MainPhase : Phase {
 		CARD_SUMMON,
 	}
 
-	MainSceneOperation _mainSceneOperation = null;
 	
-	MAIN_PHASE_STATUS _mainPhaseStatus = MAIN_PHASE_STATUS.IDLE;
-	Square _nowSquare    = null;
-	RayShooter _rayShooter = new RayShooter( );
-	CardMain _handCard = null;
-	Participant _enemyPlayer = null;
-	Vector3 _handCardPos = Vector3.zero;
+	MainSceneOperation _mainSceneOperation = null;
+	Square _nowSquare					   = null;
+	CardMain _card						   = null;
+	CardMain _handCard					   = null;
+	Participant _enemyPlayer			   = null;
+	RayShooter _rayShooter				   = new RayShooter( );
+	Vector3 _handCardPos				   = Vector3.zero;
+	MAIN_PHASE_STATUS _mainPhaseStatus	   = MAIN_PHASE_STATUS.IDLE;
 
 	//ボタン
 	GameObject _returnButton	   = null;
@@ -32,25 +33,16 @@ public class MainPhase : Phase {
 	GameObject _effectYesBuuton	   = null;
 	GameObject _turnEndButton	   = null;
 
-	//詳細系
-	GameObject _cardDetailsImage   = null;	//生成する詳細画像のプレハブ
-	GameObject _canvas			   = null;	//生成したあとに子にするため
-	GameObject _details			   = null;	//生成した詳細画像を格納するため
-
-
 	//テスト用
-	CardMain _card	   = null;
 	CardMain _drawCard = null;
 
 
 	public MainPhase( Participant turnPlayer, Participant enemyPlayer, MainSceneOperation mainSceneQperation, 
 					  GameObject returnButton, GameObject moveButton, GameObject directAttackButton, GameObject effectButton, GameObject effectYesButton, GameObject turnEndButton, 
-					  GameObject cardDitailsImage, GameObject canvas,
-					  Square nowSquare, CardMain card, CardMain drawCard ) {
+					  CardMain drawCard ) {
 
 		_turnPlayer = turnPlayer;
 		_enemyPlayer = enemyPlayer;
-		_nowSquare = nowSquare;
 		_mainSceneOperation = mainSceneQperation;
 
 		_returnButton = returnButton;
@@ -60,10 +52,6 @@ public class MainPhase : Phase {
 		_effectYesBuuton = effectYesButton;
 		_turnEndButton = turnEndButton;
 
-		_cardDetailsImage = cardDitailsImage;
-		_canvas = canvas;
-
-		_card = card;
 		_drawCard = drawCard;
 
 		Debug.Log( _turnPlayer.gameObject.tag + "メインフェーズ" );
@@ -71,8 +59,8 @@ public class MainPhase : Phase {
 
 
 	public override void PhaseUpdate( ) {
-		TestDraw( );
 
+		LoseTerms( );
 		ActiveTurnEndButton( );
 		switch ( _mainPhaseStatus ) {
 			case MAIN_PHASE_STATUS.IDLE:
@@ -126,12 +114,12 @@ public class MainPhase : Phase {
 
 	//待機状態-----------------------------------------
 	void IdleStatis( ) {
-
 		if ( _mainSceneOperation.MouseTouch( ) ) {
 			FieldCardTouch( );
 			HandCardTouch( );
-		}
 
+			//ここに手札のカードを何かしらの条件で詳細を表示するを書く？
+		}
 	}
 	//--------------------------------------------------
 
@@ -144,7 +132,7 @@ public class MainPhase : Phase {
 		_card = _nowSquare.On_Card;
 		if ( _card == null ) return;
 		
-		ShowCardDetails( );	//カードの詳細画像の表示(生成)
+		ShowCardDetails( );	//カードの詳細画像の表示
 		ShowCardOperationUI( );	//プレイヤーによって表示するUI
 		
 		_mainPhaseStatus = MAIN_PHASE_STATUS.CARD_DETAILS;
@@ -166,20 +154,7 @@ public class MainPhase : Phase {
 
 	//フィールドカードの詳細画像表示----------------------------------------------------------------------------------------------------
 	void ShowCardDetails( ) { 
-		//カードの詳細プレハブの取得
-		_details = Object.Instantiate( _cardDetailsImage, Vector3.zero, Quaternion.identity );
-		Text attackPoint = _details.transform.Find( "Attack_Point_Background/Attack_Point" ).GetComponent< Text >( );
-		Text hitPoint = _details.transform.Find( "Hit_Point_Background/Hit_Point" ).GetComponent< Text >( );
-
-		//画像などの情報読み込み
-		_details.GetComponent< Image >( ).sprite = _card.Card_Sprite_Renderer.sprite;
-		attackPoint.text = _card._cardDates.attack_point.ToString( );
-		hitPoint.text = _card._cardDates.hp.ToString( );
-
-		//位置をずらしている
-		_details.transform.parent = _canvas.transform;
-		RectTransform detailsPos = _details.GetComponent< RectTransform >( );
-		detailsPos.localPosition = new Vector3( -210, 0, 0 );	//あとでこの部分の処理は修正するだろうからマジックナンバーを放置
+		_card.ShowCardDetail( );
 	}
 	//---------------------------------------------------------------------------------------------------------------------------
 
@@ -194,21 +169,27 @@ public class MainPhase : Phase {
 					case CardMain.EFFECT_TYPE.ATTACK:	
 						if ( _turnPlayer.DecreaseActivePointConfirmation( _card._cardDates.effect_ap ) && 
 							 _turnPlayer.AttackEffectPossibleOnCardSquare( _card, _nowSquare ).Count > 0 ) {
+
 							_effectButton.SetActive( true );
+
 						}
 						break;
 
 					case CardMain.EFFECT_TYPE.MOVE:
 						if ( _turnPlayer.DecreaseActivePointConfirmation( _card._cardDates.effect_ap ) && 
 							 _turnPlayer.MovePossibleSquare( _card, _nowSquare ).Count > 0 ) {
+
 							_effectButton.SetActive( true );
+
 						}
 						break;
 
 					case CardMain.EFFECT_TYPE.RECOVERY:
 						if ( _turnPlayer.DecreaseActivePointConfirmation( _card._cardDates.effect_ap ) && 
 							 _card._cardDates.hp < _card._cardDates.max_hp ) {
+
 							_effectButton.SetActive( true );
+
 						}
 						break;
 
@@ -217,30 +198,33 @@ public class MainPhase : Phase {
 						break;
 				}
 
-				//APが消費する分あって移動できるマスがあったら
+				//APが消費する分あって移動できるマスがあったてまだ行動できるカードだったら
 				if ( _turnPlayer.DecreaseActivePointConfirmation( _card._cardDates.move_ap ) &&
-					 _turnPlayer.MovePossibleSquare( _card, _nowSquare ).Count > 0 ) {
+					 _turnPlayer.MovePossibleSquare( _card, _nowSquare ).Count > 0 &&
+					 _card._cardDates.actionCount < 3 ) {
 
 					_moveButton.SetActive( true );
+
 				}
 
-				//消費するAPがあって一番前にいたら攻撃ボタンを表示
-				if ( _turnPlayer.DecreaseActivePointConfirmation( _card._cardDates.move_ap ) ) {	
+				//消費するAPがあってまだ行動できるカードだったら
+				if ( _turnPlayer.DecreaseActivePointConfirmation( _card._cardDates.move_ap ) &&
+					 _card._cardDates.actionCount < 3 ) {
 
-					if ( ( ( _nowSquare.Index - 1 ) / 4 == 0 ) && _card.gameObject.tag == "Player1" ) {		//一列目にいたら//修正するだろうからマジックナンバーを放置
+					if ( ( ( _nowSquare.Index - 1 ) / 4 == 0 ) && _card.gameObject.tag == "Player1" ) {		//一列目にいたら攻撃ボタンを表示//修正するだろうからマジックナンバーを放置
 						_directAttackButton.SetActive( true );
 					}
 
-					if ( ( ( _nowSquare.Index - 1 ) / 4 == 4 ) && _card.gameObject.tag == "Player2" ) {		//五列目にいたら//修正するだろうからマジックナンバーを放置
+					if ( ( ( _nowSquare.Index - 1 ) / 4 == 4 ) && _card.gameObject.tag == "Player2" ) {		//五列目にいたら攻撃ボタンを表示//修正するだろうからマジックナンバーを放置
 						_directAttackButton.SetActive( true );
 					}
 				}
 
-			}
+		}
 
-			if ( _card.gameObject.tag == _enemyPlayer.gameObject.tag ) { 
-				_returnButton.SetActive( true );
-			}
+		if ( _card.gameObject.tag == _enemyPlayer.gameObject.tag ) { 
+			_returnButton.SetActive( true );
+		}
 	}
 	//------------------------------------------------------------------------------------------------------------------
 
@@ -255,8 +239,7 @@ public class MainPhase : Phase {
 			_directAttackButton.SetActive( false );
 			_effectButton.SetActive( false );
 			_mainPhaseStatus = MAIN_PHASE_STATUS.IDLE;
-			Object.Destroy( _details );
-			_details = null;
+			_card.DeleteCardDetail( );
 			_card = null;
 			_nowSquare = null;
 			return;
@@ -268,8 +251,7 @@ public class MainPhase : Phase {
 			_directAttackButton.SetActive( false );
 			_effectButton.SetActive( false );
 			_mainPhaseStatus = MAIN_PHASE_STATUS.CARD_MOVE;
-			Object.Destroy( _details );
-			_details = null;
+			_card.DeleteCardDetail( );
 			return;
 		}
 
@@ -280,8 +262,7 @@ public class MainPhase : Phase {
 			_returnButton.SetActive( false );
 			_effectButton.SetActive( false );
 			_mainPhaseStatus = MAIN_PHASE_STATUS.DIRECT_ATTACK;
-			Object.Destroy( _details );
-			_details = null;
+			_card.DeleteCardDetail( );
 			return;
 		}
 
@@ -312,8 +293,7 @@ public class MainPhase : Phase {
 					break;
 			}
 
-			Object.Destroy( _details );
-			_details = null;
+			_card.DeleteCardDetail( );
 			return;
 		}
 	}
@@ -332,7 +312,7 @@ public class MainPhase : Phase {
 			_returnButton.SetActive( false );
 
 			if ( square != null ) {
-				_turnPlayer.MoveCard( _card, _nowSquare, square );	//移動できるかどうかを判定し移動できたら移動する
+				_turnPlayer.MoveCard( _card, _nowSquare, square , true );	//移動できるかどうかを判定し移動できたら移動する
 			}
 
 			//情報リセット
@@ -398,13 +378,13 @@ public class MainPhase : Phase {
 			}
 
 			for ( int i = 0; i < squares.Count; i++ ) { 
-				if ( square.Index == squares[ i ].Index ) { 
-					_turnPlayer.SquareChangeColor( squares, false );
-					_turnPlayer.Summon( _handCard, square, _turnPlayer.gameObject.tag );
-					_handCard = null;
-					_mainPhaseStatus = MAIN_PHASE_STATUS.IDLE;
-					return;
-				}
+				if ( square.Index != squares[ i ].Index ) continue;
+
+				_turnPlayer.SquareChangeColor( squares, false );
+				_turnPlayer.Summon( _handCard, square, _turnPlayer.gameObject.tag );
+				_handCard = null;
+				_mainPhaseStatus = MAIN_PHASE_STATUS.IDLE;
+				return;
 			}
 
 
@@ -526,16 +506,23 @@ public class MainPhase : Phase {
 	}
 
 
-	void TestDraw( ) { 
-		if ( Input.GetKeyDown( KeyCode.D ) ) { 
-			_turnPlayer.Draw( _drawCard );	
-		}	
+	void LoseTerms( ) { 
+		if ( _enemyPlayer.Lefe_Point <= 0 ) { 
+			_enemyPlayer.Lose_Flag = true;
+		}
+
+		if ( _enemyPlayer.Cemetary_Point >= 10 ) { 
+			_enemyPlayer.Lose_Flag = true;	
+		}
+
+		if ( _turnPlayer.Cemetary_Point >= 10 ) { 
+			_turnPlayer.Lose_Flag = true;	
+		}
 	}
 }
 
 
 //ボタンの参照とって表示を切り替えたりする場所はどこ？
-//詳細画像を生成して画像を入れたり動かしたりする場所はどこ？
 //多分マスを連打しまくると計算やばそう
 
 //MediatorパターンyやObserverパターンなどを使って(多分意味的にはMediatorパターン？)ボタンやマウスが押されたら通知してもらってそのときだけそれに対するupdateをする、
@@ -543,7 +530,5 @@ public class MainPhase : Phase {
 //例えば移動ボタンが押されたときに通知してさらにカード詳細状態だったら処理する。逆にマウスがクリックされたときにカード詳細状態だったら処理しないなど
 
 //今現在、普通によくないプログラム。あっちこっち変更しないといけなくて可読性もよくない。条件分岐もありすぎてごり押し感半端ない
-
-//今のやり方だと自分の今操作状態のプレイヤーを確認する必要がある(文字列でPlayer1とかやってるところをターンで変えらるようにする)
 
 //手札のカードの詳細も見れたほうがいいが判定どうしよう？

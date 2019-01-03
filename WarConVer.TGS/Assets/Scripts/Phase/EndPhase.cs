@@ -11,12 +11,13 @@ public class EndPhase : Phase {
 	public EndPhase( Participant turnPlayer ) {
 		_turnPlayer = turnPlayer;
 
-		if ( _turnPlayer.getHnadNum( ) <= _turnPlayer.getMaxHnadNum( ) ) { 
+		if ( _turnPlayer.Hand_Num <= _turnPlayer.Max_Hnad_Num ) { 
 			_didHandThrowAway = true;
 		}
 
 		Debug.Log( _turnPlayer.gameObject.tag + "エンドフェーズ" );	
 	}
+
 
 	public override void PhaseUpdate( ) {
 		if ( _didHandThrowAway ) return;
@@ -24,8 +25,9 @@ public class EndPhase : Phase {
 		if ( _mainSceneOperation.MouseTouch( ) ) {
 			CardMain card = _rayShooter.RayCastHandCard( _turnPlayer.gameObject.tag );
 			if ( card == null ) return;
+
 			_turnPlayer.HandThrowAway( card );
-			if ( _turnPlayer.getHnadNum( ) == _turnPlayer.getMaxHnadNum( ) ) {
+			if ( _turnPlayer.Hand_Num == _turnPlayer.Max_Hnad_Num ) {
 				_didHandThrowAway = true;
 			}
 		}

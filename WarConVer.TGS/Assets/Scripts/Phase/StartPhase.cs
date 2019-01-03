@@ -14,6 +14,7 @@ public class StartPhase : Phase {
 		if ( _didRefresh ) return;
 
 		_turnPlayer.Refresh( );
+		_turnPlayer.CardRefresh( );
 		_didRefresh = true;
 	}
 

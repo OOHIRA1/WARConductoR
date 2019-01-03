@@ -1,7 +1,7 @@
 ﻿
 //Strategyパターンのインターフェース(Commandパターンかも？)
 //移動アルゴリズムクラスのインターフェース
-interface ISearchSquare { 
+interface I_SearchSquare { 
 
 	int SearchSquare( int nowSquareIndex, Field.DIRECTION direction, int distance );
 

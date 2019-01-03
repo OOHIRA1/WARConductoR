@@ -1,6 +1,6 @@
 ﻿
 //斜め移動のアルゴリズムクラス
-public class DiagonalSearchSquare : ISearchSquare {
+public class DiagonalSearchSquare : I_SearchSquare {
 	LeftAndRightSearchSquare leftAndRightSearch = new LeftAndRightSearchSquare( );
 	ForwardAndBackSearchSquare forwardAndBackSearch = new ForwardAndBackSearchSquare( );
 

@@ -1,24 +1,31 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 //==カード機能クラス
 //
 //==使用方法：カードのGameObjectにアタッチ
 public class CardMain : MonoBehaviour {
+	const int _MAX_ACTION_COUNT = 3;							//移動回数の最大値
+	const float DETAILS_POS_X = -210f;
+
 	[SerializeField] int _loadID = 0;							//読み込むカードID
 	[SerializeField] SpriteRenderer _cardSpriteRenderer = null;	//カードのSpriteRenderer
 	[SerializeField] CardDataLoader _cardDataLoader = null;
 	[SerializeField] CardData _cardData = null;
 	[SerializeField] int _actionCount = 0;						//移動回数
-	const int _MAX_ACTION_COUNT = 3;							//移動回数の最大値
+
+	GameObject _cardDetailsImage = null;
+	GameObject _details = null;
+	GameObject _canvas = null;
 
 	//テスト用----------------------------------------------
 	public enum EFFECT_TYPE { 
 		ATTACK,
 		MOVE,
 		RECOVERY,
-	} 
+	}
 
 	[System.Serializable]
 	public struct CardDates {
@@ -36,6 +43,7 @@ public class CardMain : MonoBehaviour {
 		public int effect_recovery_point;
 		public int mp;
 		public EFFECT_TYPE effect_type;
+		public int actionCount; 
 		
 	}
 	public CardDates _cardDates = new CardDates( );
@@ -51,7 +59,6 @@ public class CardMain : MonoBehaviour {
 
 	public SpriteRenderer Card_Sprite_Renderer { 
 		get { return _cardSpriteRenderer; }
-		private set { _cardSpriteRenderer = value; }
 	} 
 	//===================================================================
 	//===================================================================
@@ -65,6 +72,9 @@ public class CardMain : MonoBehaviour {
 		Debug.Log (_cardData);
 		Debug.Log (_actionCount);
 		_actionCount = _MAX_ACTION_COUNT;
+
+		_cardDetailsImage = Resources.Load< GameObject >( "Prefab/Dummy/CardDetailsImage" );
+		_canvas = GameObject.Find( "Canvas" );
 	}
 
 
@@ -149,6 +159,29 @@ public class CardMain : MonoBehaviour {
 		return player2Directions;
 	}
 	//-----------------------------------------------------------------------------------------------
+
+
+	public void ShowCardDetail( ) {
+		//カードの詳細プレハブの取得
+		_details = Object.Instantiate( _cardDetailsImage, Vector3.zero, Quaternion.identity );
+		Text attackPoint = _details.transform.Find( "Attack_Point_Background/Attack_Point" ).GetComponent< Text >( );
+		Text hitPoint = _details.transform.Find( "Hit_Point_Background/Hit_Point" ).GetComponent< Text >( );
+
+		//画像などの情報読み込み
+		_details.GetComponent< Image >( ).sprite = _cardSpriteRenderer.sprite;
+		attackPoint.text = _cardDates.attack_point.ToString( );
+		hitPoint.text = _cardDates.hp.ToString( );
+
+		//位置をずらしている
+		_details.transform.parent = _canvas.transform;
+		RectTransform detailsPos = _details.GetComponent< RectTransform >( );
+		detailsPos.localPosition = new Vector3( DETAILS_POS_X, 0, 0 );	//あとでこの部分の処理は修正するだろうからマジックナンバーを放置	
+	}
+
+	public void DeleteCardDetail( ) { 
+		Destroy( _details );
+		_details = null;
+	}
 
 	//===========================================================================================================
 	//===========================================================================================================

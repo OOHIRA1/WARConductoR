@@ -43,7 +43,7 @@ public class Field : MonoBehaviour {
 		if ( distance < 0 ) return null;
 
 		int index = 0;
-		ISearchSquare searchSquare = CreateISearchSquare( direction );
+		I_SearchSquare searchSquare = CreateISearchSquare( direction );
 		index = searchSquare.SearchSquare( nowSquare.Index, direction, distance );
 		if ( index == -1 ) {
 			return null;
@@ -64,7 +64,7 @@ public class Field : MonoBehaviour {
 
 
 	//Strategyパターンでマスを調べるアルゴリズムを変更している (Commandパターンかも？)-----
-	ISearchSquare CreateISearchSquare( DIRECTION direction ) { 
+	I_SearchSquare CreateISearchSquare( DIRECTION direction ) { 
 		switch ( direction ) {
 			
 			case DIRECTION.FORWAED:

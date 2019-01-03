@@ -198,7 +198,7 @@ GameObject:
   - component: {fileID: 37914555}
   - component: {fileID: 37914556}
   m_Layer: 0
-  m_Name: Player2AP_Background
+  m_Name: Player2APBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -552,119 +552,6 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
---- !u!1 &158759832
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 158759835}
-  - component: {fileID: 158759834}
-  - component: {fileID: 158759833}
-  m_Layer: 10
-  m_Name: dummy_dead_man (1)
-  m_TagString: Player2
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!114 &158759833
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 158759832}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe523c41294e1d44a9629fd76f6b0ccf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _loadID: 0
-  _cardSpriteRenderer: {fileID: 0}
-  _cardDataLoader: {fileID: 0}
-  _cardData:
-    _id: 0
-    _attack: 0
-    _toughness: 0
-    _directionOfTravel: 0
-    _effect: 0
-    _necessaryMP: 0
-    _necessaryAP: 0
-    _necessaryAPForEffect: 0
-  _actionCount: 0
-  _cardDates:
-    id: 0
-    hp: 3
-    max_hp: 0
-    attack_point: 2
-    directions: 0200000003000000050000000800000007000000060000000400000001000000
-    distance: 1
-    move_ap: 1
-    effect_directions: 
-    effect_ap: 0
-    effect_ditance: 2
-    effect_damage: 100
-    effect_recovery_point: 0
-    mp: 0
-    effect_type: 1
---- !u!212 &158759834
-SpriteRenderer:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 158759832}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
-  m_SelectedEditorRenderState: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: b511a5501fba0254ba773dd163b580a2, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
-  m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 1.4, y: 2.04}
-  m_AdaptiveModeThreshold: 0.5
-  m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
---- !u!4 &158759835
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 158759832}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.87, y: -0.04, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 21
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &159668892 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1929878406225328, guid: 2ccdf2e3197e2e54da99afa3eb97bb18,
@@ -780,119 +667,6 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
---- !u!1 &197566801
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 197566803}
-  - component: {fileID: 197566802}
-  - component: {fileID: 197566805}
-  m_Layer: 10
-  m_Name: dummy_dead_man
-  m_TagString: Player1
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!212 &197566802
-SpriteRenderer:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 197566801}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
-  m_SelectedEditorRenderState: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: b511a5501fba0254ba773dd163b580a2, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
-  m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 1.4, y: 2.04}
-  m_AdaptiveModeThreshold: 0.5
-  m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
---- !u!4 &197566803
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 197566801}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 20
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &197566805
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 197566801}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe523c41294e1d44a9629fd76f6b0ccf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _loadID: 0
-  _cardSpriteRenderer: {fileID: 0}
-  _cardDataLoader: {fileID: 0}
-  _cardData:
-    _id: 0
-    _attack: 0
-    _toughness: 0
-    _directionOfTravel: 0
-    _effect: 0
-    _necessaryMP: 0
-    _necessaryAP: 0
-    _necessaryAPForEffect: 0
-  _actionCount: 0
-  _cardDates:
-    id: 0
-    hp: 3
-    max_hp: 1000
-    attack_point: 10
-    directions: 070000000200000005000000
-    distance: 1
-    move_ap: 1
-    effect_directions: 0100000002000000030000000400000005000000060000000700000008000000
-    effect_ap: 2
-    effect_ditance: 1
-    effect_damage: 100
-    effect_recovery_point: 2
-    mp: 0
-    effect_type: 0
 --- !u!1 &226077762
 GameObject:
   m_ObjectHideFlags: 0
@@ -988,6 +762,7 @@ MonoBehaviour:
     effect_recovery_point: 0
     mp: 0
     effect_type: 0
+    actionCount: 0
 --- !u!212 &226077766
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1068,12 +843,8 @@ MonoBehaviour:
   _effectButton: {fileID: 1865975021}
   _effectYesBuuton: {fileID: 1421355633}
   _turnEndButton: {fileID: 1417735798}
-  _cardDetailsImage: {fileID: 1080583943361364, guid: 1ba175758612fc04183cefaae54a0da7,
-    type: 2}
-  _canvas: {fileID: 987176840}
-  _nowSquare: {fileID: 1707606759}
-  _card: {fileID: 197566805}
   _drawCard: {fileID: 1976715242}
+  _aheadOrRear: 0
 --- !u!4 &237354374
 Transform:
   m_ObjectHideFlags: 0
@@ -1404,18 +1175,18 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 14
+    m_FontSize: 50
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 10
-    m_MaxSize: 40
+    m_MinSize: 5
+    m_MaxSize: 50
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Button
+  m_Text: "\u79FB\u52D5"
 --- !u!222 &452658684
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1849,7 +1620,7 @@ GameObject:
   - component: {fileID: 626025893}
   - component: {fileID: 626025894}
   m_Layer: 0
-  m_Name: Player1AP_Background
+  m_Name: Player1APBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2697,6 +2468,7 @@ MonoBehaviour:
     effect_recovery_point: 0
     mp: 0
     effect_type: 0
+    actionCount: 0
 --- !u!212 &953972416
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2766,7 +2538,7 @@ GameObject:
   - component: {fileID: 962235147}
   - component: {fileID: 962235146}
   m_Layer: 0
-  m_Name: Player1Cemetary_Background
+  m_Name: Player1CemetaryBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3120,6 +2892,7 @@ MonoBehaviour:
     effect_recovery_point: 0
     mp: 0
     effect_type: 0
+    actionCount: 0
 --- !u!212 &1042503411
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3233,18 +3006,18 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 14
+    m_FontSize: 50
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 10
-    m_MaxSize: 40
+    m_MinSize: 0
+    m_MaxSize: 50
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Button
+  m_Text: "\u653B\u6483"
 --- !u!222 &1107730103
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3369,8 +3142,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 553, y: -39}
-  m_SizeDelta: {x: 187.3, y: 155.4}
+  m_AnchoredPosition: {x: 558.95, y: 62.8}
+  m_SizeDelta: {x: 260, y: 243.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1207233795
 MonoBehaviour:
@@ -3552,6 +3325,7 @@ MonoBehaviour:
     effect_recovery_point: 0
     mp: 0
     effect_type: 0
+    actionCount: 0
 --- !u!212 &1217917778
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3832,7 +3606,7 @@ GameObject:
   - component: {fileID: 1256974572}
   - component: {fileID: 1256974571}
   m_Layer: 0
-  m_Name: Player2Cemetary_Background
+  m_Name: Player2CemetaryBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4205,7 +3979,7 @@ GameObject:
   - component: {fileID: 1330729853}
   - component: {fileID: 1330729852}
   m_Layer: 0
-  m_Name: Player2LP_Background
+  m_Name: Player2LPBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4746,6 +4520,7 @@ MonoBehaviour:
     effect_recovery_point: 0
     mp: 0
     effect_type: 0
+    actionCount: 0
 --- !u!212 &1371734744
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4846,18 +4621,18 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 14
+    m_FontSize: 50
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 10
-    m_MaxSize: 40
+    m_MinSize: 0
+    m_MaxSize: 50
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Button
+  m_Text: "\u623B\u308B"
 --- !u!222 &1402245255
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4946,6 +4721,7 @@ MonoBehaviour:
     effect_recovery_point: 0
     mp: 7
     effect_type: 0
+    actionCount: 0
 --- !u!212 &1409626725
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -5037,8 +4813,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -668, y: 862}
-  m_SizeDelta: {x: 160, y: 198.9}
+  m_AnchoredPosition: {x: -589.9, y: 598.8491}
+  m_SizeDelta: {x: 271.2, y: 198.9}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1417735800
 MonoBehaviour:
@@ -5159,8 +4935,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 218, y: -299}
-  m_SizeDelta: {x: 188.1, y: 170.7}
+  m_AnchoredPosition: {x: 195.5, y: -309.5}
+  m_SizeDelta: {x: 233, y: 191.7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1421355635
 MonoBehaviour:
@@ -5365,8 +5141,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 500, y: 300}
-  m_SizeDelta: {x: 160, y: 120}
+  m_AnchoredPosition: {x: 569, y: 431}
+  m_SizeDelta: {x: 239.9, y: 224.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1474539975
 MonoBehaviour:
@@ -5660,18 +5436,18 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 14
+    m_FontSize: 40
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 10
-    m_MaxSize: 40
+    m_MinSize: 4
+    m_MaxSize: 50
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Button
+  m_Text: "\u30BF\u30FC\u30F3\u30A8\u30F3\u30C9"
 --- !u!222 &1544430580
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5888,6 +5664,7 @@ MonoBehaviour:
     effect_recovery_point: 0
     mp: 0
     effect_type: 0
+    actionCount: 0
 --- !u!212 &1623521713
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -5988,18 +5765,18 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 14
+    m_FontSize: 50
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 10
-    m_MaxSize: 40
+    m_MinSize: 5
+    m_MaxSize: 50
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Button
+  m_Text: "\u52B9\u679C"
 --- !u!222 &1665962885
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6452,8 +6229,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 523, y: -495}
-  m_SizeDelta: {x: 188.1, y: 170.7}
+  m_AnchoredPosition: {x: 565.88, y: -323}
+  m_SizeDelta: {x: 273.85, y: 253.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1865975023
 MonoBehaviour:
@@ -6597,6 +6374,7 @@ MonoBehaviour:
     effect_recovery_point: 0
     mp: 3
     effect_type: 0
+    actionCount: 0
 --- !u!212 &1906738636
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -6764,7 +6542,7 @@ GameObject:
   - component: {fileID: 1949290540}
   - component: {fileID: 1949290539}
   m_Layer: 5
-  m_Name: ReturnButton
+  m_Name: BackButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6786,8 +6564,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -570, y: -797}
-  m_SizeDelta: {x: 160, y: 127.6}
+  m_AnchoredPosition: {x: -619, y: -731.7}
+  m_SizeDelta: {x: 258, y: 258.2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1949290539
 MonoBehaviour:
@@ -6916,20 +6694,21 @@ MonoBehaviour:
     _necessaryAPForEffect: 0
   _actionCount: 0
   _cardDates:
-    id: 0
+    id: 10
     hp: 3
     max_hp: 1000
     attack_point: 2
     directions: 070000000200000005000000
     distance: 1
     move_ap: 1
-    effect_directions: 
+    effect_directions: 02000000
     effect_ap: 2
     effect_ditance: 1
     effect_damage: 100
     effect_recovery_point: 2
     mp: 0
-    effect_type: 0
+    effect_type: 1
+    actionCount: 0
 --- !u!212 &1976715243
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -6985,7 +6764,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 22
+  m_RootOrder: 20
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2028458988 stripped
 GameObject:
@@ -7200,18 +6979,18 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 14
+    m_FontSize: 40
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 10
-    m_MaxSize: 40
+    m_MinSize: 4
+    m_MaxSize: 50
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Button
+  m_Text: "\u52B9\u679C\u3092\u4F7F\u3046"
 --- !u!222 &2093040737
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7230,7 +7009,7 @@ GameObject:
   - component: {fileID: 2103627545}
   - component: {fileID: 2103627544}
   m_Layer: 0
-  m_Name: Player1LP_Background
+  m_Name: Player1LPBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
