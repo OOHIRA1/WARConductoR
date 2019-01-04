@@ -18,7 +18,7 @@ public class LeftAndRightSearchSquare : I_SearchSquare {
 	const int FOURTH_ROW_LAST_INDEX = 16;
 	const int FIFTH_ROW_LAST_INDEX  = 20;
 
-
+	const int ERROR = -1;
 
 	public int SearchSquare( int nowSquareIndex, Field.DIRECTION direction, int distance ) {
 		int index = 0;
@@ -27,11 +27,11 @@ public class LeftAndRightSearchSquare : I_SearchSquare {
 				index = nowSquareIndex - ONE_SQUIRREL * distance;
 
 				//今いる段の左端よりIndexが低くなったら-1を返す------------------------------------------------------------------------------------------------------
-				if ( ( nowSquareIndex >= FIRST_ROW_FIRST_INDEX  && nowSquareIndex <= FIRST_ROW_LAST_INDEX  ) && index < FIRST_ROW_FIRST_INDEX  ) return -1;
-				if ( ( nowSquareIndex >= SECOND_ROW_FIRST_INDEX && nowSquareIndex <= SECOND_ROW_LAST_INDEX ) && index < SECOND_ROW_FIRST_INDEX ) return -1;
-				if ( ( nowSquareIndex >= THIRD_ROW_FIRST_INDEX  && nowSquareIndex <= THIRD_ROW_LAST_INDEX  ) && index < THIRD_ROW_FIRST_INDEX  ) return -1;
-				if ( ( nowSquareIndex >= FOURTH_ROW_FIRST_INDEX && nowSquareIndex <= FOURTH_ROW_LAST_INDEX ) && index < FOURTH_ROW_FIRST_INDEX ) return -1;
-				if ( ( nowSquareIndex >= FIFTH_ROW_FIRST_INDEX  && nowSquareIndex <= FIFTH_ROW_LAST_INDEX  ) && index < FIFTH_ROW_FIRST_INDEX  ) return -1;
+				if ( ( nowSquareIndex >= FIRST_ROW_FIRST_INDEX  && nowSquareIndex <= FIRST_ROW_LAST_INDEX  ) && index < FIRST_ROW_FIRST_INDEX  ) return ERROR;
+				if ( ( nowSquareIndex >= SECOND_ROW_FIRST_INDEX && nowSquareIndex <= SECOND_ROW_LAST_INDEX ) && index < SECOND_ROW_FIRST_INDEX ) return ERROR;
+				if ( ( nowSquareIndex >= THIRD_ROW_FIRST_INDEX  && nowSquareIndex <= THIRD_ROW_LAST_INDEX  ) && index < THIRD_ROW_FIRST_INDEX  ) return ERROR;
+				if ( ( nowSquareIndex >= FOURTH_ROW_FIRST_INDEX && nowSquareIndex <= FOURTH_ROW_LAST_INDEX ) && index < FOURTH_ROW_FIRST_INDEX ) return ERROR;
+				if ( ( nowSquareIndex >= FIFTH_ROW_FIRST_INDEX  && nowSquareIndex <= FIFTH_ROW_LAST_INDEX  ) && index < FIFTH_ROW_FIRST_INDEX  ) return ERROR;
 				//---------------------------------------------------------------------------------------------------------------------------------------------------
 
 				return index;
@@ -40,17 +40,17 @@ public class LeftAndRightSearchSquare : I_SearchSquare {
 				index = nowSquareIndex + ONE_SQUIRREL * distance;
 				
 				//今いる段の右端よりIndexが大きくなったら-1を返す------------------------------------------------------------------------------------------------------
-				if ( ( nowSquareIndex >= FIRST_ROW_FIRST_INDEX  && nowSquareIndex <= FIRST_ROW_LAST_INDEX  ) && index > FIRST_ROW_LAST_INDEX  ) return -1;
-				if ( ( nowSquareIndex >= SECOND_ROW_FIRST_INDEX && nowSquareIndex <= SECOND_ROW_LAST_INDEX ) && index > SECOND_ROW_LAST_INDEX ) return -1;
-				if ( ( nowSquareIndex >= THIRD_ROW_FIRST_INDEX  && nowSquareIndex <= THIRD_ROW_LAST_INDEX  ) && index > THIRD_ROW_LAST_INDEX  ) return -1;
-				if ( ( nowSquareIndex >= FOURTH_ROW_FIRST_INDEX && nowSquareIndex <= FOURTH_ROW_LAST_INDEX ) && index > FOURTH_ROW_LAST_INDEX ) return -1;
-				if ( ( nowSquareIndex >= FIFTH_ROW_FIRST_INDEX  && nowSquareIndex <= FIFTH_ROW_LAST_INDEX  ) && index > FIFTH_ROW_LAST_INDEX  ) return -1;
+				if ( ( nowSquareIndex >= FIRST_ROW_FIRST_INDEX  && nowSquareIndex <= FIRST_ROW_LAST_INDEX  ) && index > FIRST_ROW_LAST_INDEX  ) return ERROR;
+				if ( ( nowSquareIndex >= SECOND_ROW_FIRST_INDEX && nowSquareIndex <= SECOND_ROW_LAST_INDEX ) && index > SECOND_ROW_LAST_INDEX ) return ERROR;
+				if ( ( nowSquareIndex >= THIRD_ROW_FIRST_INDEX  && nowSquareIndex <= THIRD_ROW_LAST_INDEX  ) && index > THIRD_ROW_LAST_INDEX  ) return ERROR;
+				if ( ( nowSquareIndex >= FOURTH_ROW_FIRST_INDEX && nowSquareIndex <= FOURTH_ROW_LAST_INDEX ) && index > FOURTH_ROW_LAST_INDEX ) return ERROR;
+				if ( ( nowSquareIndex >= FIFTH_ROW_FIRST_INDEX  && nowSquareIndex <= FIFTH_ROW_LAST_INDEX  ) && index > FIFTH_ROW_LAST_INDEX  ) return ERROR;
 				//---------------------------------------------------------------------------------------------------------------------------------------------------
 
 				return index;
 
 			default:
-				return -1;
+				return ERROR;
 		}
 	}
 }

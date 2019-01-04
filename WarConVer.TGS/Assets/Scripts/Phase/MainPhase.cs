@@ -14,8 +14,13 @@ public class MainPhase : Phase {
 		EEFECT_RECOVERY,
 		CARD_SUMMON,
 	}
-
 	
+	const int MAX_ACTION_COUNT = 3;							//移動回数の最大値
+	const int LOSE_CEMETARY_POINT = 10;
+	const int SQUARE_ROW_NUM = 4;
+	const int FIRST_ROW_INDEX = 0;
+	const int FIFTH_ROW_INDEX = 4;
+
 	MainSceneOperation _mainSceneOperation = null;
 	Square _nowSquare					   = null;
 	CardMain _card						   = null;
@@ -177,7 +182,8 @@ public class MainPhase : Phase {
 
 					case CardMain.EFFECT_TYPE.MOVE:
 						if ( _turnPlayer.DecreaseActivePointConfirmation( _card._cardDates.effect_ap ) && 
-							 _turnPlayer.MovePossibleSquare( _card, _nowSquare ).Count > 0 ) {
+							 _turnPlayer.MovePossibleSquare( _card, _nowSquare ).Count > 0 &&
+							 _card._cardDates.actionCount < MAX_ACTION_COUNT ) {
 
 							_effectButton.SetActive( true );
 
@@ -201,7 +207,7 @@ public class MainPhase : Phase {
 				//APが消費する分あって移動できるマスがあったてまだ行動できるカードだったら
 				if ( _turnPlayer.DecreaseActivePointConfirmation( _card._cardDates.move_ap ) &&
 					 _turnPlayer.MovePossibleSquare( _card, _nowSquare ).Count > 0 &&
-					 _card._cardDates.actionCount < 3 ) {
+					 _card._cardDates.actionCount < MAX_ACTION_COUNT ) {
 
 					_moveButton.SetActive( true );
 
@@ -209,13 +215,13 @@ public class MainPhase : Phase {
 
 				//消費するAPがあってまだ行動できるカードだったら
 				if ( _turnPlayer.DecreaseActivePointConfirmation( _card._cardDates.move_ap ) &&
-					 _card._cardDates.actionCount < 3 ) {
+					 _card._cardDates.actionCount < MAX_ACTION_COUNT ) {
 
-					if ( ( ( _nowSquare.Index - 1 ) / 4 == 0 ) && _card.gameObject.tag == "Player1" ) {		//一列目にいたら攻撃ボタンを表示//修正するだろうからマジックナンバーを放置
+					if ( ( ( _nowSquare.Index - 1 ) / SQUARE_ROW_NUM == FIRST_ROW_INDEX ) && _card.gameObject.tag == "Player1" ) {		//一列目にいたら攻撃ボタンを表示//修正するだろうからマジックナンバーを放置
 						_directAttackButton.SetActive( true );
 					}
 
-					if ( ( ( _nowSquare.Index - 1 ) / 4 == 4 ) && _card.gameObject.tag == "Player2" ) {		//五列目にいたら攻撃ボタンを表示//修正するだろうからマジックナンバーを放置
+					if ( ( ( _nowSquare.Index - 1 ) / SQUARE_ROW_NUM == FIFTH_ROW_INDEX ) && _card.gameObject.tag == "Player2" ) {		//五列目にいたら攻撃ボタンを表示//修正するだろうからマジックナンバーを放置
 						_directAttackButton.SetActive( true );
 					}
 				}
@@ -312,7 +318,7 @@ public class MainPhase : Phase {
 			_returnButton.SetActive( false );
 
 			if ( square != null ) {
-				_turnPlayer.MoveCard( _card, _nowSquare, square , true );	//移動できるかどうかを判定し移動できたら移動する
+				_turnPlayer.MoveCard( _card, _nowSquare, square );	//移動できるかどうかを判定し移動できたら移動する
 			}
 
 			//情報リセット
@@ -511,11 +517,11 @@ public class MainPhase : Phase {
 			_enemyPlayer.Lose_Flag = true;
 		}
 
-		if ( _enemyPlayer.Cemetary_Point >= 10 ) { 
+		if ( _enemyPlayer.Cemetary_Point >= LOSE_CEMETARY_POINT ) { 
 			_enemyPlayer.Lose_Flag = true;	
 		}
 
-		if ( _turnPlayer.Cemetary_Point >= 10 ) { 
+		if ( _turnPlayer.Cemetary_Point >= LOSE_CEMETARY_POINT ) { 
 			_turnPlayer.Lose_Flag = true;	
 		}
 	}

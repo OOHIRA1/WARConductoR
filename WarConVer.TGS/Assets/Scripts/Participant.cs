@@ -11,6 +11,12 @@ public class Participant : MonoBehaviour {
 	[ SerializeField ] Point _cemetaryPoint = null;
 	[ SerializeField ] Field _field			= null;
 
+	const int SQUARE_ROW_NUM = 4;
+	const int FIRST_ROW_INDEX = 0;
+	const int FIFTH_ROW_INDEX = 4;
+	const int ADD_CEMETARY_POINT = 1;
+	const int UP_MAGIC_POINT = 1;
+
 	List< CardMain > _cardInField  = new List< CardMain >( );			//フィールドの自分のカードの参照
 	CardDamageManager _cardDamageManager = new CardDamageManager( );
 	bool _loseFlag = false;
@@ -51,7 +57,7 @@ public class Participant : MonoBehaviour {
 
 
 	//カードを移動させる-----------------------------------------------------------------------------------------------------------------------------
-	public void MoveCard( CardMain card, Square nowSquare, Square moveSquare, bool isAddActionCount = false ) {
+	public void MoveCard( CardMain card, Square nowSquare, Square moveSquare ) {
 		List< Square > squares = new List< Square >( );
 
 		//移動できるマスだけ格納
@@ -88,7 +94,7 @@ public class Participant : MonoBehaviour {
 					return;
 			}
 
-			if ( isAddActionCount ) card._cardDates.actionCount++;
+			card._cardDates.actionCount++;
 			_activePoint.DecreasePoint( card._cardDates.move_ap );
 			return;
 			
@@ -210,7 +216,7 @@ public class Participant : MonoBehaviour {
 			for ( int i = 0; i < _field.Max_Index; i++ ) { 
 				Square square = _field.getSquare( i + 1 );
 
-				if ( ( square.Index - 1 ) / 4 != 4 )  continue;
+				if ( ( square.Index - 1 ) / SQUARE_ROW_NUM != FIFTH_ROW_INDEX )  continue;
 				if ( square.On_Card != null ) continue;
 
 				squares.Add( square );
@@ -221,7 +227,7 @@ public class Participant : MonoBehaviour {
 			for ( int i = 0; i < _field.Max_Index; i++ ) { 
 				Square square = _field.getSquare( i + 1 );
 
-				if ( ( square.Index - 1 ) / 4 != 0 )  continue;
+				if ( ( square.Index - 1 ) / SQUARE_ROW_NUM != FIRST_ROW_INDEX )  continue;
 				if ( square.On_Card != null ) continue;
 
 				squares.Add( square );
@@ -262,7 +268,7 @@ public class Participant : MonoBehaviour {
 	
 	public void HandThrowAway( CardMain card ) { 
 		_hand.DecreaseHandCard( card );
-		_cemetaryPoint.IncreasePoint( 1 );
+		_cemetaryPoint.IncreasePoint( ADD_CEMETARY_POINT );
 	}
 
 
@@ -277,7 +283,7 @@ public class Participant : MonoBehaviour {
 	public void Refresh( ) { 
 		_activePoint.IncreasePoint( _activePoint.Max_Point );
 
-		_magicPoint.IncreaseMaxPoint( 1 );
+		_magicPoint.IncreaseMaxPoint( UP_MAGIC_POINT );
 		_magicPoint.IncreasePoint( _magicPoint.Max_Point );
 	}
 	//----------------------------------------------------------
@@ -299,7 +305,7 @@ public class Participant : MonoBehaviour {
 		
 		for ( int i = 0; i < _cardInField.Count; i++ ) { 
 			if ( _cardInField[ i ] != null ) continue;
-			_cemetaryPoint.IncreasePoint( 1 );
+			_cemetaryPoint.IncreasePoint( ADD_CEMETARY_POINT );
 			_cardInField.Remove( _cardInField[ i ] );
 			i = 0;	
 		}

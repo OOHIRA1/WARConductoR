@@ -8,8 +8,10 @@ public class NumberUIChange : ImagesDependedOnNumber {
 		TENS_PLACE,
 		MAX_PLACE,
 	}
+	
+	const int IMAGE_NUMBER = 10;
 
-	[ SerializeField ] Sprite[ ] _numbers = new Sprite[ 10 ];
+	[ SerializeField ] Sprite[ ] _numbers = new Sprite[ IMAGE_NUMBER ];
 
 	int _previousPoint = 0;	//処理をする前の値を覚えとくための変数
 
