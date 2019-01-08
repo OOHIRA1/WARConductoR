@@ -9,7 +9,7 @@ public class Hand : MonoBehaviour {
 	[ SerializeField ] int _maxHandNum = 0;
 	[ SerializeField ] GameObject _handCardObj = null;	//生成する手札のカードオブジェクト
 	[ SerializeField ] float _sortShiftPos = 0;
-	List< CardMain > _card  = new List< CardMain >( );
+	[ SerializeField ] List< CardMain > _card  = new List< CardMain >( );
 
 	public int Hnad_Num { 
 		get { return _card.Count; }
@@ -65,18 +65,19 @@ public class Hand : MonoBehaviour {
 	public void IncreaseHand( CardMain card ) {
 		//if ( _card.Count == _maxHandNum + 1 ) return;		//今のところ手札が持てる最大枚数より多くなるのは１枚までなので +1 している
 
-		GameObject handCardObj = Instantiate( _handCardObj, transform.position, Quaternion.identity );
+		//GameObject handCardObj = Instantiate( _handCardObj, transform.position, Quaternion.identity );
 
-		CardMain handCard = handCardObj.GetComponent< CardMain >( );
-		handCard._cardDates = card._cardDates;
-		_card.Add( handCard );
+		//CardMain handCard = handCardObj.GetComponent< CardMain >( );
+		//handCard._cardDates = card._cardDates;
+		//_card.Add( handCard );
+		_card.Add( card );
 
-		SpriteRenderer handCardSprite = handCardObj.GetComponent< SpriteRenderer >( );
-		SpriteRenderer sprite = card.GetComponent< SpriteRenderer >( );
-		handCardSprite.sprite = sprite.sprite;
+		//SpriteRenderer handCardSprite = handCardObj.GetComponent< SpriteRenderer >( );
+		//SpriteRenderer sprite = card.GetComponent< SpriteRenderer >( );
+		//handCardSprite.sprite = sprite.sprite;
 
-		handCardObj.transform.parent = this.transform;
-
+		//handCardObj.transform.parent = this.transform;
+		card.transform.parent = this.transform;
 		Sort( );
 	}
 	//------------------------------------------------------------------------------------------------------
