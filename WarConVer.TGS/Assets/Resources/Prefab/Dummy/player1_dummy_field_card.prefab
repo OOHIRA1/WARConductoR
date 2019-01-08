@@ -21,6 +21,8 @@ GameObject:
   - component: {fileID: 4789972937439254}
   - component: {fileID: 212409116590496510}
   - component: {fileID: 114791133932176068}
+  - component: {fileID: 114424116894152446}
+  - component: {fileID: 114694723980514472}
   m_Layer: 10
   m_Name: player1_dummy_field_card
   m_TagString: Player1
@@ -41,6 +43,59 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114424116894152446
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1364945304883472}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 175
+    i1: 105
+    i2: 186
+    i3: 251
+    i4: 107
+    i5: 209
+    i6: 8
+    i7: 244
+    i8: 251
+    i9: 12
+    i10: 185
+    i11: 179
+    i12: 79
+    i13: 71
+    i14: 180
+    i15: 39
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 1
+--- !u!114 &114694723980514472
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1364945304883472}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1768714887, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TransformSyncMode: 1
+  m_SendInterval: 0.1
+  m_SyncRotationAxis: 7
+  m_RotationSyncCompression: 0
+  m_SyncSpin: 0
+  m_MovementTheshold: 0.001
+  m_VelocityThreshold: 0.0001
+  m_SnapThreshold: 5
+  m_InterpolateRotation: 1
+  m_InterpolateMovement: 1
 --- !u!114 &114791133932176068
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -73,13 +128,14 @@ MonoBehaviour:
     directions: 
     distance: 0
     move_ap: 0
-    effect_direction: 
+    effect_directions: 
     effect_ap: 0
     effect_ditance: 0
     effect_damage: 0
     effect_recovery_point: 0
     mp: 0
     effect_type: 0
+    actionCount: 0
 --- !u!212 &212409116590496510
 SpriteRenderer:
   m_ObjectHideFlags: 1

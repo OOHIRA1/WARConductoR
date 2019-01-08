@@ -8,12 +8,16 @@ public class EndPhase : Phase {
 	RayShooter _rayShooter = new RayShooter( );
 	MainSceneOperation _mainSceneOperation = new MainSceneOperation( );
 
-	public EndPhase( Participant turnPlayer ) {
+	Camera _camera = null;
+
+	public EndPhase( Participant turnPlayer, Camera turnPlayerCamera ) {
 		_turnPlayer = turnPlayer;
 
 		if ( _turnPlayer.Hand_Num <= _turnPlayer.Max_Hnad_Num ) { 
 			_didHandThrowAway = true;
 		}
+
+		_camera = turnPlayerCamera;
 
 		Debug.Log( _turnPlayer.gameObject.tag + "エンドフェーズ" );	
 	}
@@ -23,7 +27,7 @@ public class EndPhase : Phase {
 		if ( _didHandThrowAway ) return;
 
 		if ( _mainSceneOperation.MouseTouch( ) ) {
-			CardMain card = _rayShooter.RayCastHandCard( _turnPlayer.gameObject.tag );
+			CardMain card = _rayShooter.RayCastHandCard( _turnPlayer.gameObject.tag, _camera );
 			if ( card == null ) return;
 
 			_turnPlayer.HandThrowAway( card );

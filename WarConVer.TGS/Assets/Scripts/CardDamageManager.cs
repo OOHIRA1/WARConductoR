@@ -8,14 +8,14 @@ public class CardDamageManager {
 		NOT_BATTLE,
 		BOTH_DEATH,
 		PLAYER_WIN,
-		PLAYER_DEFEAT,
+		PLAYER_LOSE,
 		BOTH_ALIVE,
 	}
 
 	//攻撃効果のダメージによる処理----------------------------------------
 	public void CardEffectDamage( Square onCardSquare, int damage ) {
 		if ( onCardSquare == null ) {
-			Debug.Log( "[エラー]与えられたマスにカードがありません" );
+			Debug.Log( "[エラー]マスがありません" );
 			return;
 		}
 
@@ -33,7 +33,7 @@ public class CardDamageManager {
 	//戦闘のダメージ処理によって戦闘の結果を返す------------------------------------------------------
 	public BATTLE_RESULT CardBattleDamage( Square onPlayerCardSquare, Square onEnemyCardSquare ) {
 		if ( onPlayerCardSquare == null || onEnemyCardSquare == null ) { 
-			Debug.Log( "[エラー]与えられたマスにカードがありません" );
+			Debug.Log( "[エラー]マスがありません" );
 			return BATTLE_RESULT.NOT_BATTLE;
 		}
 
@@ -56,7 +56,7 @@ public class CardDamageManager {
 
 		if ( playerCard._cardDates.hp == 0 ) {	
 			onEnemyCardSquare.On_Card = null;
-			return BATTLE_RESULT.PLAYER_DEFEAT;
+			return BATTLE_RESULT.PLAYER_LOSE;
 		}
 
 		if ( playerCard._cardDates.hp > 0 && enemy_card._cardDates.hp > 0 ) {

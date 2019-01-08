@@ -37,6 +37,13 @@ public class MainSceneOperation : MonoBehaviour {
 		return worldPos;
 	}
 
+	public Vector3 getWorldMousePos( Camera turnPlayerCamera ) { 
+		Vector3 mousePos = Input.mousePosition;
+		Vector3 worldPos = turnPlayerCamera.ScreenToWorldPoint( mousePos );		//マウスのScreen座標をWorld座標に変換
+		worldPos.z = 0;
+		return worldPos;
+	}
+
 
 	//戻るボタン判定--------------------------------
 	//戻るボタンが押されたかどうかの判定

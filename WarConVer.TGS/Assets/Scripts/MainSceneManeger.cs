@@ -12,9 +12,9 @@ public class MainSceneManeger : MonoBehaviour {
 	}
 
 	//テスト用(プレイヤー１を中心に考えている)
-	enum AHEAD_OR_REAR { 
-		AHEAD,
-		REAR
+	enum ATTACK_FIRST_OR_SECOND { 
+		FIRST,
+		SECOND
 	}
 
 	[ SerializeField ] MainSceneOperation _mainSceneOperation = null;
@@ -36,16 +36,21 @@ public class MainSceneManeger : MonoBehaviour {
 
 	//テスト用
 	[ SerializeField ] CardMain _drawCard	  = null;
-	[ SerializeField ] AHEAD_OR_REAR _aheadOrRear = AHEAD_OR_REAR.AHEAD;
+	[ SerializeField ] ATTACK_FIRST_OR_SECOND _order = ATTACK_FIRST_OR_SECOND.FIRST;
+	[ SerializeField ] Camera _player1Camera = null;
+	[ SerializeField ] Camera _player2Camera = null;
+	Camera _camera = null;
 
 	private void Awake( ) {
 		//先行後攻を判別して入れ替えられる。
-		if ( _aheadOrRear == AHEAD_OR_REAR.AHEAD ) {
+		if ( _order == ATTACK_FIRST_OR_SECOND.FIRST ) {
 			_turnPlayer = _player1;	
 			_enemyPlayer = _player2;
+			_camera = _player1Camera;
 		} else { 
 			_turnPlayer = _player2;
 			_enemyPlayer = _player1;
+			_camera = _player2Camera;
 		}
 
 		_phase = new StartPhase( _turnPlayer );
@@ -104,11 +109,11 @@ public class MainSceneManeger : MonoBehaviour {
 			case PHASE.MAIN:
 				_phase = new MainPhase( _turnPlayer, _enemyPlayer, _mainSceneOperation,
 										_returnButton, _moveButton, _directAttackButton, _effectButton, _effectYesBuuton, _turnEndButton,
-										_drawCard );
+										_drawCard, _camera );
 				break;
 
 			case PHASE.END:
-				_phase = new EndPhase( _turnPlayer );
+				_phase = new EndPhase( _turnPlayer, _camera );
 				break;
 
 			default:
@@ -123,9 +128,11 @@ public class MainSceneManeger : MonoBehaviour {
 		if ( _turnPlayer == _player1 ) { 
 			_turnPlayer = _player2;
 			_enemyPlayer = _player1;
+			_camera = _player2Camera;
 		} else { 
 			_turnPlayer = _player1;
 			_enemyPlayer = _player2;
+			_camera = _player1Camera;
 		}
 	}
 

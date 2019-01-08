@@ -1,17 +1,15 @@
 ﻿using UnityEngine;
 
 public class Point : MonoBehaviour {
-	const int MAX_MAGIC_POINT = 12;
-
 	[ SerializeField ] int _maxPoint = 0;	//最大値
-	[ SerializeField ] int _point = 0;
+	[ SerializeField ] int _pointNum = 0;
 
 	public int Max_Point {
 		get { return _maxPoint; }
 	}
 
 	public int Point_Num { 
-		get { return _point; }
+		get { return _pointNum; }
 	}
 
 	//ポイントを減らす------------------------
@@ -21,17 +19,17 @@ public class Point : MonoBehaviour {
 			return;	
 		}
 		
-		_point -= point;	
+		_pointNum -= point;	
 	}
 	//----------------------------------------
 
 	
 	//ポイントを増やす---------------------
 	public void IncreasePoint( int point ) {
-		_point += point;	
+		_pointNum += point;	
 
-		if ( _point > _maxPoint ) { 
-			_point = _maxPoint;
+		if ( _pointNum > _maxPoint ) { 
+			_pointNum = _maxPoint;
 		}
 	}
 	//-------------------------------------
@@ -50,12 +48,6 @@ public class Point : MonoBehaviour {
 	//最大値を増やす--------------------------------
 	public void IncreaseMaxPoint( int point ) { 
 		_maxPoint += point;
-		if ( _maxPoint > MAX_MAGIC_POINT ) { 
-			_maxPoint = MAX_MAGIC_POINT;
-		}
 	}
 	//----------------------------------------------
 }
-
-//MPだけどうしても特別処理が必要。なんかいい方法ある？派生クラスつくる？
-//そうすればその種類でのPointしか使わない機能をまとめらるので奇麗かも？

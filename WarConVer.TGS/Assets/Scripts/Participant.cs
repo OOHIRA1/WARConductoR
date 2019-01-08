@@ -4,8 +4,9 @@ using UnityEngine;
 using UnityEngine.Assertions;
 
 public class Participant : MonoBehaviour {
+	const int MAX_MAGIC_POINT = 12;
+
 	[ SerializeField ] Hand  _hand			= null;
-	[ SerializeField ] Deck  _deck			= null;
 	[ SerializeField ] Point _activePoint	= null;
 	[ SerializeField ] Point _magicPoint    = null;
 	[ SerializeField ] Point _lifePoint	    = null;
@@ -70,7 +71,7 @@ public class Participant : MonoBehaviour {
 			if ( squares[ i ].Index != moveSquare.Index ) continue;
 
 			if ( squares[ i ].On_Card != null ) {
-				if ( squares[ i ].On_Card.gameObject.tag != card.gameObject.tag ) {	//相手カードだったときの判定はどうやってやろう？
+				if ( squares[ i ].On_Card.gameObject.tag != card.gameObject.tag ) {		//移動したマスに自分のじゃないカードがあったら
 					result = _cardDamageManager.CardBattleDamage( nowSquare, squares[ i ] );
 					Debug.Log( result );
 				}
@@ -79,7 +80,7 @@ public class Participant : MonoBehaviour {
 			//戦闘の結果によって移動処理を変える
 			switch( result ) { 
 				case CardDamageManager.BATTLE_RESULT.BOTH_DEATH:
-				case CardDamageManager.BATTLE_RESULT.PLAYER_DEFEAT:
+				case CardDamageManager.BATTLE_RESULT.PLAYER_LOSE:
 				case CardDamageManager.BATTLE_RESULT.BOTH_ALIVE:
 					break;
 
@@ -177,7 +178,7 @@ public class Participant : MonoBehaviour {
 
 			if ( square == null ) continue;
 			if ( square.On_Card != null ) {
-				if ( square.On_Card.gameObject.tag == card.gameObject.tag ) continue;
+				if ( square.On_Card.gameObject.tag == card.gameObject.tag ) continue;	//マスにあるのが自分のカードだったらcontinue
 			}
 
 			squares.Add( square );
@@ -266,18 +267,17 @@ public class Participant : MonoBehaviour {
 	}
 	//---------------------------------------------------------------------------------------------------------------------
 
-	
+
+	//手札を捨てる-----------------------------------------
 	public void HandThrowAway( CardMain card ) { 
 		_hand.DecreaseHandCard( card );
 		_cemetaryPoint.IncreasePoint( ADD_CEMETARY_POINT );
 	}
+	//-----------------------------------------------------
 
 
 	//ドロー処理---------------------------
-	public void Draw( /*CardMain card*/ ) {
-		CardMain card = _deck.Draw ( );
-		card.gameObject.tag = this.gameObject.tag;	//自身のカードであることを示すタグを付ける
-		card.gameObject.layer = LayerMask.NameToLayer( "HandCard" );	//手札レイヤー層に設定する
+	public void Draw( CardMain card ) { 
 		_hand.IncreaseHand( card );
 	}
 	//-------------------------------------
@@ -287,7 +287,10 @@ public class Participant : MonoBehaviour {
 	public void Refresh( ) { 
 		_activePoint.IncreasePoint( _activePoint.Max_Point );
 
-		_magicPoint.IncreaseMaxPoint( UP_MAGIC_POINT );
+		if ( _magicPoint.Max_Point < MAX_MAGIC_POINT ) {
+			_magicPoint.IncreaseMaxPoint( UP_MAGIC_POINT );
+		}
+
 		_magicPoint.IncreasePoint( _magicPoint.Max_Point );
 	}
 	//----------------------------------------------------------

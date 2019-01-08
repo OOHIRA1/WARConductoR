@@ -9,7 +9,12 @@ public class Hand : MonoBehaviour {
 	[ SerializeField ] int _maxHandNum = 0;
 	[ SerializeField ] GameObject _handCardObj = null;	//生成する手札のカードオブジェクト
 	[ SerializeField ] float _sortShiftPos = 0;
-	[ SerializeField ] List< CardMain > _card  = new List< CardMain >( );
+	List< CardMain > _card  = new List< CardMain >( );
+
+	//ネットワーク用 (テスト)
+	[ SerializeField ] GameObject _uraCard = null;
+	[ SerializeField ] GameObject[ ] _a = new GameObject[ 1 ];
+	List< GameObject > _uraCards  = new List< GameObject >( );
 
 	public int Hnad_Num { 
 		get { return _card.Count; }
@@ -26,6 +31,11 @@ public class Hand : MonoBehaviour {
 		foreach( Transform card in handCards ) { 
 			_card.Add( card.gameObject.GetComponent< CardMain >( ) );	
 		}
+
+
+		for ( int i = 0; i < _a.Length; i++ ) { 
+			_uraCards.Add( _a[ i ] );
+		}
 	}
 
 	void Start( ) {
@@ -38,6 +48,11 @@ public class Hand : MonoBehaviour {
 		for ( int i = 0; i < _card.Count; i++ ) {
 			_card[ i ].gameObject.transform.position = cardPos;
 			cardPos.x += _sortShiftPos;
+		}
+
+		//ネットワークテスト用
+		for ( int i = 0; i < _uraCards.Count; i++ ) { 
+			_uraCards[ i ].transform.position = _card[ i ].gameObject.transform.position;	
 		}
 		
 	}
@@ -52,6 +67,10 @@ public class Hand : MonoBehaviour {
 			Destroy( _card[ i ].gameObject );
 			_card.Remove( _card[ i ] );
 
+			//ネットワークテスト用
+			Destroy( _uraCards[ i ] );
+			_uraCards.Remove( _uraCards[ i ] );
+
 			Sort( );
 			return;
 		}
@@ -65,19 +84,22 @@ public class Hand : MonoBehaviour {
 	public void IncreaseHand( CardMain card ) {
 		//if ( _card.Count == _maxHandNum + 1 ) return;		//今のところ手札が持てる最大枚数より多くなるのは１枚までなので +1 している
 
-		//GameObject handCardObj = Instantiate( _handCardObj, transform.position, Quaternion.identity );
+		GameObject handCardObj = Instantiate( _handCardObj, transform.position, Quaternion.identity );
 
-		//CardMain handCard = handCardObj.GetComponent< CardMain >( );
-		//handCard._cardDates = card._cardDates;
-		//_card.Add( handCard );
-		_card.Add( card );
+		CardMain handCard = handCardObj.GetComponent< CardMain >( );
+		handCard._cardDates = card._cardDates;
+		_card.Add( handCard );
 
-		//SpriteRenderer handCardSprite = handCardObj.GetComponent< SpriteRenderer >( );
-		//SpriteRenderer sprite = card.GetComponent< SpriteRenderer >( );
-		//handCardSprite.sprite = sprite.sprite;
+		SpriteRenderer handCardSprite = handCardObj.GetComponent< SpriteRenderer >( );
+		SpriteRenderer sprite = card.GetComponent< SpriteRenderer >( );
+		handCardSprite.sprite = sprite.sprite;
 
-		//handCardObj.transform.parent = this.transform;
-		card.transform.parent = this.transform;
+		handCardObj.transform.parent = this.transform;
+
+		//ネットワークテスト用
+		GameObject uraCardObj = Instantiate( _uraCard, transform.position, Quaternion.identity );
+		_uraCards.Add( uraCardObj );
+
 		Sort( );
 	}
 	//------------------------------------------------------------------------------------------------------
