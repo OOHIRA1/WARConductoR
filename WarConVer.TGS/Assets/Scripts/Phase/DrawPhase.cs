@@ -17,7 +17,7 @@ public class DrawPhase : Phase {
 		if ( _didDraw ) return;
  
 		LoseTerms( );
-		_turnPlayer.Draw( _drawCard );
+		_turnPlayer.Draw( /*_drawCard*/ );
 		_didDraw = true;
 		
 		

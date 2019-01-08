@@ -7,6 +7,7 @@ public class Participant : MonoBehaviour {
 	const int MAX_MAGIC_POINT = 12;
 
 	[ SerializeField ] Hand  _hand			= null;
+	[ SerializeField ] Deck  _deck			= null;
 	[ SerializeField ] Point _activePoint	= null;
 	[ SerializeField ] Point _magicPoint    = null;
 	[ SerializeField ] Point _lifePoint	    = null;
@@ -277,7 +278,10 @@ public class Participant : MonoBehaviour {
 
 
 	//ドロー処理---------------------------
-	public void Draw( CardMain card ) { 
+	public void Draw( /*CardMain card*/ ) {
+		CardMain card = _deck.Draw ( );
+		card.gameObject.tag = this.gameObject.tag;	//自身のカードであることを示すタグを付ける
+		card.gameObject.layer = LayerMask.NameToLayer( "HandCard" );	//手札レイヤー層に設定する
 		_hand.IncreaseHand( card );
 	}
 	//-------------------------------------
