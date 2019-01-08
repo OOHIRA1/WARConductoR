@@ -14,7 +14,9 @@ public class Field : MonoBehaviour {
 		RIGHT_BACK
 	}
 
-	Square[ ] _squares = new Square[ 20 ];		//マス
+	const int MAX_SQUARE = 20;
+
+	Square[ ] _squares = new Square[ MAX_SQUARE ];		//マス
 	int _maxIndex = 0; 
 
 	public int Max_Index {

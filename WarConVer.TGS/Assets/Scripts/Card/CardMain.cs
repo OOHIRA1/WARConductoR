@@ -59,7 +59,8 @@ public class CardMain : MonoBehaviour {
 
 	public SpriteRenderer Card_Sprite_Renderer { 
 		get { return _cardSpriteRenderer; }
-	} 
+	}
+
 	//===================================================================
 	//===================================================================
 
