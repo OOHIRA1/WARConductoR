@@ -280,9 +280,11 @@ public class Participant : MonoBehaviour {
 	//ドロー処理---------------------------
 	public void Draw( /*CardMain card*/ ) {
 		CardMain card = _deck.Draw ( );
-		card.gameObject.tag = this.gameObject.tag;	//自身のカードであることを示すタグを付ける
-		card.gameObject.layer = LayerMask.NameToLayer( "HandCard" );	//手札レイヤー層に設定する
-		_hand.IncreaseHand( card );
+		if ( card ) {
+			card.gameObject.tag = this.gameObject.tag;	//自身のカードであることを示すタグを付ける
+			card.gameObject.layer = LayerMask.NameToLayer( "HandCard" );	//手札レイヤー層に設定する
+			_hand.IncreaseHand( card );
+		}
 	}
 	//-------------------------------------
 

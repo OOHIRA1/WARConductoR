@@ -5,6 +5,7 @@ using UnityEngine.Assertions;
 
 public class MainSceneManeger : MonoBehaviour {
 	enum PHASE { 
+		PREPARE,
 		START,
 		DRAW,
 		MAIN,
@@ -22,7 +23,7 @@ public class MainSceneManeger : MonoBehaviour {
 	[ SerializeField ] Participant _player2 = null;
 	
 	Phase _phase = null;
-	PHASE _phaseStatus = PHASE.START;
+	PHASE _phaseStatus = PHASE.PREPARE;
 	Participant _turnPlayer = null;		//そのターンのプレイヤー
 	Participant _enemyPlayer = null;	//そのターンのプレイヤーではないほう
 
@@ -53,7 +54,8 @@ public class MainSceneManeger : MonoBehaviour {
 			_camera = _player2Camera;
 		}
 
-		_phase = new StartPhase( _turnPlayer );
+		//_phase = new StartPhase( _turnPlayer );
+		_phase = new PreparePhase( _turnPlayer, _enemyPlayer );
 	}
 
 	void Start( ) {
@@ -98,6 +100,10 @@ public class MainSceneManeger : MonoBehaviour {
 		if ( _phase != null ) _phase = null;	
 		
 		switch ( _phaseStatus ) { 
+			case PHASE.PREPARE:
+				_phase = new PreparePhase ( _turnPlayer, _enemyPlayer );
+				break;
+
 			case PHASE.START:
 				_phase = new StartPhase( _turnPlayer );
 				break;

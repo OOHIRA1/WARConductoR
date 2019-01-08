@@ -14,7 +14,7 @@ public class Hand : MonoBehaviour {
 	//ネットワーク用 (テスト)
 	[ SerializeField ] GameObject _uraCard = null;
 	[ SerializeField ] GameObject[ ] _a = new GameObject[ 1 ];
-	List< GameObject > _uraCards  = new List< GameObject >( );
+	[ SerializeField ] List< GameObject > _uraCards  = new List< GameObject >( );
 
 	public int Hnad_Num { 
 		get { return _card.Count; }
@@ -27,8 +27,8 @@ public class Hand : MonoBehaviour {
 
 	void Awake( ) {
 		//とりあえず今は最初から設定されている手札を取得する(あとでこの処理はいらなくなるかも)
-		var handCards = gameObject.GetComponentInChildren< Transform >( ); 
-		foreach( Transform card in handCards ) { 
+		//var handCards = gameObject.GetComponentInChildren< Transform >( ); 
+		/*foreach( Transform card in handCards ) { 
 			_card.Add( card.gameObject.GetComponent< CardMain >( ) );	
 		}
 
@@ -36,6 +36,7 @@ public class Hand : MonoBehaviour {
 		for ( int i = 0; i < _a.Length; i++ ) { 
 			_uraCards.Add( _a[ i ] );
 		}
+		*/
 	}
 
 	void Start( ) {
