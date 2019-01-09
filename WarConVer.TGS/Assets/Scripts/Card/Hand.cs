@@ -61,7 +61,7 @@ public class Hand : MonoBehaviour {
 	//手札を消費する-------------------------------------------------------------
 	public void DecreaseHandCard( CardMain card ) {	//今のやりかたでは別にCardを返す理由が思いつかなかったのでvoidに変更
 		for ( int i = 0; i < _card.Count; i++ ) { 
-			if ( _card[ i ]._cardDates.id != card._cardDates.id ) continue;
+			if ( _card[ i ] != card ) continue;
 
 			Destroy( _card[ i ].gameObject );
 			_card.Remove( _card[ i ] );
