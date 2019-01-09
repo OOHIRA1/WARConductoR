@@ -38,20 +38,15 @@ public class MainSceneManeger : MonoBehaviour {
 	//テスト用
 	[ SerializeField ] CardMain _drawCard	  = null;
 	[ SerializeField ] ATTACK_FIRST_OR_SECOND _order = ATTACK_FIRST_OR_SECOND.FIRST;
-	[ SerializeField ] Camera _player1Camera = null;
-	[ SerializeField ] Camera _player2Camera = null;
-	Camera _camera = null;
 
 	private void Awake( ) {
 		//先行後攻を判別して入れ替えられる。
 		if ( _order == ATTACK_FIRST_OR_SECOND.FIRST ) {
 			_turnPlayer = _player1;	
 			_enemyPlayer = _player2;
-			_camera = _player1Camera;
 		} else { 
 			_turnPlayer = _player2;
 			_enemyPlayer = _player1;
-			_camera = _player2Camera;
 		}
 
 		//_phase = new StartPhase( _turnPlayer );
@@ -115,11 +110,11 @@ public class MainSceneManeger : MonoBehaviour {
 			case PHASE.MAIN:
 				_phase = new MainPhase( _turnPlayer, _enemyPlayer, _mainSceneOperation,
 										_returnButton, _moveButton, _directAttackButton, _effectButton, _effectYesBuuton, _turnEndButton,
-										_drawCard, _camera );
+										_drawCard );
 				break;
 
 			case PHASE.END:
-				_phase = new EndPhase( _turnPlayer, _camera );
+				_phase = new EndPhase( _turnPlayer );
 				break;
 
 			default:
@@ -134,11 +129,9 @@ public class MainSceneManeger : MonoBehaviour {
 		if ( _turnPlayer == _player1 ) { 
 			_turnPlayer = _player2;
 			_enemyPlayer = _player1;
-			_camera = _player2Camera;
 		} else { 
 			_turnPlayer = _player1;
 			_enemyPlayer = _player2;
-			_camera = _player1Camera;
 		}
 	}
 

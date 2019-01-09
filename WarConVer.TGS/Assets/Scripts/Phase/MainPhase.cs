@@ -40,11 +40,10 @@ public class MainPhase : Phase {
 
 	//テスト用
 	CardMain _drawCard = null;
-	Camera _camera = null;
 
 	public MainPhase( Participant turnPlayer, Participant enemyPlayer, MainSceneOperation mainSceneQperation, 
 					  GameObject returnButton, GameObject moveButton, GameObject directAttackButton, GameObject effectButton, GameObject effectYesButton, GameObject turnEndButton, 
-					  CardMain drawCard, Camera camera ) {
+					  CardMain drawCard ) {
 
 		_turnPlayer = turnPlayer;
 		_enemyPlayer = enemyPlayer;
@@ -58,7 +57,6 @@ public class MainPhase : Phase {
 		_turnEndButton = turnEndButton;
 
 		_drawCard = drawCard;
-		_camera = camera;
 
 		Debug.Log( _turnPlayer.gameObject.tag + "メインフェーズ" );
 	}
@@ -133,7 +131,7 @@ public class MainPhase : Phase {
 	//フィールドのカードがタッチされたら処理------------------------
 	void FieldCardTouch( ) { 
 		//カードとそのマスの取得
-		_nowSquare = _rayShooter.RayCastSquare( _camera );
+		_nowSquare = _rayShooter.RayCastSquare( );
 		if ( _nowSquare == null ) return;
 		_card = _nowSquare.On_Card;
 		if ( _card == null ) return;
@@ -148,7 +146,7 @@ public class MainPhase : Phase {
 
 	//手札のカードがタッチされたら処理-------------------------------------------
 	void HandCardTouch( ) { 
-		_handCard = _rayShooter.RayCastHandCard( _turnPlayer.gameObject.tag, _camera );
+		_handCard = _rayShooter.RayCastHandCard( _turnPlayer.gameObject.tag );
 		if ( _handCard == null ) return;
 
 		_handCardPos = _handCard.transform.position;
@@ -237,7 +235,7 @@ public class MainPhase : Phase {
 
 	
 	//ボタン操作処理------------------------------------------------------------
-	void CardDetailsStatus( ) { 
+	void CardDetailsStatus( ) {
 
 		//戻るボタンを押したら
 		if ( _mainSceneOperation.BackButtonClicked( ) ) { 
@@ -314,7 +312,7 @@ public class MainPhase : Phase {
 		_turnPlayer.SquareChangeColor( squares, true );		//移動できるマスの色を変える
 
 		if ( _mainSceneOperation.MouseTouch( ) ) {
-			Square square = _rayShooter.RayCastSquare( _camera );	//マウスをクリックしたらレイを飛ばしてマスを取得する
+			Square square = _rayShooter.RayCastSquare( );	//マウスをクリックしたらレイを飛ばしてマスを取得する
 			_turnPlayer.SquareChangeColor( squares, false );	//色をもとに戻す
 			_returnButton.SetActive( false );
 
@@ -359,7 +357,7 @@ public class MainPhase : Phase {
 	
 	//召喚状態処理----------------------------------------------------------------------
 	void SummonStatus( ) {
-		_handCard.transform.position = _mainSceneOperation.getWorldMousePos( _camera );
+		_handCard.transform.position = _mainSceneOperation.getWorldMousePos( );
 		List< Square > squares = _turnPlayer.SummonSquare( _turnPlayer.gameObject.tag );
 
 		if ( _turnPlayer.DecreaseMPointConfirmation( _handCard._cardDates.mp ) ) { 
@@ -374,7 +372,7 @@ public class MainPhase : Phase {
 				return;
 			}
 
-			Square square = _rayShooter.RayCastSquare( _camera );
+			Square square = _rayShooter.RayCastSquare( );
 
 			if ( square == null ) {
 				_turnPlayer.SquareChangeColor( squares, false );
@@ -446,7 +444,7 @@ public class MainPhase : Phase {
 		_turnPlayer.SquareChangeColor( squares, true );
 
 		if ( _mainSceneOperation.MouseTouch( ) ) {
-			Square square = _rayShooter.RayCastSquare( _camera );		//マウスをクリックしたらレイを飛ばしてマスを取得する
+			Square square = _rayShooter.RayCastSquare( );		//マウスをクリックしたらレイを飛ばしてマスを取得する
 			_turnPlayer.SquareChangeColor( squares, false );	//色をもとに戻す
 			_returnButton.SetActive( false );
 

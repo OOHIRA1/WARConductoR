@@ -7,14 +7,13 @@ public class Hand : MonoBehaviour {
 	//const int MAX_HAND_NUM = 7;
 
 	[ SerializeField ] int _maxHandNum = 0;
-	[ SerializeField ] GameObject _handCardObj = null;	//生成する手札のカードオブジェクト
+	//[ SerializeField ] GameObject _handCardObj = null;	//生成する手札のカードオブジェクト
 	[ SerializeField ] float _sortShiftPos = 0;
 	[ SerializeField ] List< CardMain > _card  = new List< CardMain >( );
 
 	//ネットワーク用 (テスト)
-	[ SerializeField ] GameObject _uraCard = null;
-	[ SerializeField ] GameObject[ ] _a = new GameObject[ 1 ];
-	[ SerializeField ] List< GameObject > _uraCards  = new List< GameObject >( );
+	//[ SerializeField ] GameObject _uraCard = null;
+	//[ SerializeField ] List< GameObject > _uraCards  = new List< GameObject >( );
 
 	public int Hnad_Num { 
 		get { return _card.Count; }
@@ -51,10 +50,9 @@ public class Hand : MonoBehaviour {
 			cardPos.x += _sortShiftPos;
 		}
 
-		//ネットワークテスト用
-		for ( int i = 0; i < _uraCards.Count; i++ ) { 
-			_uraCards[ i ].transform.position = _card[ i ].gameObject.transform.position;	
-		}
+		//for ( int i = 0; i < _uraCards.Count; i++ ) { 
+		//	_uraCards[ i ].transform.position = _card[ i ].gameObject.transform.position;	
+		//}
 		
 	}
 	//-----------------------------------------------------------------
@@ -68,9 +66,8 @@ public class Hand : MonoBehaviour {
 			Destroy( _card[ i ].gameObject );
 			_card.Remove( _card[ i ] );
 
-			//ネットワークテスト用
-			Destroy( _uraCards[ i ] );
-			_uraCards.Remove( _uraCards[ i ] );
+			//Destroy( _uraCards[ i ] );
+			//_uraCards.Remove( _uraCards[ i ] );
 
 			Sort( );
 			return;
@@ -99,9 +96,8 @@ public class Hand : MonoBehaviour {
 		//handCardObj.transform.parent = this.transform;
 		card.transform.parent = this.transform;
 
-		//ネットワークテスト用
-		GameObject uraCardObj = Instantiate( _uraCard, transform.position, Quaternion.identity );
-		_uraCards.Add( uraCardObj );
+		//GameObject uraCardObj = Instantiate( _uraCard, transform.position, Quaternion.identity );
+		//_uraCards.Add( uraCardObj );
 
 		Sort( );
 	}
