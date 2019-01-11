@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.4465782, g: 0.49641252, b: 0.5748167, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -722,7 +722,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37973a8ab335fbb498efeaf3fed83834, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cardIDs: d1070000d1070000d1070000d1070000d1070000d1070000d1070000d1070000d1070000d1070000d1070000d1070000d1070000d1070000d1070000d1070000d1070000d1070000d1070000d1070000
+  _cardIDs: d1070000d1070000d2070000d2070000d3070000d4070000d3070000d4070000d5070000d6070000d7070000d8070000d1070000d2070000d3070000d4070000d5070000d6070000d7070000d8070000
   _deckNum: 0
 --- !u!4 &201941479
 Transform:
@@ -773,7 +773,7 @@ MonoBehaviour:
   _effectButton: {fileID: 1865975021}
   _effectYesBuuton: {fileID: 1421355633}
   _turnEndButton: {fileID: 1417735798}
-  _drawCard: {fileID: 1976715242}
+  _drawCard: {fileID: 0}
   _order: 0
 --- !u!4 &237354374
 Transform:
@@ -1955,7 +1955,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 17
+  m_RootOrder: 18
   m_LocalEulerAnglesHint: {x: 180, y: 0, z: 0}
 --- !u!1 &760936418
 GameObject:
@@ -2692,7 +2692,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed55e3f52d6a31f4391fe3e2c8585f34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _csvFileNames: []
+  _csvFileNames:
+  - black_card_data
+  - white_card_data
   _cardDatas: []
 --- !u!4 &1183021951
 Transform:
@@ -3171,7 +3173,7 @@ Transform:
   - {fileID: 760936419}
   - {fileID: 724143657}
   m_Father: {fileID: 0}
-  m_RootOrder: 16
+  m_RootOrder: 17
   m_LocalEulerAnglesHint: {x: 180, y: 0, z: 0}
 --- !u!114 &1256974571
 MonoBehaviour:
@@ -3650,7 +3652,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4912751816376802, guid: 2ccdf2e3197e2e54da99afa3eb97bb18, type: 2}
       propertyPath: m_RootOrder
-      value: 18
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 212116259153676402, guid: 2ccdf2e3197e2e54da99afa3eb97bb18,
         type: 2}
@@ -4478,7 +4480,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37973a8ab335fbb498efeaf3fed83834, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cardIDs: e9030000e9030000e9030000e9030000e9030000e9030000e9030000e9030000e9030000e9030000e9030000e9030000e9030000e9030000e9030000e9030000e9030000e9030000e9030000e9030000
+  _cardIDs: e9030000ea030000eb030000ec030000ed030000ee030000ef030000f0030000e9030000ea030000eb030000ec030000ed030000ee030000ef030000f0030000e9030000ea030000eb030000ed030000
   _deckNum: 0
 --- !u!4 &1489345572
 Transform:

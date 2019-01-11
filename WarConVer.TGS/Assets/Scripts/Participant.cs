@@ -248,21 +248,16 @@ public class Participant : MonoBehaviour {
 	
 	//召喚処理-----------------------------------------------------------------------------------------------------------
 	public void Summon( CardMain card, Square square, string player ) {
-		List< Square > squares = new List< Square >( );
-		squares = SummonSquare( player );
+		List< Square > summonableSquares = SummonSquare( player );
 
-		for ( int i = 0; i < squares.Count; i++ ) { 
-			if ( square.Index != squares[ i ].Index ) continue;
+		for ( int i = 0; i < summonableSquares.Count; i++ ) { 
+			if ( square.Index != summonableSquares[ i ].Index ) continue;
 
 			_hand.DecreaseHandCard( card );
 			GameObject fieldCardObj = Instantiate( _fieldCard, square.transform.position, Quaternion.identity );	//生成はHnadがやるプレイヤーがやる？
 			
 			CardMain fieldCard = fieldCardObj.GetComponent< CardMain >( );
-			fieldCard._cardDates = card._cardDates;
-
-			SpriteRenderer fieldCardSprite = fieldCardObj.GetComponent< SpriteRenderer >( );
-			SpriteRenderer sprite = card.gameObject.GetComponent< SpriteRenderer >( );
-			fieldCardSprite.sprite = sprite.sprite;
+			fieldCard.loadID = card.loadID;
 
 			_magicPoint.DecreasePoint( card._cardDates.mp );
 			square.On_Card = fieldCard;

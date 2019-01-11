@@ -155,11 +155,21 @@ MonoBehaviour:
     _necessaryAPForEffect: 0
   _actionCount: 0
   _cardDates:
+    id: 0
+    hp: 0
+    max_hp: 0
+    attack_point: 0
     directions: 
     distance: 0
     move_ap: 0
-    hp: 0
-    attack_point: 0
+    effect_directions: 
+    effect_ap: 0
+    effect_ditance: 0
+    effect_damage: 0
+    effect_recovery_point: 0
+    mp: 0
+    effect_type: 0
+    actionCount: 0
 --- !u!212 &472380972
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -259,11 +269,21 @@ MonoBehaviour:
     _necessaryAPForEffect: 0
   _actionCount: 0
   _cardDates:
+    id: 0
+    hp: 0
+    max_hp: 0
+    attack_point: 0
     directions: 
     distance: 0
     move_ap: 0
-    hp: 0
-    attack_point: 0
+    effect_directions: 
+    effect_ap: 0
+    effect_ditance: 0
+    effect_damage: 0
+    effect_recovery_point: 0
+    mp: 0
+    effect_type: 0
+    actionCount: 0
 --- !u!212 &559674150
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -363,11 +383,21 @@ MonoBehaviour:
     _necessaryAPForEffect: 0
   _actionCount: 0
   _cardDates:
+    id: 0
+    hp: 0
+    max_hp: 0
+    attack_point: 0
     directions: 
     distance: 0
     move_ap: 0
-    hp: 0
-    attack_point: 0
+    effect_directions: 
+    effect_ap: 0
+    effect_ditance: 0
+    effect_damage: 0
+    effect_recovery_point: 0
+    mp: 0
+    effect_type: 0
+    actionCount: 0
 --- !u!212 &777664040
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -590,11 +620,21 @@ MonoBehaviour:
     _necessaryAPForEffect: 0
   _actionCount: 0
   _cardDates:
+    id: 0
+    hp: 0
+    max_hp: 0
+    attack_point: 0
     directions: 
     distance: 0
     move_ap: 0
-    hp: 0
-    attack_point: 0
+    effect_directions: 
+    effect_ap: 0
+    effect_ditance: 0
+    effect_damage: 0
+    effect_recovery_point: 0
+    mp: 0
+    effect_type: 0
+    actionCount: 0
 --- !u!212 &1194968196
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -689,6 +729,7 @@ MonoBehaviour:
   - {fileID: 777664038}
   _id: 1001
   _deck: {fileID: 1925943789}
+  _clip: {fileID: 8300000, guid: 6eb100cb70c4f0a438dca4bc0a30c5cb, type: 3}
 --- !u!4 &1510587712
 Transform:
   m_ObjectHideFlags: 0
@@ -900,11 +941,21 @@ MonoBehaviour:
     _necessaryAPForEffect: 0
   _actionCount: 0
   _cardDates:
+    id: 0
+    hp: 0
+    max_hp: 0
+    attack_point: 0
     directions: 
     distance: 0
     move_ap: 0
-    hp: 0
-    attack_point: 0
+    effect_directions: 
+    effect_ap: 0
+    effect_ditance: 0
+    effect_damage: 0
+    effect_recovery_point: 0
+    mp: 0
+    effect_type: 0
+    actionCount: 0
 --- !u!212 &2136544268
 SpriteRenderer:
   m_ObjectHideFlags: 0
