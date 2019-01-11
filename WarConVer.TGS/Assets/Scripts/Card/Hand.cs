@@ -23,6 +23,10 @@ public class Hand : MonoBehaviour {
 		get { return _maxHandNum; }	
 	}
 
+	public List< CardMain > Card { 
+		get	{ return _card; }
+	}
+
 
 	void Awake( ) {
 		//とりあえず今は最初から設定されている手札を取得する(あとでこの処理はいらなくなるかも)

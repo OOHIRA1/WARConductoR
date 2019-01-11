@@ -26,6 +26,7 @@ public class MainPhase : Phase {
 	CardMain _card						   = null;
 	CardMain _handCard					   = null;
 	Participant _enemyPlayer			   = null;
+	//EnemyBehavior _enemyBehavior		   = null;
 	RayShooter _rayShooter				   = new RayShooter( );
 	Vector3 _handCardPos				   = Vector3.zero;
 	MAIN_PHASE_STATUS _mainPhaseStatus	   = MAIN_PHASE_STATUS.IDLE;
@@ -63,6 +64,14 @@ public class MainPhase : Phase {
 
 
 	public override void PhaseUpdate( ) {
+
+		//何か一区切りを置くシステムを作る。
+		//一回の召喚で一区切り、召喚が終わったら移動で、一回の移動で一区切り。
+		//if ( _turnPlayer.gameObject.tag == "Player2" ) { 
+		//	_enemyBehavior.EnemySummonUpdate( );
+		//	_enemyBehavior.EnemySummonUpdate( );
+		//	return;
+		//}
 
 		LoseTerms( );
 		ActiveTurnEndButton( );
@@ -216,11 +225,11 @@ public class MainPhase : Phase {
 				if ( _turnPlayer.DecreaseActivePointConfirmation( _card._cardDates.move_ap ) &&
 					 _card._cardDates.actionCount < MAX_ACTION_COUNT ) {
 
-					if ( ( ( _nowSquare.Index - 1 ) / SQUARE_ROW_NUM == FIRST_ROW_INDEX ) && _card.gameObject.tag == "Player1" ) {		//一列目にいたら攻撃ボタンを表示//修正するだろうからマジックナンバーを放置
+					if ( ( ( _nowSquare.Index ) / SQUARE_ROW_NUM == FIRST_ROW_INDEX ) && _card.gameObject.tag == "Player1" ) {		//一列目にいたら攻撃ボタンを表示//修正するだろうからマジックナンバーを放置
 						_directAttackButton.SetActive( true );
 					}
 
-					if ( ( ( _nowSquare.Index - 1 ) / SQUARE_ROW_NUM == FIFTH_ROW_INDEX ) && _card.gameObject.tag == "Player2" ) {		//五列目にいたら攻撃ボタンを表示//修正するだろうからマジックナンバーを放置
+					if ( ( ( _nowSquare.Index ) / SQUARE_ROW_NUM == FIFTH_ROW_INDEX ) && _card.gameObject.tag == "Player2" ) {		//五列目にいたら攻撃ボタンを表示//修正するだろうからマジックナンバーを放置
 						_directAttackButton.SetActive( true );
 					}
 				}

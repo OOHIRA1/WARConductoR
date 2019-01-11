@@ -34,8 +34,8 @@ public class Field : MonoBehaviour {
 
 
 	//指定した番号のマスを返す-------------
-	public Square getSquare( int index ) { 
-		return _squares[ index - 1 ];
+	public Square getSquare( int index ) {
+		return _squares[ index ];
 	}
 	//-------------------------------------
 
@@ -50,7 +50,7 @@ public class Field : MonoBehaviour {
 		if ( index == -1 ) {
 			return null;
 		} else { 
-			return _squares[ index - 1 ];
+			return _squares[ index ];
 		}
 	}
 	//---------------------------------------------------------------------------------------------
@@ -89,5 +89,3 @@ public class Field : MonoBehaviour {
 	}
 	//-------------------------------------------------------------------------------------
 }
-
-//インスペクター上のIndexと配列のIndexがずれているせいでIndexを合わせるためにいろんなことろで無駄な計算をしている(Index - 1, Index + 1 など)

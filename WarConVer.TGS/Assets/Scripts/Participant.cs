@@ -49,6 +49,10 @@ public class Participant : MonoBehaviour {
 		set { _loseFlag = value; }
 	}
 
+	public List< CardMain > Card_In_Field { 
+		get { return _cardInField; }	
+	} 
+
 
 	void Start( ) {
 		ReferenceCheck( );
@@ -217,9 +221,9 @@ public class Participant : MonoBehaviour {
 		
 		if ( player == "Player1" ) { 
 			for ( int i = 0; i < _field.Max_Index; i++ ) { 
-				Square square = _field.getSquare( i + 1 );
+				Square square = _field.getSquare( i );
 
-				if ( ( square.Index - 1 ) / SQUARE_ROW_NUM != FIFTH_ROW_INDEX )  continue;
+				if ( ( square.Index ) / SQUARE_ROW_NUM != FIFTH_ROW_INDEX )  continue;
 				if ( square.On_Card != null ) continue;
 
 				squares.Add( square );
@@ -228,9 +232,9 @@ public class Participant : MonoBehaviour {
 		
 		if ( player == "Player2" ) { 
 			for ( int i = 0; i < _field.Max_Index; i++ ) { 
-				Square square = _field.getSquare( i + 1 );
+				Square square = _field.getSquare( i );
 
-				if ( ( square.Index - 1 ) / SQUARE_ROW_NUM != FIRST_ROW_INDEX )  continue;
+				if ( ( square.Index ) / SQUARE_ROW_NUM != FIRST_ROW_INDEX )  continue;
 				if ( square.On_Card != null ) continue;
 
 				squares.Add( square );
