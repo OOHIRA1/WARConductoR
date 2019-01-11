@@ -358,10 +358,10 @@ public class MainPhase : Phase {
 	//召喚状態処理----------------------------------------------------------------------
 	void SummonStatus( ) {
 		_handCard.transform.position = _mainSceneOperation.getWorldMousePos( );
-		List< Square > squares = _turnPlayer.SummonSquare( _turnPlayer.gameObject.tag );
+		List< Square > summonableSquares = _turnPlayer.SummonSquare( _turnPlayer.gameObject.tag );
 
 		if ( _turnPlayer.DecreaseMPointConfirmation( _handCard._cardDates.mp ) ) { 
-			_turnPlayer.SquareChangeColor( squares, true );
+			_turnPlayer.SquareChangeColor( summonableSquares, true );
 		}
 
 		if ( !_mainSceneOperation.MouseConsecutivelyTouch( ) ) {
@@ -372,21 +372,21 @@ public class MainPhase : Phase {
 				return;
 			}
 
-			Square square = _rayShooter.RayCastSquare( );
+			Square rayHitedSquare = _rayShooter.RayCastSquare( );
 
-			if ( square == null ) {
-				_turnPlayer.SquareChangeColor( squares, false );
+			if ( rayHitedSquare == null ) {
+				_turnPlayer.SquareChangeColor( summonableSquares, false );
 				_handCard.transform.position = _handCardPos;
 				_handCard.gameObject.GetComponent< BoxCollider2D >( ).enabled = true;
 				_mainPhaseStatus = MAIN_PHASE_STATUS.IDLE;
 				return;
 			}
 
-			for ( int i = 0; i < squares.Count; i++ ) { 
-				if ( square.Index != squares[ i ].Index ) continue;
+			for ( int i = 0; i < summonableSquares.Count; i++ ) { 
+				if ( rayHitedSquare.Index != summonableSquares[ i ].Index ) continue;
 
-				_turnPlayer.SquareChangeColor( squares, false );
-				_turnPlayer.Summon( _handCard, square, _turnPlayer.gameObject.tag );
+				_turnPlayer.SquareChangeColor( summonableSquares, false );
+				_turnPlayer.Summon( _handCard, rayHitedSquare, _turnPlayer.gameObject.tag );
 				_handCard = null;
 				_mainPhaseStatus = MAIN_PHASE_STATUS.IDLE;
 				return;
@@ -394,7 +394,7 @@ public class MainPhase : Phase {
 
 
 
-			_turnPlayer.SquareChangeColor( squares, false );
+			_turnPlayer.SquareChangeColor( summonableSquares, false );
 			_handCard.transform.position = _handCardPos;
 			_handCard.gameObject.GetComponent< BoxCollider2D >( ).enabled = true;
 			_mainPhaseStatus = MAIN_PHASE_STATUS.IDLE;
