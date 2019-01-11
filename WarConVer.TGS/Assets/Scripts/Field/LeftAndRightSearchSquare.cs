@@ -5,18 +5,18 @@ public class LeftAndRightSearchSquare : I_SearchSquare {
 	const int ONE_SQUIRREL = 1;	//左右に進むときの１マスの大きさ
 
 	//それぞれの段の右端のマスのIndex
-	const int FIRST_ROW_FIRST_INDEX  = 1;
-	const int SECOND_ROW_FIRST_INDEX = 5;
-	const int THIRD_ROW_FIRST_INDEX  = 9;
-	const int FOURTH_ROW_FIRST_INDEX = 13;
-	const int FIFTH_ROW_FIRST_INDEX  = 17;
+	const int FIRST_ROW_FIRST_INDEX  = 0;
+	const int SECOND_ROW_FIRST_INDEX = 4;
+	const int THIRD_ROW_FIRST_INDEX  = 8;
+	const int FOURTH_ROW_FIRST_INDEX = 12;
+	const int FIFTH_ROW_FIRST_INDEX  = 16;
 
 	//それぞれの段の左端のマスのIndex
-	const int FIRST_ROW_LAST_INDEX  = 4;
-	const int SECOND_ROW_LAST_INDEX = 8;
-	const int THIRD_ROW_LAST_INDEX  = 12;
-	const int FOURTH_ROW_LAST_INDEX = 16;
-	const int FIFTH_ROW_LAST_INDEX  = 20;
+	const int FIRST_ROW_LAST_INDEX  = 3;
+	const int SECOND_ROW_LAST_INDEX = 7;
+	const int THIRD_ROW_LAST_INDEX  = 11;
+	const int FOURTH_ROW_LAST_INDEX = 15;
+	const int FIFTH_ROW_LAST_INDEX  = 19;
 
 	const int ERROR = -1;
 
