@@ -29,13 +29,14 @@ public class StartPhase : Phase {
 	public override void PhaseUpdate( ) {
 		if ( _didRefresh ) return;
 
-		_turnPlayer.Refresh( );
-		_turnPlayer.CardRefresh( );
 
 		int baseLayerIndex = _turnLogoAnimator.GetLayerIndex ("Base Layer");
 		AnimatorStateInfo stateInfo = _turnLogoAnimator.GetCurrentAnimatorStateInfo ( baseLayerIndex );
 		if ( stateInfo.IsName( "cutin" ) && stateInfo.normalizedTime >= 1.0f ) {//カットインが終了したら
 			_turnLogoAnimator.SetTrigger ( "returnIdleTrigger" );
+
+			_turnPlayer.Refresh( );
+			_turnPlayer.CardRefresh( );
 			_didRefresh = true;
 		}
 	}

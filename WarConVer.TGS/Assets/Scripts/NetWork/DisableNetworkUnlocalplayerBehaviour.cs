@@ -5,7 +5,7 @@ using UnityEngine.Networking;
 
 public class DisableNetworkUnlocalplayerBehaviour : NetworkBehaviour {
 
-	[ SerializeField ] Behaviour[ ] _behaviours;
+	[ SerializeField ] Behaviour[ ] _behaviours = null;
 
 	void Start( ) {
 		if ( !isServer ) { 
