@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.4465782, g: 0.49641252, b: 0.5748167, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -818,8 +818,11 @@ MonoBehaviour:
   _effectButton: {fileID: 1865975021}
   _effectYesBuuton: {fileID: 1421355633}
   _turnEndButton: {fileID: 1417735798}
-  _drawCard: {fileID: 0}
+  _enemyBehavior: {fileID: 1256514223}
+  _drawCard: {fileID: 1976715242}
   _order: 0
+  _debugCard: {fileID: 568092346}
+  _debugSquare: {fileID: 782638987}
 --- !u!4 &237354374
 Transform:
   m_ObjectHideFlags: 0
@@ -1555,6 +1558,12 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 556421452}
+--- !u!114 &568092346 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114791133932176068, guid: af69bafb6bd108f4fb0cb9b34f47b427,
+    type: 2}
+  m_PrefabInternal: {fileID: 662428947}
+  m_Script: {fileID: 11500000, guid: fe523c41294e1d44a9629fd76f6b0ccf, type: 3}
 --- !u!1 &594578728
 GameObject:
   m_ObjectHideFlags: 0
@@ -1848,6 +1857,63 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
+--- !u!1001 &662428947
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4789972937439254, guid: af69bafb6bd108f4fb0cb9b34f47b427, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4789972937439254, guid: af69bafb6bd108f4fb0cb9b34f47b427, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4789972937439254, guid: af69bafb6bd108f4fb0cb9b34f47b427, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4789972937439254, guid: af69bafb6bd108f4fb0cb9b34f47b427, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4789972937439254, guid: af69bafb6bd108f4fb0cb9b34f47b427, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4789972937439254, guid: af69bafb6bd108f4fb0cb9b34f47b427, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4789972937439254, guid: af69bafb6bd108f4fb0cb9b34f47b427, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4789972937439254, guid: af69bafb6bd108f4fb0cb9b34f47b427, type: 2}
+      propertyPath: m_RootOrder
+      value: 26
+      objectReference: {fileID: 0}
+    - target: {fileID: 212409116590496510, guid: af69bafb6bd108f4fb0cb9b34f47b427,
+        type: 2}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: f73e7672c49f0af4aa070dc56b6668ac,
+        type: 3}
+    - target: {fileID: 212409116590496510, guid: af69bafb6bd108f4fb0cb9b34f47b427,
+        type: 2}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1364945304883472, guid: af69bafb6bd108f4fb0cb9b34f47b427, type: 2}
+      propertyPath: m_Name
+      value: DebugCard
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: af69bafb6bd108f4fb0cb9b34f47b427, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &677740606
 GameObject:
   m_ObjectHideFlags: 0
@@ -3264,6 +3330,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1256514222}
   - component: {fileID: 1256514221}
+  - component: {fileID: 1256514223}
   m_Layer: 10
   m_Name: Player2
   m_TagString: Player2
@@ -3303,6 +3370,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1256514223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1256514220}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9e3702796a4af14badc9c234e21dd30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _field: {fileID: 835475849}
+  _enemy: {fileID: 1256514221}
+  _enemyHand: {fileID: 750422029}
+  _enemyMagicPoint: {fileID: 1765459212}
 --- !u!1 &1256974568
 GameObject:
   m_ObjectHideFlags: 0

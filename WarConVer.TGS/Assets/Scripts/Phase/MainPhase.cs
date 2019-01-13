@@ -26,7 +26,7 @@ public class MainPhase : Phase {
 	CardMain _card						   = null;
 	CardMain _handCard					   = null;
 	Participant _enemyPlayer			   = null;
-	//EnemyBehavior _enemyBehavior		   = null;
+	EnemyBehavior _enemyBehavior		   = null;
 	RayShooter _rayShooter				   = new RayShooter( );
 	Vector3 _handCardPos				   = Vector3.zero;
 	MAIN_PHASE_STATUS _mainPhaseStatus	   = MAIN_PHASE_STATUS.IDLE;
@@ -41,10 +41,13 @@ public class MainPhase : Phase {
 
 	//テスト用
 	CardMain _drawCard = null;
+	CardMain _debugCard = null;
+	Square _debugSquare = null;
 
 	public MainPhase( Participant turnPlayer, Participant enemyPlayer, MainSceneOperation mainSceneQperation, 
-					  GameObject returnButton, GameObject moveButton, GameObject directAttackButton, GameObject effectButton, GameObject effectYesButton, GameObject turnEndButton, 
-					  CardMain drawCard ) {
+					  GameObject returnButton, GameObject moveButton, GameObject directAttackButton, GameObject effectButton, GameObject effectYesButton, GameObject turnEndButton,
+					  EnemyBehavior enemyBehavior,
+					  CardMain drawCard, CardMain debugCard, Square debugSquare ) {
 
 		_turnPlayer = turnPlayer;
 		_enemyPlayer = enemyPlayer;
@@ -57,9 +60,18 @@ public class MainPhase : Phase {
 		_effectYesBuuton = effectYesButton;
 		_turnEndButton = turnEndButton;
 
+		_enemyBehavior = enemyBehavior;
+
 		_drawCard = drawCard;
+		_debugCard = debugCard;
+		_debugSquare = debugSquare;
 
 		Debug.Log( _turnPlayer.gameObject.tag + "メインフェーズ" );
+
+
+		//デバッグ用
+		debugSquare.On_Card = debugCard;
+		debugCard.transform.position = debugSquare.transform.position;
 	}
 
 
@@ -67,11 +79,14 @@ public class MainPhase : Phase {
 
 		//何か一区切りを置くシステムを作る。
 		//一回の召喚で一区切り、召喚が終わったら移動で、一回の移動で一区切り。
-		//if ( _turnPlayer.gameObject.tag == "Player2" ) { 
-		//	_enemyBehavior.EnemySummonUpdate( );
-		//	_enemyBehavior.EnemySummonUpdate( );
-		//	return;
-		//}
+		if ( _turnPlayer.gameObject.tag == "Player2" ) {
+
+			TestSummonUpdateFlag( );
+			//TestCardMoveUpdateFlag( );
+			_enemyBehavior.EnemySummonUpdate( );
+			//_enemyBehavior.EnemyCardMoveUpdate( );
+			return;
+		}
 
 		LoseTerms( );
 		ActiveTurnEndButton( );
@@ -532,6 +547,20 @@ public class MainPhase : Phase {
 		if ( _turnPlayer.Cemetary_Point >= LOSE_CEMETARY_POINT ) { 
 			_turnPlayer.Lose_Flag = true;	
 		}
+	}
+
+
+	
+	void TestSummonUpdateFlag( ) { 
+		if ( Input.GetKeyDown( KeyCode.A ) ) {
+			_enemyBehavior.TestSummonUpdateFlag( );
+		}
+	}
+
+	void TestCardMoveUpdateFlag( ) { 
+		if ( Input.GetKeyDown( KeyCode.S ) ) {
+			_enemyBehavior.TestCardMoveUpdateFlag( );
+		}	
 	}
 }
 

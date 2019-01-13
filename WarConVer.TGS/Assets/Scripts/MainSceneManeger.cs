@@ -35,9 +35,13 @@ public class MainSceneManeger : MonoBehaviour {
 	[ SerializeField ] GameObject _effectYesBuuton	  = null;
 	[ SerializeField ] GameObject _turnEndButton      = null;
 
+	[ SerializeField ] EnemyBehavior _enemyBehavior = null;
+
 	//テスト用
 	[ SerializeField ] CardMain _drawCard	  = null;
 	[ SerializeField ] ATTACK_FIRST_OR_SECOND _order = ATTACK_FIRST_OR_SECOND.FIRST;
+	[ SerializeField ] CardMain _debugCard = null;
+	[ SerializeField ] Square _debugSquare = null;
 
 	private void Awake( ) {
 		//先行後攻を判別して入れ替えられる。
@@ -110,7 +114,8 @@ public class MainSceneManeger : MonoBehaviour {
 			case PHASE.MAIN:
 				_phase = new MainPhase( _turnPlayer, _enemyPlayer, _mainSceneOperation,
 										_returnButton, _moveButton, _directAttackButton, _effectButton, _effectYesBuuton, _turnEndButton,
-										_drawCard );
+										_enemyBehavior,
+										_drawCard, _debugCard, _debugSquare );
 				break;
 
 			case PHASE.END:

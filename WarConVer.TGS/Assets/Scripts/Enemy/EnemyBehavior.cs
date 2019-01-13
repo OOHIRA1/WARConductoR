@@ -8,12 +8,13 @@ public class EnemyBehavior : MonoBehaviour {
 	[ SerializeField ] Hand _enemyHand = null;
 	[ SerializeField ] Point _enemyMagicPoint = null;
 
-	void Start( ) {
-		
-	}
+	bool _summonUpdateFlag = false;
+	bool _cardMoveUpdateFlag = false;
 
+	public void EnemySummonUpdate( ) {
+		if ( !_summonUpdateFlag ) return;
+		_summonUpdateFlag = false;
 
-	public void EnemySummonUpdate( ) { 
 		List< Square > summonSquares = _enemy.SummonSquare( _enemy.gameObject.tag );
 		if ( summonSquares.Count == 0 ) return;
 
@@ -26,29 +27,50 @@ public class EnemyBehavior : MonoBehaviour {
 		//第一条件
 		summonSquare = FirstPrioritySquareSearch( );
 		if ( summonSquare != null ) { 
-			//召喚
+			Summon( summonCard, summonSquare );
 			return;
 		}
 
 		//第二条件
 		summonSquare = SecondPrioritySquareSearch( );
 		if ( summonSquare != null ) { 
-			//召喚
+			Summon( summonCard, summonSquare );
 			return;
 		}
-
+		
 		//第三条件
 		summonSquare = ThirdPrioritySquareSearch( );
 		if ( summonSquare != null ) { 
-			//召喚
+			Summon( summonCard, summonSquare );
 			return;
 		}
 
 		if ( summonSquare == null ) return;
+
 	}
 
-	public void EnemyCardMoveUpdate( ) { 
+
+	public void EnemyCardMoveUpdate( ) {
+		if ( !_cardMoveUpdateFlag ) return;
+		_cardMoveUpdateFlag = false;
+
+		if ( _enemy.Card_In_Field.Count == 0 ) return;
+
 		MoveCardSearch( );
+
+	}
+
+
+	public void TestSummonUpdateFlag( ) {
+		if ( _summonUpdateFlag ) return;	//意味ないかもだけど一応処理が終わるまで操作できないようにするために
+
+		_summonUpdateFlag = true;	
+	}
+
+	public void TestCardMoveUpdateFlag( ) { 
+		if ( _cardMoveUpdateFlag ) return;
+
+		_cardMoveUpdateFlag = true;
 	}
 
 
@@ -60,14 +82,14 @@ public class EnemyBehavior : MonoBehaviour {
 		//手札のMPを見て召喚できるカードを取り出す
 		int max_mp = -1;
 		CardMain summonCard = null;
-		for ( int i = 0; _handCard.Count < i; i++ ) { 
+		for ( int i = 0; i < _handCard.Count; i++ ) { 
 			int nowMP = _enemyMagicPoint.Point_Num;
 
 			if ( _handCard[ i ]._cardDates.mp > nowMP ) continue;	
 			if( max_mp > _handCard[ i ]._cardDates.mp ) continue;
 
 			if ( max_mp < _handCard[ i ]._cardDates.mp ) {
-				//mpがおなじだったら
+				//mpが大きかったら
 				max_mp = _handCard[ i ]._cardDates.mp;
 				summonCard = _handCard[ i ];
 			} else { 
@@ -108,29 +130,31 @@ public class EnemyBehavior : MonoBehaviour {
 			if ( square.On_Card == null ) continue;
 			if ( square.On_Card.gameObject.tag == _enemy.gameObject.tag ) continue;
 
-			summonSquare = SummonSquareSearch( );
+			summonSquare = SummonSquareSearch( square );
+			return summonSquare;
 		}
 
-		return summonSquare;
+		return null;
 	}
 
 
 	//名前はあとで変えることになる
-	Square SummonSquareSearch( ) {
-		int index = 0;
-		for ( int j = 0; j < 3; j++ ) {	//横一列を探すのは最大三回まで
+	//あとでマジックナンバーを修正する
+	Square SummonSquareSearch( Square onCardSquare ) {
+		int index = onCardSquare.Index;
+		for ( int j = 1; j < 4; j++ ) {	//横一列を探すのは最大三回まで(カードがあった場所の左右から探すという意味)
 			Square summonSquare = null;
-			index++;
+			//index++;
 
-			if ( j + index > 4 ) {	//一列目の左端を超えてなかったら
-				summonSquare = _field.getSquare( j + index );
+			if ( index + j < 4 ) {	//一列目の左端を超えてなかったら
+				summonSquare = _field.getSquare( index + j );
 				if ( summonSquare.On_Card == null ) { 
 					return summonSquare;
 				}
 			}
 
-			if ( j - index > -1 ) { //一列目の右端を超えていなかったら
-				summonSquare = _field.getSquare( j - index );	
+			if ( index - j > -1 ) { //一列目の右端を超えていなかったら
+				summonSquare = _field.getSquare( index - j );	
 				if ( summonSquare.On_Card == null ) { 
 					return summonSquare;
 				}
@@ -161,23 +185,25 @@ public class EnemyBehavior : MonoBehaviour {
 			
 		}
 
-		return summonSquare;
+		return null;
 	}
 
 
 	//第三処理
+	//出す順番が逆っぽいからあとで調べる順番を逆にする
 	Square ThirdPrioritySquareSearch( ) { 
 		Square summonSquare = null;
 
 		for ( int i = 0; i < 4; i++ ) { 
 			Square square = null;	
 			square = _field.getSquare( i );
-			if ( square.On_Card == null ) { 
+			if ( square.On_Card == null ) {
+				summonSquare = square;
 				return summonSquare;	
 			}
 		}
 		
-		return summonSquare;
+		return null;
 	}
 
 
@@ -206,6 +232,7 @@ public class EnemyBehavior : MonoBehaviour {
 
 				if ( moveSquare == null ) continue;
 
+				MoveCard( enemyMoveCard, square, moveSquare[ 0 ] );		//あとでこの関数の役割を分けないといけない
 				//_enemy.MoveCard( enemyMoveCard, square, moveSquare[ 0 ] );	//方向を一つしか送っていないのでリストの中身も一つしか入らない。
 			}
 
@@ -232,4 +259,13 @@ public class EnemyBehavior : MonoBehaviour {
 		
 		return direction;
 	}
+	
+	void Summon( CardMain card, Square square ) { 
+		_enemy.Summon( card, square, "Player2" );	
+	}
+
+	void MoveCard( CardMain card, Square nowSquare, Square moveSquare ) { 
+		_enemy.MoveCard( card, nowSquare, moveSquare );	
+	}
+
 }
