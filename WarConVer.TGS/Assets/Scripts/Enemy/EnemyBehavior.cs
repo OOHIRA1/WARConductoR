@@ -26,7 +26,7 @@ public class EnemyBehavior : MonoBehaviour {
 		Square summonSquare = null;
 		//第一条件
 		summonSquare = FirstPrioritySquareSearch( );
-		if ( summonSquare != null ) { 
+		if ( summonSquare != null ) {
 			Summon( summonCard, summonSquare );
 			return;
 		}
@@ -219,7 +219,7 @@ public class EnemyBehavior : MonoBehaviour {
 			enemyMoveCard = square.On_Card;
 			List< Field.DIRECTION > directions = EnemyDirectionSorting( enemyMoveCard );
 
-			if ( directions == null ) continue;
+			if ( directions.Count == 0 ) continue;
 
 
 
@@ -230,9 +230,10 @@ public class EnemyBehavior : MonoBehaviour {
 				enemyMoveCard._cardDates.directions = enemyDirection;	//エネミーのカードの移動先を書き換えている。いいのかはわからない
 				List< Square > moveSquare = _enemy.MovePossibleSquare( enemyMoveCard, square );
 
-				if ( moveSquare == null ) continue;
+				if ( moveSquare.Count == 0 ) continue;
 
 				MoveCard( enemyMoveCard, square, moveSquare[ 0 ] );		//あとでこの関数の役割を分けないといけない
+				return;
 				//_enemy.MoveCard( enemyMoveCard, square, moveSquare[ 0 ] );	//方向を一つしか送っていないのでリストの中身も一つしか入らない。
 			}
 

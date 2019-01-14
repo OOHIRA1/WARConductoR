@@ -82,9 +82,9 @@ public class MainPhase : Phase {
 		if ( _turnPlayer.gameObject.tag == "Player2" ) {
 
 			TestSummonUpdateFlag( );
-			//TestCardMoveUpdateFlag( );
+			TestCardMoveUpdateFlag( );
 			_enemyBehavior.EnemySummonUpdate( );
-			//_enemyBehavior.EnemyCardMoveUpdate( );
+			_enemyBehavior.EnemyCardMoveUpdate( );
 			return;
 		}
 
