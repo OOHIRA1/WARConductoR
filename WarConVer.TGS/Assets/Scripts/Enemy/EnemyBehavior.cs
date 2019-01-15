@@ -7,26 +7,48 @@ public class EnemyBehavior : MonoBehaviour {
 	[ SerializeField ] Participant _enemy = null;
 	[ SerializeField ] Hand _enemyHand = null;
 	[ SerializeField ] Point _enemyMagicPoint = null;
+	[ SerializeField ] Point _enemyActivePoint = null;
 
-	bool _summonUpdateFlag = false;
-	bool _cardMoveUpdateFlag = false;
+	bool _summonUpdateFlag = true;
+	bool _cardMoveUpdateFlag = true;
+	bool _directAttackUpdateFlag = true;
+
+	public bool Summon_Update_Flag { 
+		get { return _summonUpdateFlag; }	
+	}
+
+	public bool Card_MoveUpdate_Flag { 
+		get { return _cardMoveUpdateFlag; }	
+	}
+
+	public bool Direct_Attack_Update_Flag { 
+		get { return _directAttackUpdateFlag; }	
+	}
+
 
 	public void EnemySummonUpdate( ) {
 		if ( !_summonUpdateFlag ) return;
-		_summonUpdateFlag = false;
 
 		List< Square > summonSquares = _enemy.SummonSquare( _enemy.gameObject.tag );
-		if ( summonSquares.Count == 0 ) return;
+		if ( summonSquares.Count == 0 ) {
+			_summonUpdateFlag = false;
+			return;
+		}
+			
 
 		CardMain summonCard = null;
 		summonCard = SummonCardSearch( );
-		if ( summonCard == null ) return;
+		if ( summonCard == null ) {
+			_summonUpdateFlag = false;
+			return;
+		}
 
 
 		Square summonSquare = null;
 		//第一条件
 		summonSquare = FirstPrioritySquareSearch( );
 		if ( summonSquare != null ) {
+
 			Summon( summonCard, summonSquare );
 			return;
 		}
@@ -45,19 +67,48 @@ public class EnemyBehavior : MonoBehaviour {
 			return;
 		}
 
-		if ( summonSquare == null ) return;
+		if ( summonSquare == null ) {
+			_summonUpdateFlag = false;
+			return;
+		}
 
 	}
 
+	
+	public void DirectAttackUpdate( ) { 
+		if ( !_directAttackUpdateFlag ) return;
+		if ( _summonUpdateFlag ) return;
+
+		for ( int i = 0; i < 4; i++ ) { 
+			Square square = _field.getSquare( ( 4 * 4 ) + i );	// ( 横のマス数 ×　五列目 ) + 左からの番号
+
+			if ( square.On_Card == null ) continue;
+			if ( square.On_Card.gameObject.tag != "Player2" ) continue;
+
+			CardMain directAttackCard = square.On_Card;
+			int nowAP = _enemyActivePoint.Point_Num;
+			if ( directAttackCard._cardDates.mp > nowAP ) continue;
+
+			_enemy.DirectAttack( _enemy, directAttackCard._cardDates.mp );
+			return;
+		}
+
+		_directAttackUpdateFlag = false;
+	}
 
 	public void EnemyCardMoveUpdate( ) {
 		if ( !_cardMoveUpdateFlag ) return;
-		_cardMoveUpdateFlag = false;
+		if ( _directAttackUpdateFlag ) return;
+		if ( _summonUpdateFlag ) return;
+		//_cardMoveUpdateFlag = false;
 
-		if ( _enemy.Card_In_Field.Count == 0 ) return;
+		if ( _enemy.Card_In_Field.Count == 0 ) {
+			_cardMoveUpdateFlag = false;
+			return;
+		} 
 
+		//前列にいたら攻撃
 		MoveCardSearch( );
-
 	}
 
 
@@ -217,6 +268,9 @@ public class EnemyBehavior : MonoBehaviour {
 			if ( square.On_Card.gameObject.tag != "Player2" ) continue;
 
 			enemyMoveCard = square.On_Card;
+			int nowAP = _enemyActivePoint.Point_Num;
+			if ( enemyMoveCard._cardDates.mp > nowAP ) continue;
+
 			List< Field.DIRECTION > directions = EnemyDirectionSorting( enemyMoveCard );
 
 			if ( directions.Count == 0 ) continue;
@@ -236,17 +290,18 @@ public class EnemyBehavior : MonoBehaviour {
 				return;
 				//_enemy.MoveCard( enemyMoveCard, square, moveSquare[ 0 ] );	//方向を一つしか送っていないのでリストの中身も一つしか入らない。
 			}
-
-
-			
 		}
+
+		_cardMoveUpdateFlag = false;
 	}
 
 
 	List< Field.DIRECTION > EnemyDirectionSorting( CardMain card ) {
 		Field.DIRECTION[ ] enemyDirections = { Field.DIRECTION.FORWAED,
 											   Field.DIRECTION.LEFT_FORWARD,
-											   Field.DIRECTION.RIGHT_FORWARD };
+											   Field.DIRECTION.RIGHT_FORWARD,
+											   Field.DIRECTION.RIGHT,
+											   Field.DIRECTION.LEFT };
 
 		List< Field.DIRECTION > direction = new List< Field.DIRECTION >( );
 		for ( int i = 0; i < enemyDirections.Length; i++ ) {

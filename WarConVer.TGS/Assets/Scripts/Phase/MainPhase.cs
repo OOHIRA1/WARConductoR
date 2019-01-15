@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class MainPhase : Phase {
-	enum MAIN_PHASE_STATUS { 
+	public enum MAIN_PHASE_STATUS { 
 		IDLE,
 		CARD_MOVE,
 		CARD_DETAILS,
@@ -30,6 +30,9 @@ public class MainPhase : Phase {
 	RayShooter _rayShooter				   = new RayShooter( );
 	Vector3 _handCardPos				   = Vector3.zero;
 	MAIN_PHASE_STATUS _mainPhaseStatus	   = MAIN_PHASE_STATUS.IDLE;
+	bool _turnEndFlag					   = false;
+
+	UIManager _uiManager = new UIManager( );
 
 	//ボタン
 	GameObject _returnButton	   = null;
@@ -76,20 +79,25 @@ public class MainPhase : Phase {
 
 
 	public override void PhaseUpdate( ) {
+		LoseTerms( );
 
-		//何か一区切りを置くシステムを作る。
-		//一回の召喚で一区切り、召喚が終わったら移動で、一回の移動で一区切り。
 		if ( _turnPlayer.gameObject.tag == "Player2" ) {
+			/*アニメーションをしているフラグがたっていたらしていたらreturn*/
 
-			TestSummonUpdateFlag( );
-			TestCardMoveUpdateFlag( );
+			//TestSummonUpdateFlag( );
+			//TestCardMoveUpdateFlag( );
 			_enemyBehavior.EnemySummonUpdate( );
 			_enemyBehavior.EnemyCardMoveUpdate( );
+
+			if ( !_enemyBehavior.Summon_Update_Flag && !_enemyBehavior.Card_MoveUpdate_Flag ) { 
+				_turnEndFlag = true;
+				//フラグリセットしないといけないかも
+			}
 			return;
 		}
 
-		LoseTerms( );
 		ActiveTurnEndButton( );
+		TurnEndButtonClicked( );
 		switch ( _mainPhaseStatus ) {
 			case MAIN_PHASE_STATUS.IDLE:
 				IdleStatis( );
@@ -131,13 +139,10 @@ public class MainPhase : Phase {
 	
 
 	public override bool IsNextPhaseFlag( ) {
-		if ( _mainSceneOperation.TurnEndButtonClicked( ) ) { 
-			_turnEndButton.SetActive( false );	
-			return true;
-		}
-
-		return false; 	
+		return _turnEndFlag;
 	}
+
+
 
 
 	//待機状態-----------------------------------------
@@ -244,9 +249,9 @@ public class MainPhase : Phase {
 						_directAttackButton.SetActive( true );
 					}
 
-					if ( ( ( _nowSquare.Index ) / SQUARE_ROW_NUM == FIFTH_ROW_INDEX ) && _card.gameObject.tag == "Player2" ) {		//五列目にいたら攻撃ボタンを表示//修正するだろうからマジックナンバーを放置
-						_directAttackButton.SetActive( true );
-					}
+					//if ( ( ( _nowSquare.Index ) / SQUARE_ROW_NUM == FIFTH_ROW_INDEX ) && _card.gameObject.tag == "Player2" ) {		//五列目にいたら攻撃ボタンを表示//修正するだろうからマジックナンバーを放置
+					//	_directAttackButton.SetActive( true );
+					//}
 				}
 
 		}
@@ -531,6 +536,13 @@ public class MainPhase : Phase {
 
 		if ( _mainPhaseStatus != MAIN_PHASE_STATUS.IDLE ) { 
 			_turnEndButton.SetActive( false );	
+		}
+	}
+
+	void TurnEndButtonClicked( ) { 
+		if ( _mainSceneOperation.TurnEndButtonClicked( ) ) { 
+			_turnEndButton.SetActive( false );
+			_turnEndFlag = true;
 		}
 	}
 
