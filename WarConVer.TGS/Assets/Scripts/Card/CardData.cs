@@ -4,7 +4,7 @@ using UnityEngine;
 
 //==カードデータクラス(構造体として扱う)
 [System.Serializable]
-public class CardData {
+public struct CardData {
 	public enum EFFECT_TYPE {
 		NO_EFFECT = 0,
 		ATTACK,
@@ -14,6 +14,7 @@ public class CardData {
 
 	public int 						_id;					//カードID
 	public int 						_attack;				//攻撃力
+	public int 						_maxToughness;			//体力最大値(全回復させるとき等に必要)
 	public int 						_toughness;				//体力
 	public List<Field.DIRECTION> 	_directionOfTravel;		//移動方向
 	public EFFECT_TYPE 				_effect_type;			//効果ID
@@ -27,10 +28,10 @@ public class CardData {
 
 	//======================================================================================
 	//コンストラクタ
-	public CardData() {
-		_directionOfTravel = new List<Field.DIRECTION> ();
-		_effect_direction  = new List<Field.DIRECTION> ();
-	}
+//	public CardData() {
+//		_directionOfTravel = new List<Field.DIRECTION> ();
+//		_effect_direction  = new List<Field.DIRECTION> ();
+//	}
 	//======================================================================================
 	//======================================================================================
 }

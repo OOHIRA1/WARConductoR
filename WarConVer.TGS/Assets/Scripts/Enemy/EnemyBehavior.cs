@@ -144,8 +144,8 @@ public class EnemyBehavior : MonoBehaviour {
 				summonCard = _handCard[ i ];
 			} else { 
 				//同じmpだったら
-				int cardStatusTotal = _handCard[ i ]._cardDates.attack_point + _handCard[ i ]._cardDates.hp;
-				int summonCardStatusTotal = summonCard._cardDates.attack_point + summonCard._cardDates.hp;
+				int cardStatusTotal = _handCard[ i ]._cardDates.attack_point + _handCard[ i ].CARD_DATA._toughness;
+				int summonCardStatusTotal = summonCard._cardDates.attack_point + summonCard.CARD_DATA._toughness;
 				
 				//体力と攻撃力の合計比較
 				if ( cardStatusTotal < summonCardStatusTotal ) continue;

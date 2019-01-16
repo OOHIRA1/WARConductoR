@@ -13,7 +13,7 @@ public class CardMain : MonoBehaviour {
 	[SerializeField] int _loadID = 0;							//読み込むカードID
 	[SerializeField] SpriteRenderer _cardSpriteRenderer = null;	//カードのSpriteRenderer
 	[SerializeField] CardDataLoader _cardDataLoader = null;
-	[SerializeField] CardData _cardData = null;
+	[SerializeField] CardData _cardData = new CardData();
 	[SerializeField] int _actionCount = 0;						//移動回数
 
 	GameObject _cardDetailsImage = null;
@@ -23,8 +23,6 @@ public class CardMain : MonoBehaviour {
 	//テスト用----------------------------------------------
 	[System.Serializable]
 	public struct CardDates {
-		public int id;
-		public int hp;
 		public int max_hp;
 		public int attack_point;
 		public Field.DIRECTION[ ] directions;
@@ -55,6 +53,9 @@ public class CardMain : MonoBehaviour {
 		get { return _cardSpriteRenderer; }
 	}
 
+	public CardData CARD_DATA {
+		get { return _cardData; }
+	}
 	public int MAX_ACTION_COUNT { 
 		get { return _MAX_ACTION_COUNT; }	
 	}
@@ -89,15 +90,25 @@ public class CardMain : MonoBehaviour {
 
 	//ダメージ-----------------------------------
 	public void Damage( int decreasePoint  ) { 
-		_cardDates.hp -= decreasePoint;
+		_cardData._toughness -= decreasePoint;
 
-		if ( _cardDates.hp < 0 ) { 
-			_cardDates.hp = 0;	
+		if ( _cardData._toughness < 0 ) { 
+			_cardData._toughness = 0;	
 		}
 
 		//HPが０になったら破壊する
-		if ( _cardDates.hp == 0 ) { 
+		if ( _cardData._toughness == 0 ) { 
 			Death( );	
+		}
+	}
+	//------------------------------------------
+
+	//回復--------------------------------------
+	public void Recovery( int increasePoint ) {
+		_cardData._toughness += increasePoint;
+
+		if ( _cardData._toughness > _cardData._maxToughness ) {
+			_cardData._toughness = _cardData._maxToughness;
 		}
 	}
 	//------------------------------------------
@@ -169,7 +180,7 @@ public class CardMain : MonoBehaviour {
 		//画像などの情報読み込み
 		_details.GetComponent< Image >( ).sprite = _cardSpriteRenderer.sprite;
 		attackPoint.text = _cardDates.attack_point.ToString( );
-		hitPoint.text = _cardDates.hp.ToString( );
+		hitPoint.text = _cardData._toughness.ToString( );
 
 		//位置をずらしている
 		_details.transform.parent = _canvas.transform;

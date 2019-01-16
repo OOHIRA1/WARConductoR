@@ -22,7 +22,7 @@ public class CardDamageManager {
 		CardMain damageCard = onCardSquare.On_Card;
 		damageCard.Damage( damage );
 
-		if ( damageCard._cardDates.hp == 0 ) { 
+		if ( damageCard.CARD_DATA._toughness == 0 ) { 
 			damageCard.Death( );
 			onCardSquare.On_Card = null;
 		}
@@ -43,23 +43,23 @@ public class CardDamageManager {
 		playerCard.Damage( enemy_card._cardDates.attack_point );
 		enemy_card.Damage( playerCard._cardDates.attack_point );
 
-		if ( playerCard._cardDates.hp == 0 && enemy_card._cardDates.hp == 0 ) {
+		if ( playerCard.CARD_DATA._toughness == 0 && enemy_card.CARD_DATA._toughness == 0 ) {
 			onPlayerCardSquare.On_Card = null;
 			onEnemyCardSquare.On_Card  = null;
 			return BATTLE_RESULT.BOTH_DEATH;
 		}
 
-		if ( enemy_card._cardDates.hp == 0 ) {	
+		if ( enemy_card.CARD_DATA._toughness == 0 ) {	
 			onEnemyCardSquare.On_Card = null;
 			return BATTLE_RESULT.PLAYER_WIN;
 		}
 
-		if ( playerCard._cardDates.hp == 0 ) {	
+		if ( playerCard.CARD_DATA._toughness == 0 ) {	
 			onEnemyCardSquare.On_Card = null;
 			return BATTLE_RESULT.PLAYER_LOSE;
 		}
 
-		if ( playerCard._cardDates.hp > 0 && enemy_card._cardDates.hp > 0 ) {
+		if ( playerCard.CARD_DATA._toughness > 0 && enemy_card.CARD_DATA._toughness > 0 ) {
 			return BATTLE_RESULT.BOTH_ALIVE;
 		}
 

@@ -166,8 +166,8 @@ public class Participant : MonoBehaviour {
 	
 	//回復効果(オーバロード)----------------------------------------
 	public void UseEffect( CardMain card ) {
-		card._cardDates.hp += card._cardDates.effect_recovery_point;
-		_activePoint.DecreasePoint( card._cardDates.effect_ap );
+		card.Recovery( card.CARD_DATA._effect_value );
+		_activePoint.DecreasePoint( card.CARD_DATA._necessaryAPForEffect );
 	}
 	//--------------------------------------------------------------
 
@@ -300,7 +300,6 @@ public class Participant : MonoBehaviour {
 	}
 	//----------------------------------------------------------
 
-
 	public void CardRefresh( ) { 
 		for ( int i = 0; i < _cardInField.Count; i++ ) {
 			_cardInField[ i ]._cardDates.actionCount = 0;	
@@ -308,10 +307,10 @@ public class Participant : MonoBehaviour {
 	}
 
 
+
 	void AddMyFieldCards( CardMain card ) { 
 		_cardInField.Add( card );
 	}
-
 
 	void MyFieldCardsDeathCheck( ) {
 		if ( _cardInField.Count == 0 ) return;
@@ -324,6 +323,7 @@ public class Participant : MonoBehaviour {
 		}
 	}
 
+	
 
 	void ReferenceCheck( ) { 
 		Assert.IsNotNull( _field, "Fieldの参照がないです" );
@@ -334,7 +334,7 @@ public class Participant : MonoBehaviour {
 }
 
 
-//カードが存在するか、カードのtypeが何か、事前に調べる関数は別クラスにしたほうがいいかも。ブリッジバターンとかいいかも？→Fieldの役割じゃね？
+//カードが存在するか、カードのtypeが何か、事前に調べる関数は別クラスにしたほうがいいかも。ブリッジバターンとかいいかも？
 
 //Handクラスのカードを使う関数のやり方を聞いてからSummon関数を修正すること
 

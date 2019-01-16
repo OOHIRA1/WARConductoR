@@ -78,7 +78,7 @@ public class UIActiveManager : MonoBehaviour {
 
 			case CardData.EFFECT_TYPE.RECOVERY:
 				if ( turnPlayer.DecreaseActivePointConfirmation( card._cardDates.effect_ap ) && 
-					 card._cardDates.hp < card._cardDates.max_hp ) {
+					 card.CARD_DATA._toughness < card.CARD_DATA._maxToughness ) {
 
 					ButtonActiveChanger( true, BUTTON.EFFECT );
 				}

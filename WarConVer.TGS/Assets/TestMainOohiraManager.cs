@@ -8,6 +8,7 @@ public class TestMainOohiraManager : MonoBehaviour {
 	public int _id = 1001;
 	public Deck _deck = null;
 	public AudioClip _clip;
+	public CardMain _card;
 
 	// Use this for initialization
 	void Start () {
@@ -29,7 +30,12 @@ public class TestMainOohiraManager : MonoBehaviour {
 		}
 
 		if (Input.GetKeyDown (KeyCode.C)) {
-			_deck.Draw ();
+			_card = _deck.Draw ();
+		}
+
+		if (Input.GetKeyDown (KeyCode.D)) {
+			if (_card)
+				_card.Damage (3);
 		}
 
 		if (Input.GetKeyDown (KeyCode.P)) {//これでは音は鳴らせない(Scene上にないとダメらしい)
