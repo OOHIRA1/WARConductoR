@@ -33,6 +33,8 @@ public class MainPhase : Phase {
 	MAIN_PHASE_STATUS _mainPhaseStatus	   = MAIN_PHASE_STATUS.IDLE;
 	bool _turnEndFlag					   = false;
 
+	Field _field = null;
+
 
 	//ボタン
 	//GameObject _returnButton	   = null;
@@ -47,7 +49,7 @@ public class MainPhase : Phase {
 	CardMain _debugCard = null;
 	Square _debugSquare = null;
 
-	public MainPhase( Participant turnPlayer, Participant enemyPlayer, MainSceneOperation mainSceneQperation, UIActiveManager uIActiveManager,
+	public MainPhase( Participant turnPlayer, Participant enemyPlayer, MainSceneOperation mainSceneQperation, UIActiveManager uIActiveManager, Field field,
 					  GameObject returnButton, GameObject moveButton, GameObject directAttackButton, GameObject effectButton, GameObject effectYesButton, GameObject turnEndButton,
 					  EnemyBehavior enemyBehavior,
 					  CardMain drawCard, CardMain debugCard, Square debugSquare ) {
@@ -56,6 +58,8 @@ public class MainPhase : Phase {
 		_enemyPlayer = enemyPlayer;
 		_mainSceneOperation = mainSceneQperation;
 		_uiActiveManager = uIActiveManager;
+
+		_field = field;
 
 		//_returnButton = returnButton;
 		//_moveButton = moveButton;
@@ -337,7 +341,7 @@ public class MainPhase : Phase {
 	
 	//カード移動状態処理----------------------------------------------------------------------------------------------------------------
 	void MoveCardStatus( ) {
-		List< Square > squares = _turnPlayer.MovePossibleSquare( _card, _nowSquare );
+		List< Square > squares = _field.MovePossibleSquare( _card, _nowSquare );
 
 		_turnPlayer.SquareChangeColor( squares, true );		//移動できるマスの色を変える
 
@@ -388,7 +392,8 @@ public class MainPhase : Phase {
 	//召喚状態処理----------------------------------------------------------------------
 	void SummonStatus( ) {
 		_handCard.transform.position = _mainSceneOperation.getWorldMousePos( );
-		List< Square > summonableSquares = _turnPlayer.SummonSquare( _turnPlayer.gameObject.tag );
+		//List< Square > summonableSquares = _turnPlayer.SummonSquare( _turnPlayer.gameObject.tag );
+		List< Square > summonableSquares = _field.SummonSquare( _turnPlayer.gameObject.tag );
 
 		if ( _turnPlayer.DecreaseMPointConfirmation( _handCard._cardDates.mp ) ) { 
 			_turnPlayer.SquareChangeColor( summonableSquares, true );
@@ -435,7 +440,8 @@ public class MainPhase : Phase {
 
 	//攻撃効果中処理------------------------------------------------------------------------------
 	void AttackEffect( ) {
-		List< Square > squares = _turnPlayer.AttackEffectPossibleOnCardSquare( _card, _nowSquare );
+		//List< Square > squares = _turnPlayer.AttackEffectPossibleOnCardSquare( _card, _nowSquare );
+		List< Square > squares = _field.AttackEffectPossibleOnCardSquare( _card, _nowSquare );
 		_turnPlayer.SquareChangeColor( squares, true );
 
 		if ( _mainSceneOperation.BackButtonClicked( ) ) {
@@ -471,7 +477,8 @@ public class MainPhase : Phase {
 
 	//移動効果中処理---------------------------------------------------------------------------------
 	void MoveEffect( ) {
-		List< Square > squares = _turnPlayer.MovePossibleSquare( _card, _nowSquare );
+		//List< Square > squares = _turnPlayer.MovePossibleSquare( _card, _nowSquare );
+		List< Square > squares = _field.MovePossibleSquare( _card, _nowSquare );
 
 		_turnPlayer.SquareChangeColor( squares, true );
 

@@ -29,7 +29,8 @@ public class EnemyBehavior : MonoBehaviour {
 	public void EnemySummonUpdate( ) {
 		if ( !_summonUpdateFlag ) return;
 
-		List< Square > summonSquares = _enemy.SummonSquare( _enemy.gameObject.tag );
+		//List< Square > summonSquares = _enemy.SummonSquare( _enemy.gameObject.tag );
+		List< Square > summonSquares = _field.SummonSquare( _enemy.gameObject.tag );
 		if ( summonSquares.Count == 0 ) {
 			_summonUpdateFlag = false;
 			return;
@@ -281,7 +282,8 @@ public class EnemyBehavior : MonoBehaviour {
 			for ( int j = 0; j < directions.Count; j++ ) { 
 				enemyDirection[ 0 ] = directions[ j ];
 				enemyMoveCard._cardDates.directions = enemyDirection;	//エネミーのカードの移動先を書き換えている。いいのかはわからない
-				List< Square > moveSquare = _enemy.MovePossibleSquare( enemyMoveCard, square );
+				//List< Square > moveSquare = _enemy.MovePossibleSquare( enemyMoveCard, square );
+				List< Square > moveSquare = _field.MovePossibleSquare( enemyMoveCard, square );
 
 				if ( moveSquare.Count == 0 ) continue;
 
