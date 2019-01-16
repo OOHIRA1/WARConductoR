@@ -57,7 +57,7 @@ public class UIActiveManager : MonoBehaviour {
 		//効果の種類によって処理を変える
 		//効果ボタン表示条件
 		switch ( card._cardDates.effect_type ) { 
-			case CardMain.EFFECT_TYPE.ATTACK:	
+			case CardData.EFFECT_TYPE.ATTACK:	
 				if ( turnPlayer.DecreaseActivePointConfirmation( card._cardDates.effect_ap ) && 
 					 turnPlayer.AttackEffectPossibleOnCardSquare( card, nowSquare ).Count > 0 ) {
 
@@ -65,7 +65,7 @@ public class UIActiveManager : MonoBehaviour {
 				}
 				break;
 
-			case CardMain.EFFECT_TYPE.MOVE:
+			case CardData.EFFECT_TYPE.MOVE:
 				if ( turnPlayer.DecreaseActivePointConfirmation( card._cardDates.effect_ap ) && 
 					 turnPlayer.MovePossibleSquare( card, nowSquare ).Count > 0 &&
 					 card._cardDates.actionCount < card.MAX_ACTION_COUNT ) {
@@ -74,7 +74,7 @@ public class UIActiveManager : MonoBehaviour {
 				}
 				break;
 
-			case CardMain.EFFECT_TYPE.RECOVERY:
+			case CardData.EFFECT_TYPE.RECOVERY:
 				if ( turnPlayer.DecreaseActivePointConfirmation( card._cardDates.effect_ap ) && 
 					 card._cardDates.hp < card._cardDates.max_hp ) {
 

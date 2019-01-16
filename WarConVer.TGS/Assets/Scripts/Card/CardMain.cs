@@ -21,12 +21,6 @@ public class CardMain : MonoBehaviour {
 	GameObject _canvas = null;
 
 	//テスト用----------------------------------------------
-	public enum EFFECT_TYPE { 
-		ATTACK,
-		MOVE,
-		RECOVERY,
-	}
-
 	[System.Serializable]
 	public struct CardDates {
 		public int id;
@@ -42,7 +36,7 @@ public class CardMain : MonoBehaviour {
 		public int effect_damage;
 		public int effect_recovery_point;
 		public int mp;
-		public EFFECT_TYPE effect_type;
+		public CardData.EFFECT_TYPE effect_type;
 		public int actionCount; 
 		
 	}

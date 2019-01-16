@@ -308,16 +308,16 @@ public class MainPhase : Phase {
 
 			//効果の種類によって処理を変える
 			switch ( _card._cardDates.effect_type ) { 
-				case CardMain.EFFECT_TYPE.ATTACK:
+				case CardData.EFFECT_TYPE.ATTACK:
 					_uiManager.ButtonActiveChanger( true, UIActiveManager.BUTTON.EFFECT_YES );
 					_mainPhaseStatus = MAIN_PHASE_STATUS.EFFECT_ATTACK;
 					break;
 
-				case CardMain.EFFECT_TYPE.MOVE:
+				case CardData.EFFECT_TYPE.MOVE:
 					_mainPhaseStatus = MAIN_PHASE_STATUS.EFFECT_MOVE;
 					break;
 
-				case CardMain.EFFECT_TYPE.RECOVERY:
+				case CardData.EFFECT_TYPE.RECOVERY:
 					_uiManager.ButtonActiveChanger( true, UIActiveManager.BUTTON.EFFECT_YES );
 					_mainPhaseStatus = MAIN_PHASE_STATUS.EEFECT_RECOVERY;
 					break;

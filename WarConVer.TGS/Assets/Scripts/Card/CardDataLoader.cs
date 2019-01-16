@@ -37,11 +37,24 @@ public class CardDataLoader : MonoBehaviour {
 				cardData._id 					= int.Parse(csvStringArrayList [i] [0]);
 				cardData._attack 				= int.Parse(csvStringArrayList [i] [1]);
 				cardData._toughness 			= int.Parse(csvStringArrayList [i] [2]);
-				cardData._directionOfTravel 	= int.Parse(csvStringArrayList [i] [3]);
-				cardData._effect 				= int.Parse(csvStringArrayList [i] [4]);
-				cardData._necessaryMP 			= int.Parse(csvStringArrayList [i] [5]);
-				cardData._necessaryAP 			= int.Parse(csvStringArrayList [i] [5]);
-				cardData._necessaryAPForEffect 	= int.Parse(csvStringArrayList [i] [6]);
+				int directionOfTravelData 		= int.Parse(csvStringArrayList [i] [3]);
+				while (directionOfTravelData != 0) {
+					Field.DIRECTION fieldDirection = (Field.DIRECTION)( directionOfTravelData % 10 );
+					cardData._directionOfTravel.Add ( fieldDirection );
+					directionOfTravelData /= 10;
+				}
+				cardData._effect_type 			= (CardData.EFFECT_TYPE)int.Parse(csvStringArrayList [i] [4]);
+				cardData._effect_value 			= int.Parse(csvStringArrayList [i] [5]);
+				int effectDirectionData 		= int.Parse(csvStringArrayList [i] [6]);
+				while (effectDirectionData != 0) {
+					Field.DIRECTION fieldDirection = (Field.DIRECTION)( directionOfTravelData % 10 );
+					cardData._effect_direction.Add ( fieldDirection );
+					effectDirectionData /= 10;
+				}
+				cardData._effect_distance 		= int.Parse(csvStringArrayList [i] [7]);
+				cardData._necessaryMP 			= int.Parse(csvStringArrayList [i] [8]);
+				cardData._necessaryAP 			= int.Parse(csvStringArrayList [i] [9]);
+				cardData._necessaryAPForEffect 	= int.Parse(csvStringArrayList [i] [10]);
 				_cardDatas.Add(cardData);
 			}
 		}
