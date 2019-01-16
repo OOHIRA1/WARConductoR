@@ -101,8 +101,8 @@ public class Participant : MonoBehaviour {
 					return;
 			}
 
-			card._cardDates.actionCount++;
-			_activePoint.DecreasePoint( card._cardDates.move_ap );
+			card.Action_Count++;
+			_activePoint.DecreasePoint( card.Card_Data._necessaryAP );
 			return;
 			
 		}
@@ -149,10 +149,10 @@ public class Participant : MonoBehaviour {
 		
 	
 		for ( int i = 0; i < squares.Count; i++ ) { 
-			_cardDamageManager.CardEffectDamage( squares[ i ], card._cardDates.effect_damage );
+			_cardDamageManager.CardEffectDamage( squares[ i ], card.Card_Data._effect_value );
 		}
 
-		_activePoint.DecreasePoint( card._cardDates.effect_ap );
+		_activePoint.DecreasePoint( card.Card_Data._necessaryAPForEffect );
 	}
 	//-------------------------------------------------------------------------------------------
 
@@ -166,8 +166,8 @@ public class Participant : MonoBehaviour {
 	
 	//回復効果(オーバロード)----------------------------------------
 	public void UseEffect( CardMain card ) {
-		card._cardDates.hp += card._cardDates.effect_recovery_point;
-		_activePoint.DecreasePoint( card._cardDates.effect_ap );
+		card.Recovery( card.Card_Data._effect_value );
+		_activePoint.DecreasePoint( card.Card_Data._necessaryAPForEffect );
 	}
 	//--------------------------------------------------------------
 
@@ -259,7 +259,7 @@ public class Participant : MonoBehaviour {
 			CardMain fieldCard = fieldCardObj.GetComponent< CardMain >( );
 			fieldCard.loadID = card.loadID;
 
-			_magicPoint.DecreasePoint( card._cardDates.mp );
+			_magicPoint.DecreasePoint( card.Card_Data._necessaryMP );
 			square.On_Card = fieldCard;
 			AddMyFieldCards( fieldCard );
 			return;
@@ -300,18 +300,17 @@ public class Participant : MonoBehaviour {
 	}
 	//----------------------------------------------------------
 
-
 	public void CardRefresh( ) { 
 		for ( int i = 0; i < _cardInField.Count; i++ ) {
-			_cardInField[ i ]._cardDates.actionCount = 0;	
+			_cardInField[ i ].Action_Count = 0;	
 		}	
 	}
+
 
 
 	void AddMyFieldCards( CardMain card ) { 
 		_cardInField.Add( card );
 	}
-
 
 	void MyFieldCardsDeathCheck( ) {
 		if ( _cardInField.Count == 0 ) return;
@@ -324,6 +323,7 @@ public class Participant : MonoBehaviour {
 		}
 	}
 
+	
 
 	void ReferenceCheck( ) { 
 		Assert.IsNotNull( _field, "Fieldの参照がないです" );
@@ -334,7 +334,7 @@ public class Participant : MonoBehaviour {
 }
 
 
-//カードが存在するか、カードのtypeが何か、事前に調べる関数は別クラスにしたほうがいいかも。ブリッジバターンとかいいかも？→Fieldの役割じゃね？
+//カードが存在するか、カードのtypeが何か、事前に調べる関数は別クラスにしたほうがいいかも。ブリッジバターンとかいいかも？
 
 //Handクラスのカードを使う関数のやり方を聞いてからSummon関数を修正すること
 
