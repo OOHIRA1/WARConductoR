@@ -15,6 +15,9 @@ public class Field : MonoBehaviour {
 	}
 
 	const int MAX_SQUARE = 20;
+	const int FIRST_ROW_INDEX = 0;
+	const int FIFTH_ROW_INDEX = 4;
+	const int SQUARE_ROW_NUM = 4;
 
 	Square[ ] _squares = new Square[ MAX_SQUARE ];		//マス
 	int _maxIndex = 0; 
@@ -61,6 +64,80 @@ public class Field : MonoBehaviour {
 		for ( int i = 0; i < squares.Count; i++ ) { 
 			squares[ i ].ChangeColor( value );
 		}
+	}
+	//--------------------------------------------------------------
+
+
+	//移動できる場所を事前に調べる関数-------------------------------------------------------------------------------------------------
+	public List< Square > MovePossibleSquare( CardMain card, Square nowSquare ) { 
+		List< Square > squares = new List< Square >( );
+
+		//移動できるマスだけ格納
+		Field.DIRECTION[ ] directions = card.getDirections( card.gameObject.tag, card._cardDates.directions );
+		for ( int i = 0; i < directions.Length; i++ ) {
+			Square square = SquareInThatDirection( nowSquare, directions[ i ], card._cardDates.distance );
+
+			if ( square == null ) continue;
+			if ( square.On_Card != null ) {
+				if ( square.On_Card.gameObject.tag == card.gameObject.tag ) continue;	//マスにあるのが自分のカードだったらcontinue
+			}
+
+			squares.Add( square );
+				
+		}
+
+		return squares;
+	}
+	//----------------------------------------------------------------------------------------------------------------------------------
+
+	
+	//攻撃効果をするマスにカードがあるマスを事前に調べる関数-----------------------------------------------------------------------------------
+	public List< Square > AttackEffectPossibleOnCardSquare( CardMain card, Square nowSquare ) { 
+		List< Square > squares = new List< Square >( );
+
+		//攻撃できるマスだけ格納
+		Field.DIRECTION[ ] directions = card.getDirections( card.gameObject.tag, card._cardDates.effect_directions );
+		for ( int i = 0; i < directions.Length; i++ ) {
+			Square square = SquareInThatDirection( nowSquare, directions[ i ], card._cardDates.effect_ditance );
+
+			if ( square == null ) continue;
+			if ( square.On_Card == null ) continue;
+			squares.Add( square );
+				
+		}
+
+		Debug.Log( squares );
+		return squares;
+	}
+	//------------------------------------------------------------------------------------------------------------------------------------
+
+	//召喚できるマスを事前に調べる関数-----------------------------
+	public List< Square > SummonSquare( string player ) { 
+		List< Square > squares = new List< Square >( );
+		
+		if ( player == "Player1" ) { 
+			for ( int i = 0; i < _maxIndex; i++ ) { 
+				Square square = getSquare( i );
+
+				if ( ( square.Index ) / SQUARE_ROW_NUM != FIFTH_ROW_INDEX )  continue;
+				if ( square.On_Card != null ) continue;
+
+				squares.Add( square );
+			}		
+		}
+		
+		//if ( player == "Player2" ) { 
+		//	for ( int i = 0; i < _maxIndex; i++ ) { 
+		//		Square square = getSquare( i );
+		//
+		//		if ( ( square.Index ) / SQUARE_ROW_NUM != FIRST_ROW_INDEX )  continue;
+		//		if ( square.On_Card != null ) continue;
+		//
+		//		squares.Add( square );
+		//	}		
+		//}
+
+		return squares;
 	}
 	//--------------------------------------------------------------
 

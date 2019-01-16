@@ -5,6 +5,11 @@ using UnityEngine.Assertions;
 
 public class Participant : MonoBehaviour {
 	const int MAX_MAGIC_POINT = 12;
+	const int SQUARE_ROW_NUM = 4;
+	const int FIRST_ROW_INDEX = 0;
+	const int FIFTH_ROW_INDEX = 4;
+	const int ADD_CEMETARY_POINT = 1;
+	const int UP_MAGIC_POINT = 1;
 
 	[ SerializeField ] Hand  _hand			= null;
 	[ SerializeField ] Deck  _deck			= null;
@@ -14,11 +19,6 @@ public class Participant : MonoBehaviour {
 	[ SerializeField ] Point _cemetaryPoint = null;
 	[ SerializeField ] Field _field			= null;
 
-	const int SQUARE_ROW_NUM = 4;
-	const int FIRST_ROW_INDEX = 0;
-	const int FIFTH_ROW_INDEX = 4;
-	const int ADD_CEMETARY_POINT = 1;
-	const int UP_MAGIC_POINT = 1;
 
 	List< CardMain > _cardInField  = new List< CardMain >( );			//フィールドの自分のカードの参照
 	CardDamageManager _cardDamageManager = new CardDamageManager( );
@@ -68,7 +68,7 @@ public class Participant : MonoBehaviour {
 		List< Square > squares = new List< Square >( );
 
 		//移動できるマスだけ格納
-		squares = MovePossibleSquare( card, nowSquare );
+		squares = _field.MovePossibleSquare( card, nowSquare );
 
 		CardDamageManager.BATTLE_RESULT result = CardDamageManager.BATTLE_RESULT.NOT_BATTLE;
 		//移動できるマスの中に移動したいマスがあるか探す
@@ -145,7 +145,7 @@ public class Participant : MonoBehaviour {
 		List< Square > squares = new List< Square >( );
 	
 		//効果範囲内でカードがあるマスだけ格納
-		squares = AttackEffectPossibleOnCardSquare( card, nowSquare );
+		squares = _field.AttackEffectPossibleOnCardSquare( card, nowSquare );
 		
 	
 		for ( int i = 0; i < squares.Count; i++ ) { 
@@ -172,7 +172,7 @@ public class Participant : MonoBehaviour {
 	//--------------------------------------------------------------
 
 
-	//移動できる場所を事前に調べる関数-------------------------------------------------------------------------------------------------
+	/*//移動できる場所を事前に調べる関数-------------------------------------------------------------------------------------------------
 	public List< Square > MovePossibleSquare( CardMain card, Square nowSquare ) { 
 		List< Square > squares = new List< Square >( );
 
@@ -243,12 +243,12 @@ public class Participant : MonoBehaviour {
 
 		return squares;
 	}
-	//--------------------------------------------------------------
+	//--------------------------------------------------------------*/
 
 	
 	//召喚処理-----------------------------------------------------------------------------------------------------------
 	public void Summon( CardMain card, Square square, string player ) {
-		List< Square > summonableSquares = SummonSquare( player );
+		List< Square > summonableSquares = _field.SummonSquare( player );
 
 		for ( int i = 0; i < summonableSquares.Count; i++ ) { 
 			if ( square.Index != summonableSquares[ i ].Index ) continue;

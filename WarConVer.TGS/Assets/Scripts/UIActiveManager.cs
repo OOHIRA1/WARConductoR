@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class UIActiveManager : MonoBehaviour {
-	//const int MAX_ACTION_COUNT = 3;	
-	const int FIRST_ROW_INDEX = 0;
-	const int SQUARE_ROW_NUM = 4;
 
 	public enum BUTTON { 
 		BACK,	
@@ -15,6 +12,12 @@ public class UIActiveManager : MonoBehaviour {
 		EFFECT_YES,
 		TURN_END,
 	}
+
+	//const int MAX_ACTION_COUNT = 3;	
+	const int FIRST_ROW_INDEX = 0;
+	const int SQUARE_ROW_NUM = 4;
+
+	[ SerializeField ] Field _field = null;
 
 	//ボタン
 	[ SerializeField ] List< GameObject > _UIButtons = new List< GameObject >( );
@@ -61,7 +64,7 @@ public class UIActiveManager : MonoBehaviour {
 		switch ( card._cardDates.effect_type ) { 
 			case CardData.EFFECT_TYPE.ATTACK:	
 				if ( turnPlayer.DecreaseActivePointConfirmation( card._cardDates.effect_ap ) && 
-					 turnPlayer.AttackEffectPossibleOnCardSquare( card, nowSquare ).Count > 0 ) {
+					 _field.AttackEffectPossibleOnCardSquare( card, nowSquare ).Count > 0 ) {
 
 					ButtonActiveChanger( true, BUTTON.EFFECT );
 				}
@@ -69,7 +72,7 @@ public class UIActiveManager : MonoBehaviour {
 
 			case CardData.EFFECT_TYPE.MOVE:
 				if ( turnPlayer.DecreaseActivePointConfirmation( card._cardDates.effect_ap ) && 
-					 turnPlayer.MovePossibleSquare( card, nowSquare ).Count > 0 &&
+					 _field.MovePossibleSquare( card, nowSquare ).Count > 0 &&
 					 card._cardDates.actionCount < card.MAX_ACTION_COUNT ) {
 
 					ButtonActiveChanger( true, BUTTON.EFFECT );
@@ -94,7 +97,7 @@ public class UIActiveManager : MonoBehaviour {
 	void MoveButtonActiveConditions( CardMain card, Participant turnPlayer, Square nowSquare ) {
 		//APが消費する分あって移動できるマスがあったてまだ行動できるカードだったら
 		if ( turnPlayer.DecreaseActivePointConfirmation( card._cardDates.move_ap ) &&
-			 turnPlayer.MovePossibleSquare( card, nowSquare ).Count > 0 &&
+			 _field.MovePossibleSquare( card, nowSquare ).Count > 0 &&
 			 card._cardDates.actionCount < card.MAX_ACTION_COUNT ) {
 
 			ButtonActiveChanger( true, BUTTON.MOVE );
