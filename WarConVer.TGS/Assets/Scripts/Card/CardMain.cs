@@ -20,27 +20,6 @@ public class CardMain : MonoBehaviour {
 	GameObject _details = null;
 	GameObject _canvas = null;
 
-	//テスト用----------------------------------------------
-	[System.Serializable]
-	public struct CardDates {
-		public int max_hp;
-		public int attack_point;
-		public Field.DIRECTION[ ] directions;
-		public int distance;
-		public int move_ap;
-		public Field.DIRECTION[ ] effect_directions;
-		public int effect_ap;
-		public int effect_ditance;
-		public int effect_damage;
-		public int effect_recovery_point;
-		public int mp;
-		public CardData.EFFECT_TYPE effect_type;
-		public int actionCount; 
-		
-	}
-	public CardDates _cardDates = new CardDates( );
-	//-------------------------------------------------------
-
 
 	//===================================================================
 	//アクセッサ
@@ -53,9 +32,15 @@ public class CardMain : MonoBehaviour {
 		get { return _cardSpriteRenderer; }
 	}
 
-	public CardData CARD_DATA {
+	public CardData Card_Data {
 		get { return _cardData; }
 	}
+
+	public int Action_Count {
+		get { return _actionCount; }
+		set { _actionCount = value; }
+	}
+
 	public int MAX_ACTION_COUNT { 
 		get { return _MAX_ACTION_COUNT; }	
 	}
@@ -120,13 +105,13 @@ public class CardMain : MonoBehaviour {
 
 
 	//プレイヤーによってカードの持っている向きを調整して返す処理------------------------------------
-	public Field.DIRECTION[ ] getDirections( string player, Field.DIRECTION[ ] directions ) {
+	public List< Field.DIRECTION > getDirections( string player, List< Field.DIRECTION > directions ) {
 		if ( player == "Player1" ) {
 			return directions;
 		}
 
-		Field.DIRECTION[ ] player2Directions = new Field.DIRECTION[ directions.Length ];
-		for ( int i = 0; i < directions.Length; i++ ) { 
+		List< Field.DIRECTION > player2Directions = new List< Field.DIRECTION >( directions.Count );
+		for ( int i = 0; i < directions.Count; i++ ) { 
 		
 			switch( directions[ i ] ) { 
 				case Field.DIRECTION.LEFT_FORWARD:
@@ -179,7 +164,7 @@ public class CardMain : MonoBehaviour {
 
 		//画像などの情報読み込み
 		_details.GetComponent< Image >( ).sprite = _cardSpriteRenderer.sprite;
-		attackPoint.text = _cardDates.attack_point.ToString( );
+		attackPoint.text = _cardData._attack.ToString( );
 		hitPoint.text = _cardData._toughness.ToString( );
 
 		//位置をずらしている

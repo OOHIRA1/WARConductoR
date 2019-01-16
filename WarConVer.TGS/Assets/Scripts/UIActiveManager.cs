@@ -61,9 +61,9 @@ public class UIActiveManager : MonoBehaviour {
 	void EffectButtonActiveConditions( CardMain card, Participant turnPlayer, Square nowSquare ) { 
 		//効果の種類によって処理を変える
 		//効果ボタン表示条件
-		switch ( card._cardDates.effect_type ) { 
+		switch ( card.Card_Data._effect_type ) { 
 			case CardData.EFFECT_TYPE.ATTACK:	
-				if ( turnPlayer.DecreaseActivePointConfirmation( card._cardDates.effect_ap ) && 
+			if ( turnPlayer.DecreaseActivePointConfirmation( card.Card_Data._necessaryAPForEffect ) && 
 					 _field.AttackEffectPossibleOnCardSquare( card, nowSquare ).Count > 0 ) {
 
 					ButtonActiveChanger( true, BUTTON.EFFECT );
@@ -71,17 +71,17 @@ public class UIActiveManager : MonoBehaviour {
 				break;
 
 			case CardData.EFFECT_TYPE.MOVE:
-				if ( turnPlayer.DecreaseActivePointConfirmation( card._cardDates.effect_ap ) && 
+			if ( turnPlayer.DecreaseActivePointConfirmation( card.Card_Data._necessaryAPForEffect ) && 
 					 _field.MovePossibleSquare( card, nowSquare ).Count > 0 &&
-					 card._cardDates.actionCount < card.MAX_ACTION_COUNT ) {
+					 card.Action_Count < card.MAX_ACTION_COUNT ) {
 
 					ButtonActiveChanger( true, BUTTON.EFFECT );
 				}
 				break;
 
 			case CardData.EFFECT_TYPE.RECOVERY:
-				if ( turnPlayer.DecreaseActivePointConfirmation( card._cardDates.effect_ap ) && 
-					 card.CARD_DATA._toughness < card.CARD_DATA._maxToughness ) {
+			if ( turnPlayer.DecreaseActivePointConfirmation( card.Card_Data._necessaryAPForEffect ) && 
+					 card.Card_Data._toughness < card.Card_Data._maxToughness ) {
 
 					ButtonActiveChanger( true, BUTTON.EFFECT );
 				}
@@ -96,9 +96,9 @@ public class UIActiveManager : MonoBehaviour {
 
 	void MoveButtonActiveConditions( CardMain card, Participant turnPlayer, Square nowSquare ) {
 		//APが消費する分あって移動できるマスがあったてまだ行動できるカードだったら
-		if ( turnPlayer.DecreaseActivePointConfirmation( card._cardDates.move_ap ) &&
+		if ( turnPlayer.DecreaseActivePointConfirmation( card.Card_Data._necessaryAP ) &&
 			 _field.MovePossibleSquare( card, nowSquare ).Count > 0 &&
-			 card._cardDates.actionCount < card.MAX_ACTION_COUNT ) {
+			 card.Action_Count < card.MAX_ACTION_COUNT ) {
 
 			ButtonActiveChanger( true, BUTTON.MOVE );
 
@@ -108,8 +108,8 @@ public class UIActiveManager : MonoBehaviour {
 
 	void DirectAttackButtonActiveConditions( CardMain card, Participant turnPlayer, Square nowSquare ) { 
 		//消費するAPがあってまだ行動できるカードだったら
-		if ( turnPlayer.DecreaseActivePointConfirmation( card._cardDates.move_ap ) &&
-			 card._cardDates.actionCount < card.MAX_ACTION_COUNT ) {
+		if ( turnPlayer.DecreaseActivePointConfirmation( card.Card_Data._necessaryAP ) &&
+			 card.Action_Count < card.MAX_ACTION_COUNT ) {
 
 			if ( ( ( nowSquare.Index ) / SQUARE_ROW_NUM == FIRST_ROW_INDEX ) && card.gameObject.tag == "Player1" ) {		//一列目にいたら攻撃ボタンを表示//修正するだろうからマジックナンバーを放置
 				ButtonActiveChanger( true, BUTTON.DIRECT_ATTACK );

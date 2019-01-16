@@ -312,7 +312,7 @@ public class MainPhase : Phase {
 												   UIActiveManager.BUTTON.EFFECT );
 
 			//効果の種類によって処理を変える
-			switch ( _card._cardDates.effect_type ) { 
+			switch ( _card.Card_Data._effect_type ) { 
 				case CardData.EFFECT_TYPE.ATTACK:
 					_uiActiveManager.ButtonActiveChanger( true, UIActiveManager.BUTTON.EFFECT_YES );
 					_mainPhaseStatus = MAIN_PHASE_STATUS.EFFECT_ATTACK;
@@ -380,7 +380,7 @@ public class MainPhase : Phase {
 
 	//ダイレクトアタック処理----------------------------------------------------
 	void DirectAttack( ) { 
-			_turnPlayer.DirectAttack( _enemyPlayer, _card._cardDates.move_ap );
+		_turnPlayer.DirectAttack( _enemyPlayer, _card.Card_Data._necessaryAP );
 			_card = null;
 			_nowSquare = null;
 			_mainPhaseStatus = MAIN_PHASE_STATUS.IDLE;
@@ -395,12 +395,12 @@ public class MainPhase : Phase {
 		//List< Square > summonableSquares = _turnPlayer.SummonSquare( _turnPlayer.gameObject.tag );
 		List< Square > summonableSquares = _field.SummonSquare( _turnPlayer.gameObject.tag );
 
-		if ( _turnPlayer.DecreaseMPointConfirmation( _handCard._cardDates.mp ) ) { 
+		if ( _turnPlayer.DecreaseMPointConfirmation( _handCard.Card_Data._necessaryMP ) ) { 
 			_turnPlayer.SquareChangeColor( summonableSquares, true );
 		}
 
 		if ( !_mainSceneOperation.MouseConsecutivelyTouch( ) ) {
-			if ( !_turnPlayer.DecreaseMPointConfirmation( _handCard._cardDates.mp ) ) {
+			if ( !_turnPlayer.DecreaseMPointConfirmation( _handCard.Card_Data._necessaryMP ) ) {
 				_handCard.transform.position = _handCardPos;
 				_handCard.gameObject.GetComponent< BoxCollider2D >( ).enabled = true;
 				_mainPhaseStatus = MAIN_PHASE_STATUS.IDLE;

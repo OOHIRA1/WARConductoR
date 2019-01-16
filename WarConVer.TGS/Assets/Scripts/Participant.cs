@@ -101,8 +101,8 @@ public class Participant : MonoBehaviour {
 					return;
 			}
 
-			card._cardDates.actionCount++;
-			_activePoint.DecreasePoint( card._cardDates.move_ap );
+			card.Action_Count++;
+			_activePoint.DecreasePoint( card.Card_Data._necessaryAP );
 			return;
 			
 		}
@@ -149,10 +149,10 @@ public class Participant : MonoBehaviour {
 		
 	
 		for ( int i = 0; i < squares.Count; i++ ) { 
-			_cardDamageManager.CardEffectDamage( squares[ i ], card._cardDates.effect_damage );
+			_cardDamageManager.CardEffectDamage( squares[ i ], card.Card_Data._effect_value );
 		}
 
-		_activePoint.DecreasePoint( card._cardDates.effect_ap );
+		_activePoint.DecreasePoint( card.Card_Data._necessaryAPForEffect );
 	}
 	//-------------------------------------------------------------------------------------------
 
@@ -166,8 +166,8 @@ public class Participant : MonoBehaviour {
 	
 	//回復効果(オーバロード)----------------------------------------
 	public void UseEffect( CardMain card ) {
-		card.Recovery( card.CARD_DATA._effect_value );
-		_activePoint.DecreasePoint( card.CARD_DATA._necessaryAPForEffect );
+		card.Recovery( card.Card_Data._effect_value );
+		_activePoint.DecreasePoint( card.Card_Data._necessaryAPForEffect );
 	}
 	//--------------------------------------------------------------
 
@@ -259,7 +259,7 @@ public class Participant : MonoBehaviour {
 			CardMain fieldCard = fieldCardObj.GetComponent< CardMain >( );
 			fieldCard.loadID = card.loadID;
 
-			_magicPoint.DecreasePoint( card._cardDates.mp );
+			_magicPoint.DecreasePoint( card.Card_Data._necessaryMP );
 			square.On_Card = fieldCard;
 			AddMyFieldCards( fieldCard );
 			return;
@@ -302,7 +302,7 @@ public class Participant : MonoBehaviour {
 
 	public void CardRefresh( ) { 
 		for ( int i = 0; i < _cardInField.Count; i++ ) {
-			_cardInField[ i ]._cardDates.actionCount = 0;	
+			_cardInField[ i ].Action_Count = 0;	
 		}	
 	}
 

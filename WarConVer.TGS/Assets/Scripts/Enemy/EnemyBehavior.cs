@@ -87,9 +87,9 @@ public class EnemyBehavior : MonoBehaviour {
 
 			CardMain directAttackCard = square.On_Card;
 			int nowAP = _enemyActivePoint.Point_Num;
-			if ( directAttackCard._cardDates.mp > nowAP ) continue;
+			if ( directAttackCard.Card_Data._necessaryMP > nowAP ) continue;
 
-			_enemy.DirectAttack( _enemy, directAttackCard._cardDates.mp );
+			_enemy.DirectAttack( _enemy, directAttackCard.Card_Data._necessaryMP );
 			return;
 		}
 
@@ -136,17 +136,17 @@ public class EnemyBehavior : MonoBehaviour {
 		for ( int i = 0; i < _handCard.Count; i++ ) { 
 			int nowMP = _enemyMagicPoint.Point_Num;
 
-			if ( _handCard[ i ]._cardDates.mp > nowMP ) continue;	
-			if( max_mp > _handCard[ i ]._cardDates.mp ) continue;
+			if ( _handCard[ i ].Card_Data._necessaryMP > nowMP ) continue;	
+			if( max_mp > _handCard[ i ].Card_Data._necessaryMP ) continue;
 
-			if ( max_mp < _handCard[ i ]._cardDates.mp ) {
+			if ( max_mp < _handCard[ i ].Card_Data._necessaryMP ) {
 				//mpが大きかったら
-				max_mp = _handCard[ i ]._cardDates.mp;
+				max_mp = _handCard[ i ].Card_Data._necessaryMP;
 				summonCard = _handCard[ i ];
 			} else { 
 				//同じmpだったら
-				int cardStatusTotal = _handCard[ i ]._cardDates.attack_point + _handCard[ i ].CARD_DATA._toughness;
-				int summonCardStatusTotal = summonCard._cardDates.attack_point + summonCard.CARD_DATA._toughness;
+				int cardStatusTotal = _handCard[ i ].Card_Data._attack + _handCard[ i ].Card_Data._toughness;
+				int summonCardStatusTotal = summonCard.Card_Data._attack + summonCard.Card_Data._toughness;
 				
 				//体力と攻撃力の合計比較
 				if ( cardStatusTotal < summonCardStatusTotal ) continue;
@@ -156,8 +156,8 @@ public class EnemyBehavior : MonoBehaviour {
 				}
 
 				//移動方向の多さ比較
-				if ( _handCard[ i ]._cardDates.directions.Length < summonCard._cardDates.directions.Length ) continue;
-				if ( _handCard[ i ]._cardDates.directions.Length > summonCard._cardDates.directions.Length ) { 
+				if ( _handCard[ i ].Card_Data._directionOfTravel.Count < summonCard.Card_Data._directionOfTravel.Count ) continue;
+				if ( _handCard[ i ].Card_Data._directionOfTravel.Count > summonCard.Card_Data._directionOfTravel.Count ) { 
 					summonCard = _handCard[ i ];
 					continue;
 				}
@@ -269,7 +269,7 @@ public class EnemyBehavior : MonoBehaviour {
 
 			enemyMoveCard = square.On_Card;
 			int nowAP = _enemyActivePoint.Point_Num;
-			if ( enemyMoveCard._cardDates.mp > nowAP ) continue;
+			if ( enemyMoveCard.Card_Data._necessaryMP > nowAP ) continue;
 
 			List< Field.DIRECTION > directions = EnemyDirectionSorting( enemyMoveCard );
 
@@ -277,11 +277,14 @@ public class EnemyBehavior : MonoBehaviour {
 
 
 
-			Field.DIRECTION[ ] enemyDirection = new Field.DIRECTION[ 1 ];
+			List<Field.DIRECTION> enemyDirection = new List< Field.DIRECTION >( );
 
 			for ( int j = 0; j < directions.Count; j++ ) { 
 				enemyDirection[ 0 ] = directions[ j ];
-				enemyMoveCard._cardDates.directions = enemyDirection;	//エネミーのカードの移動先を書き換えている。いいのかはわからない
+				//変更してください！！！！！エラーになります！##################################################################################################
+				//enemyMoveCard.CARD_DATA._directionOfTravel = enemyDirection;	//エネミーのカードの移動先を書き換えている。いいのかはわからない
+				//############################################################################################################################################
+
 				//List< Square > moveSquare = _enemy.MovePossibleSquare( enemyMoveCard, square );
 				List< Square > moveSquare = _field.MovePossibleSquare( enemyMoveCard, square );
 
@@ -307,9 +310,9 @@ public class EnemyBehavior : MonoBehaviour {
 		List< Field.DIRECTION > direction = new List< Field.DIRECTION >( );
 		for ( int i = 0; i < enemyDirections.Length; i++ ) {
 
-			for ( int j = 0; j < card._cardDates.directions.Length; j++ ) {
-				if ( card._cardDates.directions[ j ] != enemyDirections[ i ]  ) continue;
-				direction.Add( card._cardDates.directions[ j ] );
+			for ( int j = 0; j < card.Card_Data._directionOfTravel.Count; j++ ) {
+				if ( card.Card_Data._directionOfTravel[ j ] != enemyDirections[ i ]  ) continue;
+				direction.Add( card.Card_Data._directionOfTravel[ j ] );
 			}
 
 		}
