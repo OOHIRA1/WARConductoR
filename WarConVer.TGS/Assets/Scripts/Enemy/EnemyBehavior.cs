@@ -48,7 +48,6 @@ public class EnemyBehavior : MonoBehaviour {
 		//第一条件
 		summonSquare = FirstPrioritySquareSearch( );
 		if ( summonSquare != null ) {
-
 			Summon( summonCard, summonSquare );
 			return;
 		}
@@ -75,7 +74,7 @@ public class EnemyBehavior : MonoBehaviour {
 	}
 
 	
-	public void DirectAttackUpdate( ) { 
+	public void EnemyDirectAttackUpdate( ) { 
 		if ( !_directAttackUpdateFlag ) return;
 		if ( _summonUpdateFlag ) return;
 

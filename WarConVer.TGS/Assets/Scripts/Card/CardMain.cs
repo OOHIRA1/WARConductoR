@@ -61,6 +61,10 @@ public class CardMain : MonoBehaviour {
 		get { return _cardSpriteRenderer; }
 	}
 
+	public int MAX_ACTION_COUNT { 
+		get { return _MAX_ACTION_COUNT; }	
+	}
+
 	//===================================================================
 	//===================================================================
 

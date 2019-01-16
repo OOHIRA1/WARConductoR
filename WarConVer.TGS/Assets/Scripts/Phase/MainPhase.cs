@@ -15,11 +15,11 @@ public class MainPhase : Phase {
 		CARD_SUMMON,
 	}
 	
-	const int MAX_ACTION_COUNT = 3;							//移動回数の最大値
+	//const int MAX_ACTION_COUNT = 3;							//移動回数の最大値
 	const int LOSE_CEMETARY_POINT = 10;
-	const int SQUARE_ROW_NUM = 4;
-	const int FIRST_ROW_INDEX = 0;
-	const int FIFTH_ROW_INDEX = 4;
+	//const int SQUARE_ROW_NUM = 4;
+	//const int FIRST_ROW_INDEX = 0;
+	//const int FIFTH_ROW_INDEX = 4;
 
 	MainSceneOperation _mainSceneOperation = null;
 	Square _nowSquare					   = null;
@@ -32,14 +32,14 @@ public class MainPhase : Phase {
 	MAIN_PHASE_STATUS _mainPhaseStatus	   = MAIN_PHASE_STATUS.IDLE;
 	bool _turnEndFlag					   = false;
 
-	UIManager _uiManager = new UIManager( );
+	UIActiveManager _uiManager = new UIActiveManager( );
 
 	//ボタン
-	GameObject _returnButton	   = null;
-	GameObject _moveButton		   = null;
-	GameObject _directAttackButton = null;
-	GameObject _effectButton	   = null;
-	GameObject _effectYesBuuton	   = null;
+	//GameObject _returnButton	   = null;
+	//GameObject _moveButton		   = null;
+	//GameObject _directAttackButton = null;
+	//GameObject _effectButton	   = null;
+	//GameObject _effectYesBuuton	   = null;
 	GameObject _turnEndButton	   = null;
 
 	//テスト用
@@ -56,11 +56,11 @@ public class MainPhase : Phase {
 		_enemyPlayer = enemyPlayer;
 		_mainSceneOperation = mainSceneQperation;
 
-		_returnButton = returnButton;
-		_moveButton = moveButton;
-		_directAttackButton = directAttackButton;
-		_effectButton = effectButton;
-		_effectYesBuuton = effectYesButton;
+		//_returnButton = returnButton;
+		//_moveButton = moveButton;
+		//_directAttackButton = directAttackButton;
+		//_effectButton = effectButton;
+		//_effectYesBuuton = effectYesButton;
 		_turnEndButton = turnEndButton;
 
 		_enemyBehavior = enemyBehavior;
@@ -86,10 +86,13 @@ public class MainPhase : Phase {
 
 			//TestSummonUpdateFlag( );
 			//TestCardMoveUpdateFlag( );
-			_enemyBehavior.EnemySummonUpdate( );
-			_enemyBehavior.EnemyCardMoveUpdate( );
+			//_enemyBehavior.EnemySummonUpdate( );
+			//_enemyBehavior.EnemyDirectAttackUpdate( );
+			//_enemyBehavior.EnemyCardMoveUpdate( );
 
-			if ( !_enemyBehavior.Summon_Update_Flag && !_enemyBehavior.Card_MoveUpdate_Flag ) { 
+			if ( !_enemyBehavior.Summon_Update_Flag && 
+				!_enemyBehavior.Card_MoveUpdate_Flag &&
+				!_enemyBehavior.Direct_Attack_Update_Flag ) { 
 				_turnEndFlag = true;
 				//フラグリセットしないといけないかも
 			}
@@ -193,8 +196,10 @@ public class MainPhase : Phase {
 
 
 	//フィールドカードの操作系UIの表示処理----------------------------------------------------------------------------
-	void ShowCardOperationUI( ) { 
-		if ( _card.gameObject.tag == _turnPlayer.gameObject.tag ) {
+	void ShowCardOperationUI( ) {
+		_uiManager.ShowCardOperationUI( _card, _turnPlayer, _nowSquare );
+
+		/*if ( _card.gameObject.tag == _turnPlayer.gameObject.tag ) {
 				_returnButton.SetActive( true );
 
 				//効果の種類によって処理を変える
@@ -258,7 +263,7 @@ public class MainPhase : Phase {
 
 		if ( _card.gameObject.tag == _enemyPlayer.gameObject.tag ) { 
 			_returnButton.SetActive( true );
-		}
+		}*/
 	}
 	//------------------------------------------------------------------------------------------------------------------
 
@@ -268,33 +273,28 @@ public class MainPhase : Phase {
 
 		//戻るボタンを押したら
 		if ( _mainSceneOperation.BackButtonClicked( ) ) { 
-			_returnButton.SetActive( false );
-			_moveButton.SetActive( false );
-			_directAttackButton.SetActive( false );
-			_effectButton.SetActive( false );
-			_mainPhaseStatus = MAIN_PHASE_STATUS.IDLE;
+			_uiManager.AllButtonActiveChanger( false );
 			_card.DeleteCardDetail( );
 			_card = null;
 			_nowSquare = null;
+			_mainPhaseStatus = MAIN_PHASE_STATUS.IDLE;
 			return;
 		}
 
 		//移動ボタンを押したら
 		if ( _mainSceneOperation.MoveButtonClicked( ) ) { 
-			_moveButton.SetActive( false );
-			_directAttackButton.SetActive( false );
-			_effectButton.SetActive( false );
-			_mainPhaseStatus = MAIN_PHASE_STATUS.CARD_MOVE;
+			_uiManager.ButtonActiveChanger( false, UIActiveManager.BUTTON.MOVE,
+												   UIActiveManager.BUTTON.DIRECTATTACK,
+												   UIActiveManager.BUTTON.EFFECT );
+
 			_card.DeleteCardDetail( );
+			_mainPhaseStatus = MAIN_PHASE_STATUS.CARD_MOVE;
 			return;
 		}
 
 		//攻撃ボタンを押したら
 		if ( _mainSceneOperation.AttackButtonClicked( ) ) {
-			_moveButton.SetActive( false );
-			_directAttackButton.SetActive( false );
-			_returnButton.SetActive( false );
-			_effectButton.SetActive( false );
+			_uiManager.AllButtonActiveChanger( false );
 			_mainPhaseStatus = MAIN_PHASE_STATUS.DIRECT_ATTACK;
 			_card.DeleteCardDetail( );
 			return;
@@ -302,15 +302,15 @@ public class MainPhase : Phase {
 
 		//効果ボタンを押したら
 		if ( _mainSceneOperation.EffectButtonClicked( ) ) { 
-			_moveButton.SetActive( false );
-			_directAttackButton.SetActive( false );
-			_effectButton.SetActive( false );
+			_uiManager.ButtonActiveChanger( false, UIActiveManager.BUTTON.MOVE,
+												   UIActiveManager.BUTTON.DIRECTATTACK,
+												   UIActiveManager.BUTTON.EFFECT );
 
 			//効果の種類によって処理を変える
 			switch ( _card._cardDates.effect_type ) { 
-				case CardMain.EFFECT_TYPE.ATTACK:	
+				case CardMain.EFFECT_TYPE.ATTACK:
+					_uiManager.ButtonActiveChanger( true, UIActiveManager.BUTTON.EFFECT_YES );
 					_mainPhaseStatus = MAIN_PHASE_STATUS.EFFECT_ATTACK;
-					_effectYesBuuton.SetActive( true );
 					break;
 
 				case CardMain.EFFECT_TYPE.MOVE:
@@ -318,8 +318,8 @@ public class MainPhase : Phase {
 					break;
 
 				case CardMain.EFFECT_TYPE.RECOVERY:
+					_uiManager.ButtonActiveChanger( true, UIActiveManager.BUTTON.EFFECT_YES );
 					_mainPhaseStatus = MAIN_PHASE_STATUS.EEFECT_RECOVERY;
-					_effectYesBuuton.SetActive( true );
 					break;
 
 				default:
@@ -343,7 +343,7 @@ public class MainPhase : Phase {
 		if ( _mainSceneOperation.MouseTouch( ) ) {
 			Square square = _rayShooter.RayCastSquare( );	//マウスをクリックしたらレイを飛ばしてマスを取得する
 			_turnPlayer.SquareChangeColor( squares, false );	//色をもとに戻す
-			_returnButton.SetActive( false );
+			_uiManager.ButtonActiveChanger( false, UIActiveManager.BUTTON.BACK );
 
 			if ( square != null ) {
 				_turnPlayer.MoveCard( _card, _nowSquare, square );	//移動できるかどうかを判定し移動できたら移動する
@@ -359,7 +359,7 @@ public class MainPhase : Phase {
 
 		//戻るボタンを押したら
 		if ( _mainSceneOperation.BackButtonClicked( ) ) {
-			_returnButton.SetActive( false );
+			_uiManager.ButtonActiveChanger( false, UIActiveManager.BUTTON.BACK );
 			_turnPlayer.SquareChangeColor( squares, false );	//色をもとに戻す
 
 			//情報リセット
@@ -376,9 +376,9 @@ public class MainPhase : Phase {
 	//ダイレクトアタック処理----------------------------------------------------
 	void DirectAttack( ) { 
 			_turnPlayer.DirectAttack( _enemyPlayer, _card._cardDates.move_ap );
-			_mainPhaseStatus = MAIN_PHASE_STATUS.IDLE;
 			_card = null;
 			_nowSquare = null;
+			_mainPhaseStatus = MAIN_PHASE_STATUS.IDLE;
 			return;
 	}
 	//--------------------------------------------------------------------------
@@ -439,8 +439,9 @@ public class MainPhase : Phase {
 
 		if ( _mainSceneOperation.BackButtonClicked( ) ) {
 			_turnPlayer.SquareChangeColor( squares, false );
-			_returnButton.SetActive( false );
-			_effectYesBuuton.SetActive( false );
+			_uiManager.AllButtonActiveChanger( false );
+			//_returnButton.SetActive( false );
+			//_effectYesBuuton.SetActive( false );
 
 			_card = null;
 			_nowSquare = null;
@@ -451,9 +452,10 @@ public class MainPhase : Phase {
 		
 		if ( _mainSceneOperation.EffectYesButtonClicked( ) ) {
 			_turnPlayer.SquareChangeColor( squares, false );
-			_returnButton.SetActive( false );
-			_effectYesBuuton.SetActive( false );
 			_turnPlayer.UseEffect( _card, _nowSquare );
+			_uiManager.AllButtonActiveChanger( false );
+			//_returnButton.SetActive( false );
+			//_effectYesBuuton.SetActive( false );
 
 			_card = null;
 			_nowSquare = null;
@@ -475,7 +477,7 @@ public class MainPhase : Phase {
 		if ( _mainSceneOperation.MouseTouch( ) ) {
 			Square square = _rayShooter.RayCastSquare( );		//マウスをクリックしたらレイを飛ばしてマスを取得する
 			_turnPlayer.SquareChangeColor( squares, false );	//色をもとに戻す
-			_returnButton.SetActive( false );
+			_uiManager.ButtonActiveChanger( false, UIActiveManager.BUTTON.BACK );
 
 			if ( square != null ) {
 				_turnPlayer.UseEffect( _card, _nowSquare, square );	//移動できるかどうかを判定し移動できたら移動する
@@ -489,7 +491,7 @@ public class MainPhase : Phase {
 
 		if ( _mainSceneOperation.BackButtonClicked( ) ) {
 			_turnPlayer.SquareChangeColor( squares, false );
-			_returnButton.SetActive( false );
+			_uiManager.ButtonActiveChanger( false, UIActiveManager.BUTTON.BACK );
 
 			_card = null;
 			_nowSquare = null;
@@ -504,8 +506,9 @@ public class MainPhase : Phase {
 	//回復効果中処理----------------------------------------------
 	void RecoveryEffect( ) {
 		if ( _mainSceneOperation.BackButtonClicked( ) ) {
-			_returnButton.SetActive( false );
-			_effectYesBuuton.SetActive( false );
+			//_returnButton.SetActive( false );
+			//_effectYesBuuton.SetActive( false );
+			_uiManager.AllButtonActiveChanger( false );
 
 			_card = null;
 			_nowSquare = null;
@@ -515,9 +518,10 @@ public class MainPhase : Phase {
 		}
 		
 		if ( _mainSceneOperation.EffectYesButtonClicked( ) ) {
-			_returnButton.SetActive( false );
-			_effectYesBuuton.SetActive( false );
+			//_returnButton.SetActive( false );
+			//_effectYesBuuton.SetActive( false );
 			_turnPlayer.UseEffect( _card );
+			_uiManager.AllButtonActiveChanger( false );
 
 			_card = null;
 			_nowSquare = null;
@@ -531,17 +535,17 @@ public class MainPhase : Phase {
 	
 	void ActiveTurnEndButton( ) { 
 		if ( _mainPhaseStatus == MAIN_PHASE_STATUS.IDLE && !_turnEndButton.activeInHierarchy ) { 
-			_turnEndButton.SetActive( true );	
+			_uiManager.ButtonActiveChanger( true, UIActiveManager.BUTTON.TURNEND );
 		}
 
-		if ( _mainPhaseStatus != MAIN_PHASE_STATUS.IDLE ) { 
-			_turnEndButton.SetActive( false );	
+		if ( _mainPhaseStatus != MAIN_PHASE_STATUS.IDLE && _turnEndButton.activeInHierarchy ) { 
+			_uiManager.ButtonActiveChanger( false, UIActiveManager.BUTTON.TURNEND );
 		}
 	}
 
 	void TurnEndButtonClicked( ) { 
 		if ( _mainSceneOperation.TurnEndButtonClicked( ) ) { 
-			_turnEndButton.SetActive( false );
+			_uiManager.ButtonActiveChanger( false, UIActiveManager.BUTTON.TURNEND );
 			_turnEndFlag = true;
 		}
 	}
@@ -577,7 +581,6 @@ public class MainPhase : Phase {
 }
 
 
-//ボタンの参照とって表示を切り替えたりする場所はどこ？
 //多分マスを連打しまくると計算やばそう
 
 //MediatorパターンyやObserverパターンなどを使って(多分意味的にはMediatorパターン？)ボタンやマウスが押されたら通知してもらってそのときだけそれに対するupdateをする、
@@ -587,3 +590,6 @@ public class MainPhase : Phase {
 //今現在、普通によくないプログラム。あっちこっち変更しないといけなくて可読性もよくない。条件分岐もありすぎてごり押し感半端ない
 
 //手札のカードの詳細も見れたほうがいいが判定どうしよう？
+
+//ボタンの表示を全部消すときに二つ以上あったら全部表示を切り替える処理、一つだけなら指定のものだけ表示を切り替える処理でやっている。
+//無駄な処理をしている感じなのだろか？もしくはわかりづらいだろうか？
