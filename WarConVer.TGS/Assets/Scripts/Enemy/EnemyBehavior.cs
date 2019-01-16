@@ -17,36 +17,31 @@ public class EnemyBehavior : MonoBehaviour {
 	[ SerializeField ] Point _enemyActivePoint = null;
 
 	ENEMY_BEHAVIOR_STATUS _enemyBehaviorStatus = ENEMY_BEHAVIOR_STATUS.SUMMON;
-	bool _summonUpdateFlag = true;
-	bool _cardMoveUpdateFlag = true;
-	bool _directAttackUpdateFlag = true;
+	bool _enemyUpdateFlag = true;
 
-	public bool Summon_Update_Flag { 
-		get { return _summonUpdateFlag; }	
-	}
-
-	public bool Card_MoveUpdate_Flag { 
-		get { return _cardMoveUpdateFlag; }	
-	}
-
-	public bool Direct_Attack_Update_Flag { 
-		get { return _directAttackUpdateFlag; }	
+	public bool Enemy_Update_Flag { 
+		get { return _enemyUpdateFlag; }
+		set { _enemyUpdateFlag = value; }
 	}
 
 
+	public void EnemyUpdate( ) {
+		if ( !_enemyUpdateFlag ) return;
 
-	public void EnemyUpdate( ) { 
 		switch ( _enemyBehaviorStatus ) { 
 			case ENEMY_BEHAVIOR_STATUS.SUMMON:
 				EnemySummonUpdate( );
+				Debug.Log( "S" );
 				break;
 
 			case ENEMY_BEHAVIOR_STATUS.DIRECT_ATTACK:
 				EnemyDirectAttackUpdate( );
+				Debug.Log( "D" );
 				break;
 
 			case ENEMY_BEHAVIOR_STATUS.MOVE:
 				EnemyCardMoveUpdate( );
+				Debug.Log( "M" );
 				break;
 
 			default:
@@ -55,13 +50,12 @@ public class EnemyBehavior : MonoBehaviour {
 		}
 	}
 
-	public void EnemySummonUpdate( ) {
-		if ( !_summonUpdateFlag ) return;
+	void EnemySummonUpdate( ) {
 
 		//List< Square > summonSquares = _enemy.SummonSquare( _enemy.gameObject.tag );
 		List< Square > summonSquares = _field.SummonSquare( _enemy.gameObject.tag );
 		if ( summonSquares.Count == 0 ) {
-			_summonUpdateFlag = false;
+			_enemyBehaviorStatus = ENEMY_BEHAVIOR_STATUS.DIRECT_ATTACK;
 			return;
 		}
 			
@@ -69,7 +63,7 @@ public class EnemyBehavior : MonoBehaviour {
 		CardMain summonCard = null;
 		summonCard = SummonCardSearch( );
 		if ( summonCard == null ) {
-			_summonUpdateFlag = false;
+			_enemyBehaviorStatus = ENEMY_BEHAVIOR_STATUS.DIRECT_ATTACK;
 			return;
 		}
 
@@ -97,16 +91,14 @@ public class EnemyBehavior : MonoBehaviour {
 		}
 
 		if ( summonSquare == null ) {
-			_summonUpdateFlag = false;
+			_enemyBehaviorStatus = ENEMY_BEHAVIOR_STATUS.DIRECT_ATTACK;
 			return;
 		}
 
 	}
 
 	
-	public void EnemyDirectAttackUpdate( ) { 
-		if ( !_directAttackUpdateFlag ) return;
-		if ( _summonUpdateFlag ) return;
+	void EnemyDirectAttackUpdate( ) { 
 
 		for ( int i = 0; i < 4; i++ ) { 
 			Square square = _field.getSquare( ( 4 * 4 ) + i );	// ( 横のマス数 ×　五列目 ) + 左からの番号
@@ -116,41 +108,25 @@ public class EnemyBehavior : MonoBehaviour {
 
 			CardMain directAttackCard = square.On_Card;
 			int nowAP = _enemyActivePoint.Point_Num;
-			if ( directAttackCard.Card_Data._necessaryMP > nowAP ) continue;
+			if ( directAttackCard.Card_Data._necessaryAP > nowAP ) continue;
 
-			_enemy.DirectAttack( _enemy, directAttackCard.Card_Data._necessaryMP );
+			_enemy.DirectAttack( _enemy, directAttackCard.Card_Data._necessaryAP );
 			return;
 		}
 
-		_directAttackUpdateFlag = false;
+		_enemyBehaviorStatus = ENEMY_BEHAVIOR_STATUS.MOVE;
 	}
 
 	public void EnemyCardMoveUpdate( ) {
-		if ( !_cardMoveUpdateFlag ) return;
-		if ( _directAttackUpdateFlag ) return;
-		if ( _summonUpdateFlag ) return;
-		//_cardMoveUpdateFlag = false;
 
 		if ( _enemy.Card_In_Field.Count == 0 ) {
-			_cardMoveUpdateFlag = false;
+			_enemyUpdateFlag = false;
+			_enemyBehaviorStatus = ENEMY_BEHAVIOR_STATUS.SUMMON;
 			return;
 		} 
 
 		//前列にいたら攻撃
 		MoveCardSearch( );
-	}
-
-
-	public void TestSummonUpdateFlag( ) {
-		if ( _summonUpdateFlag ) return;	//意味ないかもだけど一応処理が終わるまで操作できないようにするために
-
-		_summonUpdateFlag = true;	
-	}
-
-	public void TestCardMoveUpdateFlag( ) { 
-		if ( _cardMoveUpdateFlag ) return;
-
-		_cardMoveUpdateFlag = true;
 	}
 
 
@@ -308,24 +284,34 @@ public class EnemyBehavior : MonoBehaviour {
 
 			List<Field.DIRECTION> enemyDirection = new List< Field.DIRECTION >( );
 
-			for ( int j = 0; j < directions.Count; j++ ) { 
-				enemyDirection[ 0 ] = directions[ j ];
-				//変更してください！！！！！エラーになります！##################################################################################################
-				//enemyMoveCard.CARD_DATA._directionOfTravel = enemyDirection;	//エネミーのカードの移動先を書き換えている。いいのかはわからない
+			for ( int j = 0; j < directions.Count; j++ ) {
+				//enemyDirection[ 0 ] = directions[ j ];
+				enemyDirection.Add( directions[ j ] );
+
+				//変更してください！！！！！エラーになります！	→　CardDataのアクセッサーだとその先の_directionOfTravelまでアクセスできないっぽい
+				//enemyMoveCard.Card_Data._directionOfTravel = enemyDirection;	//エネミーのカードの移動先を書き換えている。いいのかはわからない
+				List< Field.DIRECTION > preDirection = enemyMoveCard.Card_Data_Direction;
+				enemyMoveCard.Card_Data_Direction = enemyDirection;  // →　Card_Data._directionOfTravelのアクセッサーを用意したらいけた
 				//############################################################################################################################################
 
 				//List< Square > moveSquare = _enemy.MovePossibleSquare( enemyMoveCard, square );
 				List< Square > moveSquare = _field.MovePossibleSquare( enemyMoveCard, square );
 
-				if ( moveSquare.Count == 0 ) continue;
+				if ( moveSquare.Count == 0 ) {
+					enemyMoveCard.Card_Data_Direction = preDirection;
+					enemyDirection.Remove( directions[ j ] );
+					continue;
+				}
 
 				MoveCard( enemyMoveCard, square, moveSquare[ 0 ] );		//あとでこの関数の役割を分けないといけない
+				enemyMoveCard.Card_Data_Direction = preDirection;
 				return;
 				//_enemy.MoveCard( enemyMoveCard, square, moveSquare[ 0 ] );	//方向を一つしか送っていないのでリストの中身も一つしか入らない。
 			}
 		}
 
-		_cardMoveUpdateFlag = false;
+		_enemyBehaviorStatus = ENEMY_BEHAVIOR_STATUS.SUMMON;
+		_enemyUpdateFlag = false;
 	}
 
 
@@ -358,3 +344,5 @@ public class EnemyBehavior : MonoBehaviour {
 	}
 
 }
+
+//リファクタリング必須

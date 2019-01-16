@@ -45,6 +45,12 @@ public class CardMain : MonoBehaviour {
 		get { return _MAX_ACTION_COUNT; }	
 	}
 
+	//テスト用
+	public List< Field.DIRECTION > Card_Data_Direction {
+		get { return _cardData._directionOfTravel; }
+		set { _cardData._directionOfTravel = value; }
+	}
+
 	//===================================================================
 	//===================================================================
 
@@ -115,35 +121,43 @@ public class CardMain : MonoBehaviour {
 		
 			switch( directions[ i ] ) { 
 				case Field.DIRECTION.LEFT_FORWARD:
-					player2Directions[ i ] = Field.DIRECTION.RIGHT_BACK;
+					//player2Directions[ i ] = Field.DIRECTION.RIGHT_BACK;
+					player2Directions.Add( Field.DIRECTION.RIGHT_BACK );
 					break;
 
 				case Field.DIRECTION.FORWAED:
-					player2Directions[ i ] = Field.DIRECTION.BACK;
+					//player2Directions[ i ] = Field.DIRECTION.BACK;
+					player2Directions.Add( Field.DIRECTION.BACK );
 					break;
 
 				case Field.DIRECTION.RIGHT_FORWARD:
-					player2Directions[ i ] = Field.DIRECTION.LEFT_BACK;
+					//player2Directions[ i ] = Field.DIRECTION.LEFT_BACK;
+					player2Directions.Add( Field.DIRECTION.LEFT_BACK );
 					break;
 
 				case Field.DIRECTION.LEFT:
-					player2Directions[ i ] = Field.DIRECTION.RIGHT;
+					//player2Directions[ i ] = Field.DIRECTION.RIGHT;
+					player2Directions.Add( Field.DIRECTION.RIGHT );
 					break;
 
 				case Field.DIRECTION.RIGHT:
-					player2Directions[ i ] = Field.DIRECTION.LEFT;
+					//player2Directions[ i ] = Field.DIRECTION.LEFT;
+					player2Directions.Add( Field.DIRECTION.LEFT );
 					break;
 
 				case Field.DIRECTION.LEFT_BACK:
-					player2Directions[ i ] = Field.DIRECTION.RIGHT_FORWARD;
+					//player2Directions[ i ] = Field.DIRECTION.RIGHT_FORWARD;
+					player2Directions.Add( Field.DIRECTION.RIGHT_FORWARD );
 					break;
 
 				case Field.DIRECTION.BACK:
-					player2Directions[ i ] = Field.DIRECTION.FORWAED;
+					//player2Directions[ i ] = Field.DIRECTION.FORWAED;
+					player2Directions.Add( Field.DIRECTION.FORWAED );
 					break;
 
 				case Field.DIRECTION.RIGHT_BACK:
-					player2Directions[ i ] = Field.DIRECTION.LEFT_FORWARD;
+					//player2Directions[ i ] = Field.DIRECTION.LEFT_FORWARD;
+					player2Directions.Add( Field.DIRECTION.LEFT_FORWARD );
 					break;
 				
 				default:

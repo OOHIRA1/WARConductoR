@@ -48,6 +48,7 @@ public class MainPhase : Phase {
 	CardMain _drawCard = null;
 	CardMain _debugCard = null;
 	Square _debugSquare = null;
+	bool _enemyUpdateFlag = false;
 
 	public MainPhase( Participant turnPlayer, Participant enemyPlayer, MainSceneOperation mainSceneQperation, UIActiveManager uIActiveManager, Field field,
 					  GameObject returnButton, GameObject moveButton, GameObject directAttackButton, GameObject effectButton, GameObject effectYesButton, GameObject turnEndButton,
@@ -88,18 +89,16 @@ public class MainPhase : Phase {
 
 		if ( _turnPlayer.gameObject.tag == "Player2" ) {
 			/*アニメーションをしているフラグがたっていたらしていたらreturn*/
+			testEnemuUpdate( );
+			if ( !_enemyUpdateFlag ) return;
+			_enemyUpdateFlag = false;
 
-			//TestSummonUpdateFlag( );
-			//TestCardMoveUpdateFlag( );
-			//_enemyBehavior.EnemySummonUpdate( );
-			//_enemyBehavior.EnemyDirectAttackUpdate( );
-			//_enemyBehavior.EnemyCardMoveUpdate( );
+			_enemyBehavior.EnemyUpdate( );
+			Debug.Log( "EnemuUpdate" );
 
-			if ( !_enemyBehavior.Summon_Update_Flag && 
-				!_enemyBehavior.Card_MoveUpdate_Flag &&
-				!_enemyBehavior.Direct_Attack_Update_Flag ) { 
+			if ( !_enemyBehavior.Enemy_Update_Flag ) {
+				_enemyBehavior.Enemy_Update_Flag = true;	//フラグリセット
 				_turnEndFlag = true;
-				//フラグリセットしないといけないかも
 			}
 			return;
 		}
@@ -400,6 +399,11 @@ public class MainPhase : Phase {
 		}
 
 		if ( !_mainSceneOperation.MouseConsecutivelyTouch( ) ) {
+			//if ( ホールドが一秒以下だった場合は詳細を表示する ) { 
+			//	return;
+			//}
+
+
 			if ( !_turnPlayer.DecreaseMPointConfirmation( _handCard.Card_Data._necessaryMP ) ) {
 				_handCard.transform.position = _handCardPos;
 				_handCard.gameObject.GetComponent< BoxCollider2D >( ).enabled = true;
@@ -408,7 +412,6 @@ public class MainPhase : Phase {
 			}
 
 			Square rayHitedSquare = _rayShooter.RayCastSquare( );
-
 			if ( rayHitedSquare == null ) {
 				_turnPlayer.SquareChangeColor( summonableSquares, false );
 				_handCard.transform.position = _handCardPos;
@@ -574,16 +577,9 @@ public class MainPhase : Phase {
 	}
 
 
-	
-	void TestSummonUpdateFlag( ) { 
-		if ( Input.GetKeyDown( KeyCode.A ) ) {
-			_enemyBehavior.TestSummonUpdateFlag( );
-		}
-	}
-
-	void TestCardMoveUpdateFlag( ) { 
-		if ( Input.GetKeyDown( KeyCode.S ) ) {
-			_enemyBehavior.TestCardMoveUpdateFlag( );
+	void testEnemuUpdate( ) { 
+		if ( Input.GetKeyDown( KeyCode.A ) ) { 
+			_enemyUpdateFlag = true;	
 		}	
 	}
 }
@@ -597,7 +593,7 @@ public class MainPhase : Phase {
 
 //今現在、普通によくないプログラム。あっちこっち変更しないといけなくて可読性もよくない。条件分岐もありすぎてごり押し感半端ない
 
-//手札のカードの詳細も見れたほうがいいが判定どうしよう？
+//手札のカードの詳細も見れたほうがいいが判定どうしよう？ →　カードがホールドされた時間を見るのはどうだろう。ホールドされたのが１秒以下だったら詳細を表示など
 
 //ボタンの表示を全部消すときに二つ以上あったら全部表示を切り替える処理、一つだけなら指定のものだけ表示を切り替える処理でやっている。
 //無駄な処理をしている感じなのだろか？もしくはわかりづらいだろうか？

@@ -813,6 +813,7 @@ MonoBehaviour:
   _player1: {fileID: 473805677}
   _player2: {fileID: 1256514221}
   _uIActiveManager: {fileID: 1099092320}
+  _field: {fileID: 835475849}
   _returnButton: {fileID: 1949290537}
   _moveButton: {fileID: 1474539973}
   _directAttackButton: {fileID: 1207233793}
@@ -2817,6 +2818,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22a91e598d327e643afc55e1122c81b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _field: {fileID: 835475849}
   _UIButtons:
   - {fileID: 1949290537}
   - {fileID: 1474539973}
@@ -3433,7 +3435,7 @@ MonoBehaviour:
   _enemy: {fileID: 1256514221}
   _enemyHand: {fileID: 750422029}
   _enemyMagicPoint: {fileID: 1765459212}
-  _enemyActivePoint: {fileID: 0}
+  _enemyActivePoint: {fileID: 37914555}
 --- !u!1 &1256974568
 GameObject:
   m_ObjectHideFlags: 0
@@ -6087,29 +6089,17 @@ MonoBehaviour:
   _cardData:
     _id: 0
     _attack: 0
+    _maxToughness: 0
     _toughness: 0
-    _directionOfTravel: 0
-    _effect: 0
+    _directionOfTravel: 
+    _effect_type: 0
+    _effect_value: 0
+    _effect_direction: 
+    _effect_distance: 0
     _necessaryMP: 0
     _necessaryAP: 0
     _necessaryAPForEffect: 0
   _actionCount: 0
-  _cardDates:
-    id: 10
-    hp: 3
-    max_hp: 1000
-    attack_point: 2
-    directions: 070000000200000005000000
-    distance: 1
-    move_ap: 1
-    effect_directions: 02000000
-    effect_ap: 2
-    effect_ditance: 1
-    effect_damage: 100
-    effect_recovery_point: 2
-    mp: 0
-    effect_type: 1
-    actionCount: 0
 --- !u!212 &1976715243
 SpriteRenderer:
   m_ObjectHideFlags: 0

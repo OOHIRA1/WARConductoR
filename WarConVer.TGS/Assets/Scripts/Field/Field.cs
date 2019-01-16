@@ -73,7 +73,7 @@ public class Field : MonoBehaviour {
 		List< Square > squares = new List< Square >( );
 
 		//移動できるマスだけ格納
-		List< Field.DIRECTION > directions = card.getDirections( card.gameObject.tag, card.Card_Data._directionOfTravel );
+		List< DIRECTION > directions = card.getDirections( card.gameObject.tag, card.Card_Data._directionOfTravel );
 		for ( int i = 0; i < directions.Count; i++ ) {
 			Square square = SquareInThatDirection( nowSquare, directions[ i ], 1 );
 
@@ -126,16 +126,16 @@ public class Field : MonoBehaviour {
 			}		
 		}
 		
-		//if ( player == "Player2" ) { 
-		//	for ( int i = 0; i < _maxIndex; i++ ) { 
-		//		Square square = getSquare( i );
-		//
-		//		if ( ( square.Index ) / SQUARE_ROW_NUM != FIRST_ROW_INDEX )  continue;
-		//		if ( square.On_Card != null ) continue;
-		//
-		//		squares.Add( square );
-		//	}		
-		//}
+		if ( player == "Player2" ) { 
+			for ( int i = 0; i < _maxIndex; i++ ) { 
+				Square square = getSquare( i );
+		
+				if ( ( square.Index ) / SQUARE_ROW_NUM != FIRST_ROW_INDEX )  continue;
+				if ( square.On_Card != null ) continue;
+		
+				squares.Add( square );
+			}		
+		}
 
 		return squares;
 	}
