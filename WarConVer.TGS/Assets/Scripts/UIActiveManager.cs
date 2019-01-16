@@ -10,10 +10,10 @@ public class UIActiveManager : MonoBehaviour {
 	public enum BUTTON { 
 		BACK,	
 		MOVE,
-		DIRECTATTACK,
+		DIRECT_ATTACK,
 		EFFECT,
 		EFFECT_YES,
-		TURNEND,
+		TURN_END,
 	}
 
 	//ボタン
@@ -21,12 +21,14 @@ public class UIActiveManager : MonoBehaviour {
 
 	MainSceneOperation _mainSceneOperation = new MainSceneOperation( );
 
+
 	public void AllButtonActiveChanger( bool active ) {
 		for ( int i = 0; i < _UIButtons.Count; i++ ) { 
 			_UIButtons[ i ].SetActive( active );	
 		}
 	}
 	
+
 	public void ButtonActiveChanger( bool active, params BUTTON[ ] buttons ) {
 		for ( int i = 0; i < buttons.Length; i++ ) {
 			_UIButtons[ ( int )buttons[ i ] ].SetActive( active );
@@ -52,7 +54,7 @@ public class UIActiveManager : MonoBehaviour {
 	}
 	//------------------------------------------------------------------------------------------------------------------
 
-
+	
 	void EffectButtonActiveConditions( CardMain card, Participant turnPlayer, Square nowSquare ) { 
 		//効果の種類によって処理を変える
 		//効果ボタン表示条件
@@ -100,13 +102,14 @@ public class UIActiveManager : MonoBehaviour {
 		}
 	}
 
+
 	void DirectAttackButtonActiveConditions( CardMain card, Participant turnPlayer, Square nowSquare ) { 
 		//消費するAPがあってまだ行動できるカードだったら
 		if ( turnPlayer.DecreaseActivePointConfirmation( card._cardDates.move_ap ) &&
 			 card._cardDates.actionCount < card.MAX_ACTION_COUNT ) {
 
 			if ( ( ( nowSquare.Index ) / SQUARE_ROW_NUM == FIRST_ROW_INDEX ) && card.gameObject.tag == "Player1" ) {		//一列目にいたら攻撃ボタンを表示//修正するだろうからマジックナンバーを放置
-				ButtonActiveChanger( true, BUTTON.DIRECTATTACK );
+				ButtonActiveChanger( true, BUTTON.DIRECT_ATTACK );
 			}
 
 			//if ( ( ( _nowSquare.Index ) / SQUARE_ROW_NUM == FIFTH_ROW_INDEX ) && _card.gameObject.tag == "Player2" ) {		//五列目にいたら攻撃ボタンを表示//修正するだろうからマジックナンバーを放置

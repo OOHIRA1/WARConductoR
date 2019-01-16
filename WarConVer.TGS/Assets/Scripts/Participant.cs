@@ -300,6 +300,7 @@ public class Participant : MonoBehaviour {
 	}
 	//----------------------------------------------------------
 
+
 	public void CardRefresh( ) { 
 		for ( int i = 0; i < _cardInField.Count; i++ ) {
 			_cardInField[ i ]._cardDates.actionCount = 0;	
@@ -307,10 +308,10 @@ public class Participant : MonoBehaviour {
 	}
 
 
-
 	void AddMyFieldCards( CardMain card ) { 
 		_cardInField.Add( card );
 	}
+
 
 	void MyFieldCardsDeathCheck( ) {
 		if ( _cardInField.Count == 0 ) return;
@@ -323,7 +324,6 @@ public class Participant : MonoBehaviour {
 		}
 	}
 
-	
 
 	void ReferenceCheck( ) { 
 		Assert.IsNotNull( _field, "Fieldの参照がないです" );

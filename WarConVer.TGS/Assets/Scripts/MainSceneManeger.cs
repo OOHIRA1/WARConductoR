@@ -21,6 +21,7 @@ public class MainSceneManeger : MonoBehaviour {
 	[ SerializeField ] MainSceneOperation _mainSceneOperation = null;
 	[ SerializeField ] Participant _player1 = null;
 	[ SerializeField ] Participant _player2 = null;
+	[ SerializeField ] UIActiveManager _uIActiveManager = null;
 	
 	Phase _phase = null;
 	PHASE _phaseStatus = PHASE.PREPARE;
@@ -112,7 +113,7 @@ public class MainSceneManeger : MonoBehaviour {
 				break;
 
 			case PHASE.MAIN:
-				_phase = new MainPhase( _turnPlayer, _enemyPlayer, _mainSceneOperation,
+				_phase = new MainPhase( _turnPlayer, _enemyPlayer, _mainSceneOperation, _uIActiveManager,
 										_returnButton, _moveButton, _directAttackButton, _effectButton, _effectYesBuuton, _turnEndButton,
 										_enemyBehavior,
 										_drawCard, _debugCard, _debugSquare );
