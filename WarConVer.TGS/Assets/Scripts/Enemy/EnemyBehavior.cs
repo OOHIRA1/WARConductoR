@@ -1,14 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class EnemyBehavior : MonoBehaviour {
+	enum ENEMY_BEHAVIOR_STATUS { 
+		SUMMON,	
+		DIRECT_ATTACK,
+		MOVE,
+	}
+
 	[ SerializeField ] Field _field = null;
 	[ SerializeField ] Participant _enemy = null;
 	[ SerializeField ] Hand _enemyHand = null;
 	[ SerializeField ] Point _enemyMagicPoint = null;
 	[ SerializeField ] Point _enemyActivePoint = null;
 
+	ENEMY_BEHAVIOR_STATUS _enemyBehaviorStatus = ENEMY_BEHAVIOR_STATUS.SUMMON;
 	bool _summonUpdateFlag = true;
 	bool _cardMoveUpdateFlag = true;
 	bool _directAttackUpdateFlag = true;
@@ -25,6 +33,27 @@ public class EnemyBehavior : MonoBehaviour {
 		get { return _directAttackUpdateFlag; }	
 	}
 
+
+
+	public void EnemyUpdate( ) { 
+		switch ( _enemyBehaviorStatus ) { 
+			case ENEMY_BEHAVIOR_STATUS.SUMMON:
+				EnemySummonUpdate( );
+				break;
+
+			case ENEMY_BEHAVIOR_STATUS.DIRECT_ATTACK:
+				EnemyDirectAttackUpdate( );
+				break;
+
+			case ENEMY_BEHAVIOR_STATUS.MOVE:
+				EnemyCardMoveUpdate( );
+				break;
+
+			default:
+				Assert.IsTrue( false, "エネミーの状態が想定外です" );
+				break;
+		}
+	}
 
 	public void EnemySummonUpdate( ) {
 		if ( !_summonUpdateFlag ) return;
