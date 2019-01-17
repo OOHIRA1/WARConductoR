@@ -9,6 +9,7 @@ public class TestMainOohiraManager : MonoBehaviour {
 	public Deck _deck = null;
 	public AudioClip _clip;
 	public CardMain _card;
+	public GameObject _tapEffect;
 
 	// Use this for initialization
 	void Start () {
@@ -43,6 +44,12 @@ public class TestMainOohiraManager : MonoBehaviour {
 			audioSource.clip = _clip;
 			audioSource.loop = true;
 			audioSource.Play ();
+		}
+
+		if (Input.GetMouseButtonDown (0)) {
+			Vector3 effectPosition = Camera.main.ScreenToWorldPoint (Input.mousePosition);
+			effectPosition.z = -9;
+			Instantiate (_tapEffect, effectPosition, Quaternion.identity);
 		}
 	}
 }
