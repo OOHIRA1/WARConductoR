@@ -69,5 +69,14 @@ public class TestMainOohiraManager : MonoBehaviour {
 			AutoDestroyBattleSpace battleSpace = Instantiate<AutoDestroyBattleSpace> (_battleSpace, Vector3.zero, Quaternion.identity);
 			battleSpace.StartRightWinAnim ( _cardSprite[0], _cardSprite[1] );
 		}
+		if (Input.GetKeyDown (KeyCode.G)) {
+			GameObject battleSpaceObj = Instantiate (_battleSpacePrefab, Vector3.zero, Quaternion.identity);
+			AutoDestroyBattleSpace battleSpace = battleSpaceObj.GetComponent<AutoDestroyBattleSpace> ();
+			battleSpace.StartBothDeathAnim ( _cardSprite[0], _cardSprite[1] );
+		}
+		if (Input.GetKeyDown (KeyCode.H)) {
+			AutoDestroyBattleSpace battleSpace = Instantiate<AutoDestroyBattleSpace> (_battleSpace, Vector3.zero, Quaternion.identity);
+			battleSpace.StartBothAliveAnim ( _cardSprite[0], _cardSprite[1] );
+		}
 	}
 }

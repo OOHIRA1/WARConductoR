@@ -19,6 +19,7 @@ public class Participant : MonoBehaviour {
 	[ SerializeField ] Point _cemetaryPoint = null;
 	[ SerializeField ] Field _field			= null;
 	[ SerializeField ] GameObject _summonEffect = null;
+	[ SerializeField ] AutoDestroyBattleSpace _battleSpacePrefab = null;
 
 
 	List< CardMain > _cardInField  = new List< CardMain >( );			//フィールドの自分のカードの参照
@@ -78,7 +79,34 @@ public class Participant : MonoBehaviour {
 
 			if ( squares[ i ].On_Card != null ) {
 				if ( squares[ i ].On_Card.gameObject.tag != card.gameObject.tag ) {		//移動したマスに自分のじゃないカードがあったら
+					Sprite movingCardSprite = new Sprite();
+					movingCardSprite = nowSquare.On_Card.Card_Sprite_Renderer.sprite;
+					Sprite notMoveCardSprite = new Sprite ();
+					notMoveCardSprite = squares[ i ].On_Card.Card_Sprite_Renderer.sprite;
+
 					result = _cardDamageManager.CardBattleDamage( nowSquare, squares[ i ] );
+
+					//戦闘アニメーション処理-------------------------------------------------------------------------------------------------------------
+					AutoDestroyBattleSpace battleSpace = Instantiate<AutoDestroyBattleSpace> (_battleSpacePrefab, Vector3.zero, Quaternion.identity);
+					switch(result) {
+					case CardDamageManager.BATTLE_RESULT.PLAYER_WIN:
+						battleSpace.StartRightWinAnim ( notMoveCardSprite, movingCardSprite );
+						break;
+					case CardDamageManager.BATTLE_RESULT.PLAYER_LOSE:
+						battleSpace.StartLeftWinAnim ( notMoveCardSprite, movingCardSprite );
+						break;
+					case CardDamageManager.BATTLE_RESULT.BOTH_DEATH:
+						battleSpace.StartBothDeathAnim ( notMoveCardSprite, movingCardSprite );
+						break;
+					case CardDamageManager.BATTLE_RESULT.BOTH_ALIVE:
+						battleSpace.StartBothAliveAnim ( notMoveCardSprite, movingCardSprite );
+						break;
+					default:
+						Debug.Log ("想定外の戦闘結果になりました");
+						break;
+					}
+					//----------------------------------------------------------------------------------------------------------------------------------
+
 					Debug.Log( result );
 				}
 			}
