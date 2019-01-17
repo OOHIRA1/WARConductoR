@@ -46,6 +46,10 @@ public class MainSceneManeger : MonoBehaviour {
 	[ SerializeField ] CardMain _debugCard = null;
 	[ SerializeField ] Square _debugSquare = null;
 
+
+	//エフェクト系
+	[ SerializeField ] GameObject _tapEffect = null;
+
 	private void Awake( ) {
 		//先行後攻を判別して入れ替えられる。
 		if ( _order == ATTACK_FIRST_OR_SECOND.FIRST ) {
@@ -96,6 +100,13 @@ public class MainSceneManeger : MonoBehaviour {
 		_phase.PhaseUpdate( );
 
 
+		//タップエフェクト処理-------------------------------------------------------------------
+		if( _mainSceneOperation.MouseTouch() ) {
+			Vector3 effectPos = _mainSceneOperation.getWorldMousePos ();
+			effectPos.z = Camera.main.transform.position.z + 1f;//カメラに近い位置に生成したいため
+			Instantiate( _tapEffect, effectPos, Quaternion.identity );
+		}
+		//--------------------------------------------------------------------------------------
 	}
 
 	void ChangePhase( ) {
