@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class MainSceneOperation : MonoBehaviour {
 	const float RAY_DIR = 100f;
+	float _holdCount = 0;
 	bool _backButtonClicked 	 = false; 
 	bool _moveButtonClicked      = false;
 	bool _attackButtonClicked    = false;
@@ -26,6 +27,14 @@ public class MainSceneOperation : MonoBehaviour {
 			return true;	
 		} else { 
 			return false;	
+		}
+	}
+
+
+	void FixedUpdate( ) {
+		//マウスの押している時間を測定
+		if ( MouseConsecutivelyTouch( ) ) { 
+			_holdCount += Time.deltaTime;	
 		}
 	}
 
@@ -144,5 +153,12 @@ public class MainSceneOperation : MonoBehaviour {
 		_turnEndButtonClicked = true;
 	}
 	//----------------------------------------------
+
+
+	public float getHoldCount( ) { 
+		float holdCount = _holdCount;
+		_holdCount = 0;
+		return holdCount;
+	}
 
 }

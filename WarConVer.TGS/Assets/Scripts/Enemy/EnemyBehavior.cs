@@ -274,7 +274,8 @@ public class EnemyBehavior : MonoBehaviour {
 
 			enemyMoveCard = square.On_Card;
 			int nowAP = _enemyActivePoint.Point_Num;
-			if ( enemyMoveCard.Card_Data._necessaryMP > nowAP ) continue;
+			if ( enemyMoveCard.Card_Data._necessaryAP > nowAP ) continue;
+			if ( enemyMoveCard.Action_Count >= enemyMoveCard.MAX_ACTION_COUNT ) continue;
 
 			List< Field.DIRECTION > directions = EnemyDirectionSorting( enemyMoveCard );
 

@@ -12,11 +12,14 @@ public class MainPhase : Phase {
 		EFFECT_ATTACK,
 		EFFECT_MOVE,
 		EEFECT_RECOVERY,
-		CARD_SUMMON,
+		HAND_CARD_OPERATION,
+		HAND_CARD_DETAILS,
+		HANC_CARD_SUMMON
 	}
 	
 	//const int MAX_ACTION_COUNT = 3;							//移動回数の最大値
-	const int LOSE_CEMETARY_POINT = 10;
+	static readonly int LOSE_CEMETARY_POINT = 10;
+	static readonly float SHOW_DETAILS_HOLD_TIME = 0.5f;
 	//const int SQUARE_ROW_NUM = 4;
 	//const int FIRST_ROW_INDEX = 0;
 	//const int FIFTH_ROW_INDEX = 4;
@@ -134,8 +137,16 @@ public class MainPhase : Phase {
 				RecoveryEffect( );
 				return;
 
-			case MAIN_PHASE_STATUS.CARD_SUMMON:
-				SummonStatus( );
+			case MAIN_PHASE_STATUS.HAND_CARD_OPERATION:
+				HnadOperationStatus( );
+				return;
+
+			case MAIN_PHASE_STATUS.HAND_CARD_DETAILS:
+				HnadCardDetailsStatus( );
+				return;
+
+			case MAIN_PHASE_STATUS.HANC_CARD_SUMMON:
+				HandCardSummon( );
 				return;
 
 			default:
@@ -187,7 +198,7 @@ public class MainPhase : Phase {
 
 		_handCardPos = _handCard.transform.position;
 		_handCard.gameObject.GetComponent< BoxCollider2D >( ).enabled = false;
-		_mainPhaseStatus = MAIN_PHASE_STATUS.CARD_SUMMON;
+		_mainPhaseStatus = MAIN_PHASE_STATUS.HAND_CARD_OPERATION;
 	}
 	//---------------------------------------------------------------------------
 
@@ -288,8 +299,8 @@ public class MainPhase : Phase {
 		//移動ボタンを押したら
 		if ( _mainSceneOperation.MoveButtonClicked( ) ) { 
 			_uiActiveManager.ButtonActiveChanger( false, UIActiveManager.BUTTON.MOVE,
-												   UIActiveManager.BUTTON.DIRECT_ATTACK,
-												   UIActiveManager.BUTTON.EFFECT );
+														 UIActiveManager.BUTTON.DIRECT_ATTACK,
+														 UIActiveManager.BUTTON.EFFECT );
 
 			_card.DeleteCardDetail( );
 			_mainPhaseStatus = MAIN_PHASE_STATUS.CARD_MOVE;
@@ -307,8 +318,8 @@ public class MainPhase : Phase {
 		//効果ボタンを押したら
 		if ( _mainSceneOperation.EffectButtonClicked( ) ) { 
 			_uiActiveManager.ButtonActiveChanger( false, UIActiveManager.BUTTON.MOVE,
-												   UIActiveManager.BUTTON.DIRECT_ATTACK,
-												   UIActiveManager.BUTTON.EFFECT );
+														 UIActiveManager.BUTTON.DIRECT_ATTACK,
+														 UIActiveManager.BUTTON.EFFECT );
 
 			//効果の種類によって処理を変える
 			switch ( _card.Card_Data._effect_type ) { 
@@ -388,57 +399,117 @@ public class MainPhase : Phase {
 	//--------------------------------------------------------------------------
 
 	
-	//召喚状態処理----------------------------------------------------------------------
-	void SummonStatus( ) {
+	//手札操作状態処理----------------------------------------------------------------------
+	void HnadOperationStatus( ) {
 		_handCard.transform.position = _mainSceneOperation.getWorldMousePos( );
-		//List< Square > summonableSquares = _turnPlayer.SummonSquare( _turnPlayer.gameObject.tag );
 		List< Square > summonableSquares = _field.SummonSquare( _turnPlayer.gameObject.tag );
+		//List< Square > summonableSquares = _turnPlayer.SummonSquare( _turnPlayer.gameObject.tag );
 
 		if ( _turnPlayer.DecreaseMPointConfirmation( _handCard.Card_Data._necessaryMP ) ) { 
 			_turnPlayer.SquareChangeColor( summonableSquares, true );
 		}
 
 		if ( !_mainSceneOperation.MouseConsecutivelyTouch( ) ) {
-			//if ( ホールドが一秒以下だった場合は詳細を表示する ) { 
+			if ( _mainSceneOperation.getHoldCount( ) <= SHOW_DETAILS_HOLD_TIME ) {
+				_handCard.ShowCardDetail( );
+				_uiActiveManager.ButtonActiveChanger( true, UIActiveManager.BUTTON.BACK );
+				_turnPlayer.SquareChangeColor( summonableSquares, false );
+				_handCard.transform.position = _handCardPos;
+				_handCard.gameObject.GetComponent< BoxCollider2D >( ).enabled = true;
+				_mainPhaseStatus = MAIN_PHASE_STATUS.HAND_CARD_DETAILS;
+				return;
+			} else { 
+				_mainPhaseStatus = MAIN_PHASE_STATUS.HANC_CARD_SUMMON;
+				return;
+			}
+
+
+			//if ( !_turnPlayer.DecreaseMPointConfirmation( _handCard.Card_Data._necessaryMP ) ) {
+			//	_handCard.transform.position = _handCardPos;
+			//	_handCard.gameObject.GetComponent< BoxCollider2D >( ).enabled = true;
+			//	_mainPhaseStatus = MAIN_PHASE_STATUS.IDLE;
+			//	return;
+			//}
+			//
+			//Square rayHitedSquare = _rayShooter.RayCastSquare( );
+			//if ( rayHitedSquare == null ) {
+			//	_turnPlayer.SquareChangeColor( summonableSquares, false );
+			//	_handCard.transform.position = _handCardPos;
+			//	_handCard.gameObject.GetComponent< BoxCollider2D >( ).enabled = true;
+			//	_mainPhaseStatus = MAIN_PHASE_STATUS.IDLE;
+			//	return;
+			//}
+			//
+			//for ( int i = 0; i < summonableSquares.Count; i++ ) { 
+			//	if ( rayHitedSquare.Index != summonableSquares[ i ].Index ) continue;
+			//
+			//	_turnPlayer.SquareChangeColor( summonableSquares, false );
+			//	_turnPlayer.Summon( _handCard, rayHitedSquare, _turnPlayer.gameObject.tag );
+			//	_handCard = null;
+			//	_mainPhaseStatus = MAIN_PHASE_STATUS.IDLE;
 			//	return;
 			//}
 
 
-			if ( !_turnPlayer.DecreaseMPointConfirmation( _handCard.Card_Data._necessaryMP ) ) {
-				_handCard.transform.position = _handCardPos;
-				_handCard.gameObject.GetComponent< BoxCollider2D >( ).enabled = true;
-				_mainPhaseStatus = MAIN_PHASE_STATUS.IDLE;
-				return;
-			}
 
-			Square rayHitedSquare = _rayShooter.RayCastSquare( );
-			if ( rayHitedSquare == null ) {
-				_turnPlayer.SquareChangeColor( summonableSquares, false );
-				_handCard.transform.position = _handCardPos;
-				_handCard.gameObject.GetComponent< BoxCollider2D >( ).enabled = true;
-				_mainPhaseStatus = MAIN_PHASE_STATUS.IDLE;
-				return;
-			}
+			//_turnPlayer.SquareChangeColor( summonableSquares, false );
+			//_handCard.transform.position = _handCardPos;
+			//_handCard.gameObject.GetComponent< BoxCollider2D >( ).enabled = true;
+			//_mainPhaseStatus = MAIN_PHASE_STATUS.IDLE;
+		}
+	}
+	//--------------------------------------------------------------------------------------
+	
 
-			for ( int i = 0; i < summonableSquares.Count; i++ ) { 
-				if ( rayHitedSquare.Index != summonableSquares[ i ].Index ) continue;
+	//手札の詳細表示状態-------------------------------------------------------------------
+	void HnadCardDetailsStatus( ) { 
+		if ( _mainSceneOperation.BackButtonClicked( ) ) { 
+			_handCard.DeleteCardDetail( );
+			_uiActiveManager.ButtonActiveChanger( false, UIActiveManager.BUTTON.BACK );
+			_mainPhaseStatus = MAIN_PHASE_STATUS.IDLE;
+		}
+	}
+	//-------------------------------------------------------------------------------------
 
-				_turnPlayer.SquareChangeColor( summonableSquares, false );
-				_turnPlayer.Summon( _handCard, rayHitedSquare, _turnPlayer.gameObject.tag );
-				_handCard = null;
-				_mainPhaseStatus = MAIN_PHASE_STATUS.IDLE;
-				return;
-			}
+	
+	//召喚処理--------------------------------------------------------------------------------
+	void HandCardSummon( ) {
+		List< Square > summonableSquares = _field.SummonSquare( _turnPlayer.gameObject.tag );
 
-
-
+		if ( !_turnPlayer.DecreaseMPointConfirmation( _handCard.Card_Data._necessaryMP ) ) {
+			_handCard.transform.position = _handCardPos;
+			_handCard.gameObject.GetComponent< BoxCollider2D >( ).enabled = true;
+			_mainPhaseStatus = MAIN_PHASE_STATUS.IDLE;
+			return;
+		}
+		
+		Square rayHitedSquare = _rayShooter.RayCastSquare( );
+		if ( rayHitedSquare == null ) {
 			_turnPlayer.SquareChangeColor( summonableSquares, false );
 			_handCard.transform.position = _handCardPos;
 			_handCard.gameObject.GetComponent< BoxCollider2D >( ).enabled = true;
 			_mainPhaseStatus = MAIN_PHASE_STATUS.IDLE;
+			return;
 		}
+		
+		for ( int i = 0; i < summonableSquares.Count; i++ ) { 
+			if ( rayHitedSquare.Index != summonableSquares[ i ].Index ) continue;
+		
+			_turnPlayer.SquareChangeColor( summonableSquares, false );
+			_turnPlayer.Summon( _handCard, rayHitedSquare, _turnPlayer.gameObject.tag );
+			_handCard = null;
+			_mainPhaseStatus = MAIN_PHASE_STATUS.IDLE;
+			return;
+		}
+
+
+
+		_turnPlayer.SquareChangeColor( summonableSquares, false );
+		_handCard.transform.position = _handCardPos;
+		_handCard.gameObject.GetComponent< BoxCollider2D >( ).enabled = true;
+		_mainPhaseStatus = MAIN_PHASE_STATUS.IDLE;
 	}
-	//--------------------------------------------------------------------------------------
+	//----------------------------------------------------------------------------------------
 
 
 	//攻撃効果中処理------------------------------------------------------------------------------
