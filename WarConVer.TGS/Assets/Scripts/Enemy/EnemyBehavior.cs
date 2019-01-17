@@ -12,6 +12,7 @@ public class EnemyBehavior : MonoBehaviour {
 
 	[ SerializeField ] Field _field = null;
 	[ SerializeField ] Participant _enemy = null;
+	[ SerializeField ] Participant _player = null;
 	[ SerializeField ] Hand _enemyHand = null;
 	[ SerializeField ] Point _enemyMagicPoint = null;
 	[ SerializeField ] Point _enemyActivePoint = null;
@@ -110,7 +111,7 @@ public class EnemyBehavior : MonoBehaviour {
 			int nowAP = _enemyActivePoint.Point_Num;
 			if ( directAttackCard.Card_Data._necessaryAP > nowAP ) continue;
 
-			_enemy.DirectAttack( _enemy, directAttackCard.Card_Data._necessaryAP );
+			_enemy.DirectAttack( _player, directAttackCard.Card_Data._necessaryAP );
 			return;
 		}
 
@@ -298,6 +299,8 @@ public class EnemyBehavior : MonoBehaviour {
 				//List< Square > moveSquare = _enemy.MovePossibleSquare( enemyMoveCard, square );
 				List< Square > moveSquare = _field.MovePossibleSquare( enemyMoveCard, square );
 
+				//相手カードがあったりしたらよける処理
+
 				if ( moveSquare.Count == 0 ) {
 					enemyMoveCard.Card_Data_Direction = preDirection;
 					enemyDirection.Remove( directions[ j ] );
@@ -347,3 +350,4 @@ public class EnemyBehavior : MonoBehaviour {
 }
 
 //リファクタリング必須
+//相手カードは今はよけない

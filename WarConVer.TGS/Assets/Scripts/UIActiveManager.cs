@@ -10,7 +10,7 @@ public class UIActiveManager : MonoBehaviour {
 		DIRECT_ATTACK,
 		EFFECT,
 		EFFECT_YES,
-		TURN_END,
+		TURN_END_COLOR,
 	}
 
 	//const int MAX_ACTION_COUNT = 3;	
@@ -21,22 +21,29 @@ public class UIActiveManager : MonoBehaviour {
 
 	//ボタン
 	[ SerializeField ] List< GameObject > _UIButtons = new List< GameObject >( );
+	[ SerializeField ] GameObject _turnEndButtonMono = null;
 
 	MainSceneOperation _mainSceneOperation = new MainSceneOperation( );
 
 
+	//全てのボタンの表示を切り替える---------------------
 	public void AllButtonActiveChanger( bool active ) {
-		for ( int i = 0; i < _UIButtons.Count; i++ ) { 
-			_UIButtons[ i ].SetActive( active );	
+		for ( int i = 0; i < _UIButtons.Count; i++ ) {
+			_UIButtons[ i ].SetActive( active );
+			MonoAndColorSwap( ( BUTTON )i );
 		}
 	}
+	//---------------------------------------------------
 	
-
+	
+	//指定のボタンの表示を切り替える----------------------------------------------
 	public void ButtonActiveChanger( bool active, params BUTTON[ ] buttons ) {
 		for ( int i = 0; i < buttons.Length; i++ ) {
 			_UIButtons[ ( int )buttons[ i ] ].SetActive( active );
+			MonoAndColorSwap( buttons[ i ] );
 		}
 	}
+	//----------------------------------------------------------------------------
 
 
 	//フィールドカードの操作系UIの表示処理----------------------------------------------------------------------------
@@ -58,12 +65,13 @@ public class UIActiveManager : MonoBehaviour {
 	//------------------------------------------------------------------------------------------------------------------
 
 	
+	//エフェクトボタンの表示処理------------------------------------------------------------------------------
 	void EffectButtonActiveConditions( CardMain card, Participant turnPlayer, Square nowSquare ) { 
 		//効果の種類によって処理を変える
 		//効果ボタン表示条件
 		switch ( card.Card_Data._effect_type ) { 
 			case CardData.EFFECT_TYPE.ATTACK:	
-			if ( turnPlayer.DecreaseActivePointConfirmation( card.Card_Data._necessaryAPForEffect ) && 
+				if ( turnPlayer.DecreaseActivePointConfirmation( card.Card_Data._necessaryAPForEffect ) && 
 					 _field.AttackEffectPossibleOnCardSquare( card, nowSquare ).Count > 0 ) {
 
 					ButtonActiveChanger( true, BUTTON.EFFECT );
@@ -71,7 +79,7 @@ public class UIActiveManager : MonoBehaviour {
 				break;
 
 			case CardData.EFFECT_TYPE.MOVE:
-			if ( turnPlayer.DecreaseActivePointConfirmation( card.Card_Data._necessaryAPForEffect ) && 
+				if ( turnPlayer.DecreaseActivePointConfirmation( card.Card_Data._necessaryAPForEffect ) && 
 					 _field.MovePossibleSquare( card, nowSquare ).Count > 0 &&
 					 card.Action_Count < card.MAX_ACTION_COUNT ) {
 
@@ -80,11 +88,14 @@ public class UIActiveManager : MonoBehaviour {
 				break;
 
 			case CardData.EFFECT_TYPE.RECOVERY:
-			if ( turnPlayer.DecreaseActivePointConfirmation( card.Card_Data._necessaryAPForEffect ) && 
+				if ( turnPlayer.DecreaseActivePointConfirmation( card.Card_Data._necessaryAPForEffect ) && 
 					 card.Card_Data._toughness < card.Card_Data._maxToughness ) {
 
 					ButtonActiveChanger( true, BUTTON.EFFECT );
 				}
+				break;
+
+			case CardData.EFFECT_TYPE.NO_EFFECT:
 				break;
 
 			default:
@@ -92,8 +103,10 @@ public class UIActiveManager : MonoBehaviour {
 				break;
 		}
 	}
+	//--------------------------------------------------------------------------------------------------------
 
-
+	
+	//移動ボタンの表示処理-----------------------------------------------------------------------------
 	void MoveButtonActiveConditions( CardMain card, Participant turnPlayer, Square nowSquare ) {
 		//APが消費する分あって移動できるマスがあったてまだ行動できるカードだったら
 		if ( turnPlayer.DecreaseActivePointConfirmation( card.Card_Data._necessaryAP ) &&
@@ -104,8 +117,10 @@ public class UIActiveManager : MonoBehaviour {
 
 		}
 	}
+	//-------------------------------------------------------------------------------------------------
 
-
+	
+	//攻撃ボタンの表示処理---------------------------------------------------------------------------------------------
 	void DirectAttackButtonActiveConditions( CardMain card, Participant turnPlayer, Square nowSquare ) { 
 		//消費するAPがあってまだ行動できるカードだったら
 		if ( turnPlayer.DecreaseActivePointConfirmation( card.Card_Data._necessaryAP ) &&
@@ -120,4 +135,18 @@ public class UIActiveManager : MonoBehaviour {
 			//}
 		}
 	}
+	//-------------------------------------------------------------------------------------------------------------------
+
+	
+	//カラーボタンとモノクロボタンを入れ替える---------------
+	void MonoAndColorSwap( BUTTON button ) { 
+		if ( button == BUTTON.TURN_END_COLOR  ) {				//カラーボタンが表示されていたらモノクロボタンを非表示にする。
+			if ( _UIButtons[ ( int )button ].activeInHierarchy ) {		//カラーボタンが非表示だったらモノクロボタンを表示する。
+				_turnEndButtonMono.SetActive( false );
+			} else { 
+				_turnEndButtonMono.SetActive( true );	
+			}
+		}
+	}
+	//-------------------------------------------------------
 }

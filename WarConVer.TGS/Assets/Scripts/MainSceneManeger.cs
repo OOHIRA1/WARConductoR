@@ -70,9 +70,6 @@ public class MainSceneManeger : MonoBehaviour {
 
 	
 	void Update( ) {
-		if ( _mainSceneOperation == null ) return;
-		if ( _player1 == null ) return;
-		if ( _player2 == null ) return;
 
 		if ( _player1.Lose_Flag ) { 
 			Debug.Log( "Player2の勝ちです" );
@@ -95,7 +92,8 @@ public class MainSceneManeger : MonoBehaviour {
 			ChangePhase( );
 		}
 
-		if ( _phase == null ) return;
+		//if ( _phase == null ) return;
+		Assert.IsNotNull( _phase, "[エラー]フェーズが正常に入ってないです" );
 
 		_phase.PhaseUpdate( );
 

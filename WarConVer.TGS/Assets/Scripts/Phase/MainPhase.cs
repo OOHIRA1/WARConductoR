@@ -19,7 +19,7 @@ public class MainPhase : Phase {
 	
 	//const int MAX_ACTION_COUNT = 3;							//移動回数の最大値
 	static readonly int LOSE_CEMETARY_POINT = 10;
-	static readonly float SHOW_DETAILS_HOLD_TIME = 0.5f;
+	static readonly float SHOW_DETAILS_HOLD_TIME = 0.5f;		//手札の詳細を表示するホールド時間(手札をタッチしたときホールド時間がx秒以下だったら表示する)
 	//const int SQUARE_ROW_NUM = 4;
 	//const int FIRST_ROW_INDEX = 0;
 	//const int FIFTH_ROW_INDEX = 4;
@@ -82,8 +82,8 @@ public class MainPhase : Phase {
 
 
 		//デバッグ用
-		debugSquare.On_Card = debugCard;
-		debugCard.transform.position = debugSquare.transform.position;
+		//debugSquare.On_Card = debugCard;
+		//debugCard.transform.position = debugSquare.transform.position;
 	}
 
 
@@ -617,17 +617,17 @@ public class MainPhase : Phase {
 	
 	void ActiveTurnEndButton( ) { 
 		if ( _mainPhaseStatus == MAIN_PHASE_STATUS.IDLE && !_turnEndButton.activeInHierarchy ) { 
-			_uiActiveManager.ButtonActiveChanger( true, UIActiveManager.BUTTON.TURN_END );
+			_uiActiveManager.ButtonActiveChanger( true, UIActiveManager.BUTTON.TURN_END_COLOR );
 		}
 
 		if ( _mainPhaseStatus != MAIN_PHASE_STATUS.IDLE && _turnEndButton.activeInHierarchy ) { 
-			_uiActiveManager.ButtonActiveChanger( false, UIActiveManager.BUTTON.TURN_END );
+			_uiActiveManager.ButtonActiveChanger( false, UIActiveManager.BUTTON.TURN_END_COLOR );
 		}
 	}
 
 	void TurnEndButtonClicked( ) { 
 		if ( _mainSceneOperation.TurnEndButtonClicked( ) ) { 
-			_uiActiveManager.ButtonActiveChanger( false, UIActiveManager.BUTTON.TURN_END );
+			_uiActiveManager.ButtonActiveChanger( false, UIActiveManager.BUTTON.TURN_END_COLOR );
 			_turnEndFlag = true;
 		}
 	}
@@ -664,7 +664,8 @@ public class MainPhase : Phase {
 
 //今現在、普通によくないプログラム。あっちこっち変更しないといけなくて可読性もよくない。条件分岐もありすぎてごり押し感半端ない
 
-//手札のカードの詳細も見れたほうがいいが判定どうしよう？ →　カードがホールドされた時間を見るのはどうだろう。ホールドされたのが１秒以下だったら詳細を表示など
-
 //ボタンの表示を全部消すときに二つ以上あったら全部表示を切り替える処理、一つだけなら指定のものだけ表示を切り替える処理でやっている。
 //無駄な処理をしている感じなのだろか？もしくはわかりづらいだろうか？
+
+
+//移動処理がうまくいっていない。普通に重なる →　再現ができない。再現でき次第確認
