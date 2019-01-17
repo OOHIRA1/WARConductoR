@@ -44,6 +44,18 @@ public class BattleAnimation : MonoBehaviour {
 		_animator.SetBool ("rightWinFlag", true);
 		_audioSource.Play ();
 	}
+
+	//--左右のカードが共に負けるアニメーションを再生する関数
+	public void StartBothDeathAnim() {
+		_animator.SetBool ("bothLoseFlag", true);
+		_audioSource.Play ();
+	}
+
+	//--左右のカードが共に生き残るアニメーションを再生する関数
+	public void StartBothAliveAnim() {
+		_animator.SetBool ("bothAliveFlag", true);
+		_audioSource.Play ();
+	}
 	//=======================================================
 	//=======================================================
 

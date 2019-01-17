@@ -35,6 +35,20 @@ public class AutoDestroyBattleSpace : MonoBehaviour {
 		_rightCardSpriteRenderer.sprite = rightCardSprite;
 		_battleAnimation.StartRightWinAnim ();
 	}
+
+	//--左右のカードが共に負けるアニメーションを再生する関数
+	public void StartBothDeathAnim( Sprite leftCardSprite, Sprite rightCardSprite ) {
+		_leftCardSpriteRenderer.sprite = leftCardSprite;
+		_rightCardSpriteRenderer.sprite = rightCardSprite;
+		_battleAnimation.StartBothDeathAnim ();
+	}
+
+	//--左右のカードが共に生き残るアニメーションを再生する関数
+	public void StartBothAliveAnim( Sprite leftCardSprite, Sprite rightCardSprite ) {
+		_leftCardSpriteRenderer.sprite = leftCardSprite;
+		_rightCardSpriteRenderer.sprite = rightCardSprite;
+		_battleAnimation.StartBothAliveAnim ();
+	}
 	//=================================================================
 	//=================================================================
 }

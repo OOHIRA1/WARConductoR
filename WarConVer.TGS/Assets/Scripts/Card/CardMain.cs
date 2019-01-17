@@ -62,7 +62,7 @@ public class CardMain : MonoBehaviour {
 		Load ();//カードデータの読み込み
 		Debug.Log (_cardData);
 		Debug.Log (_actionCount);
-		_actionCount = _MAX_ACTION_COUNT;
+		_actionCount = 0;
 
 		_cardDetailsImage = Resources.Load< GameObject >( "Prefab/Dummy/CardDetailsImage" );
 		_canvas = GameObject.Find( "Canvas" );
