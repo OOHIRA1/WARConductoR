@@ -54,7 +54,7 @@ public class CardDataLoader : MonoBehaviour {
 				int effectDirectionData 		= int.Parse(csvStringArrayList [i] [6]);
 				List<Field.DIRECTION> effectDirecionList = new List<Field.DIRECTION> ();
 				while (effectDirectionData != 0) {
-					Field.DIRECTION fieldDirection = (Field.DIRECTION)( directionOfTravelData % 10 );
+					Field.DIRECTION fieldDirection = (Field.DIRECTION)( effectDirectionData % 10 );
 					effectDirecionList.Add ( fieldDirection );
 					effectDirectionData /= 10;
 				}
