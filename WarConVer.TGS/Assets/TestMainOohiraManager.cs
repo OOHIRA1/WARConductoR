@@ -13,6 +13,7 @@ public class TestMainOohiraManager : MonoBehaviour {
 	public GameObject _battleSpacePrefab;
 	public AutoDestroyBattleSpace _battleSpace;
 	public Sprite[] _cardSprite;
+	public GameObject _summonEffect;
 
 	// Use this for initialization
 	void Start () {
@@ -35,6 +36,10 @@ public class TestMainOohiraManager : MonoBehaviour {
 
 		if (Input.GetKeyDown (KeyCode.C)) {
 			_card = _deck.Draw ();
+			Vector3 effectPosition = _card.transform.position;
+			effectPosition.z = -9;
+			Instantiate (_summonEffect, effectPosition, Quaternion.identity);
+
 		}
 
 		if (Input.GetKeyDown (KeyCode.D)) {

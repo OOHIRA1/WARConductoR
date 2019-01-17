@@ -691,6 +691,7 @@ MonoBehaviour:
   _cardSprite:
   - {fileID: 21300000, guid: 91a401647c6721d4285b32e01d645d28, type: 3}
   - {fileID: 21300000, guid: 4fedde1fcc581694688a1bc4034e6e56, type: 3}
+  _summonEffect: {fileID: 100000, guid: 5d8f9f93426caba42aa910ad4ff23429, type: 2}
 --- !u!4 &1510587712
 Transform:
   m_ObjectHideFlags: 0
