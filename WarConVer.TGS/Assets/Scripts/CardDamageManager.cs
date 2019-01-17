@@ -55,7 +55,7 @@ public class CardDamageManager {
 		}
 
 		if ( playerCard.Card_Data._toughness == 0 ) {	
-			onEnemyCardSquare.On_Card = null;
+			onPlayerCardSquare.On_Card = null;
 			return BATTLE_RESULT.PLAYER_LOSE;
 		}
 
