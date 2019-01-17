@@ -1328,6 +1328,7 @@ MonoBehaviour:
   _lifePoint: {fileID: 2103627544}
   _cemetaryPoint: {fileID: 962235146}
   _field: {fileID: 835475849}
+  _summonEffect: {fileID: 100000, guid: 5d8f9f93426caba42aa910ad4ff23429, type: 2}
   _fieldCard: {fileID: 1364945304883472, guid: af69bafb6bd108f4fb0cb9b34f47b427, type: 2}
 --- !u!1 &499325160
 GameObject:
@@ -3407,6 +3408,7 @@ MonoBehaviour:
   _lifePoint: {fileID: 1330729852}
   _cemetaryPoint: {fileID: 1256974571}
   _field: {fileID: 835475849}
+  _summonEffect: {fileID: 100000, guid: 5d8f9f93426caba42aa910ad4ff23429, type: 2}
   _fieldCard: {fileID: 1884116939736334, guid: a57506c16f88ff54495a62718f4a44a5, type: 2}
 --- !u!4 &1256514222
 Transform:
