@@ -31,11 +31,6 @@ public class MainSceneManeger : MonoBehaviour {
 	Participant _enemyPlayer = null;	//そのターンのプレイヤーではないほう
 
 	//ボタン
-	[ SerializeField ] GameObject _returnButton		  = null;
-	[ SerializeField ] GameObject _moveButton		  = null;
-	[ SerializeField ] GameObject _directAttackButton = null;
-	[ SerializeField ] GameObject _effectButton		  = null;
-	[ SerializeField ] GameObject _effectYesBuuton	  = null;
 	[ SerializeField ] GameObject _turnEndButton      = null;
 
 	[ SerializeField ] EnemyBehavior _enemyBehavior = null;
@@ -60,7 +55,6 @@ public class MainSceneManeger : MonoBehaviour {
 			_enemyPlayer = _player1;
 		}
 
-		//_phase = new StartPhase( _turnPlayer );
 		_phase = new PreparePhase( _turnPlayer, _enemyPlayer );
 	}
 
@@ -92,7 +86,6 @@ public class MainSceneManeger : MonoBehaviour {
 			ChangePhase( );
 		}
 
-		//if ( _phase == null ) return;
 		Assert.IsNotNull( _phase, "[エラー]フェーズが正常に入ってないです" );
 
 		_phase.PhaseUpdate( );
@@ -125,7 +118,7 @@ public class MainSceneManeger : MonoBehaviour {
 
 			case PHASE.MAIN:
 				_phase = new MainPhase( _turnPlayer, _enemyPlayer, _mainSceneOperation, _uIActiveManager, _field,
-										_returnButton, _moveButton, _directAttackButton, _effectButton, _effectYesBuuton, _turnEndButton,
+									    _turnEndButton,
 										_enemyBehavior,
 										_drawCard, _debugCard, _debugSquare );
 				break;
