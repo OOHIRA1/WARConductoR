@@ -131,7 +131,7 @@ public class MainSceneManeger : MonoBehaviour {
 				break;
 
 			case PHASE.END:
-				_phase = new EndPhase( _turnPlayer );
+				_phase = new EndPhase( _turnPlayer, _mainSceneOperation );
 				break;
 
 			default:

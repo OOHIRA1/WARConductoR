@@ -6,10 +6,11 @@ public class EndPhase : Phase {
 	bool _didHandThrowAway = false;
 
 	RayShooter _rayShooter = new RayShooter( );
-	MainSceneOperation _mainSceneOperation = new MainSceneOperation( );
+	MainSceneOperation _mainSceneOperation = null;
 
-	public EndPhase( Participant turnPlayer ) {
+	public EndPhase( Participant turnPlayer, MainSceneOperation mainSceneOperation ) {
 		_turnPlayer = turnPlayer;
+		_mainSceneOperation = mainSceneOperation;
 
 		if ( _turnPlayer.Hand_Num <= _turnPlayer.Max_Hnad_Num ) { 
 			_didHandThrowAway = true;
