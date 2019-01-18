@@ -23,7 +23,7 @@ public class UIActiveManager : MonoBehaviour {
 	[ SerializeField ] List< GameObject > _UIButtons = new List< GameObject >( );
 	[ SerializeField ] GameObject _turnEndButtonMono = null;
 
-	MainSceneOperation _mainSceneOperation = new MainSceneOperation( );
+	//MainSceneOperation _mainSceneOperation = new MainSceneOperation( );//MonoBenaviourを継承したクラスをnewして使用するのは良くないみたいです（警告が出ます）
 
 
 	//全てのボタンの表示を切り替える---------------------

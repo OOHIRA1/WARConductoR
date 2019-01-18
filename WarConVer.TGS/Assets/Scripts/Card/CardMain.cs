@@ -174,7 +174,8 @@ public class CardMain : MonoBehaviour {
 		hitPoint.text = _cardData._toughness.ToString( );
 
 		//位置をずらしている
-		_details.transform.parent = _canvas.transform;
+		_details.transform.SetParent( _canvas.transform );
+//		_details.transform.parent = _canvas.transform;//RectTransformを使っているGameObjectの子にする時はSetParentメゾット推奨だそうです（警告が出ます、UIスケーリング問題を防ぐためとか…）
 		RectTransform detailsPos = _details.GetComponent< RectTransform >( );
 		detailsPos.localPosition = new Vector3( DETAILS_POS_X, 0, 0 );	//あとでこの部分の処理は修正するだろうからマジックナンバーを放置	
 	}
