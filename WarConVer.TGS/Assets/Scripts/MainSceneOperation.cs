@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class MainSceneOperation : MonoBehaviour {
-	const float RAY_DIR = 100f;
 	float _holdCount = 0;
 	bool _backButtonClicked 	 = false; 
 	bool _moveButtonClicked      = false;

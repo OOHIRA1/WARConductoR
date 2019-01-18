@@ -5,9 +5,6 @@ using UnityEngine.Assertions;
 
 public class Participant : MonoBehaviour {
 	const int MAX_MAGIC_POINT = 12;
-	const int SQUARE_ROW_NUM = 4;
-	const int FIRST_ROW_INDEX = 0;
-	const int FIFTH_ROW_INDEX = 4;
 	const int ADD_CEMETARY_POINT = 1;
 	const int UP_MAGIC_POINT = 1;
 

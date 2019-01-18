@@ -17,8 +17,8 @@ public class MainPhase : Phase {
 		HANC_CARD_SUMMON
 	}
 	
-	static readonly int LOSE_CEMETARY_POINT = 10;
-	static readonly float SHOW_DETAILS_HOLD_TIME = 0.5f;		//手札の詳細を表示するホールド時間(手札をタッチしたときホールド時間がx秒以下だったら表示する)
+	const int LOSE_CEMETARY_POINT = 10;
+	const float SHOW_DETAILS_HOLD_TIME = 0.5f;		//手札の詳細を表示するホールド時間(手札をタッチしたときホールド時間がx秒以下だったら表示する)
 
 	MainSceneOperation _mainSceneOperation = null;
 	Square _nowSquare					   = null;

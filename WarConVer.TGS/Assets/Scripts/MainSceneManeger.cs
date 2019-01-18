@@ -22,8 +22,11 @@ public class MainSceneManeger : MonoBehaviour {
 	[ SerializeField ] Participant _player1 = null;
 	[ SerializeField ] Participant _player2 = null;
 	[ SerializeField ] UIActiveManager _uIActiveManager = null;
-	
+	[ SerializeField ] EnemyBehavior _enemyBehavior = null;
 	[ SerializeField ] Field _field = null;
+
+	//エフェクト系
+	[ SerializeField ] GameObject _tapEffect = null;
 	
 	Phase _phase = null;
 	PHASE _phaseStatus = PHASE.PREPARE;
@@ -31,9 +34,7 @@ public class MainSceneManeger : MonoBehaviour {
 	Participant _enemyPlayer = null;	//そのターンのプレイヤーではないほう
 
 	//ボタン
-	[ SerializeField ] GameObject _turnEndButton      = null;
-
-	[ SerializeField ] EnemyBehavior _enemyBehavior = null;
+	[ SerializeField ] GameObject _turnEndButton = null;
 
 	//テスト用
 	[ SerializeField ] CardMain _drawCard	  = null;
@@ -41,9 +42,6 @@ public class MainSceneManeger : MonoBehaviour {
 	[ SerializeField ] CardMain _debugCard = null;
 	[ SerializeField ] Square _debugSquare = null;
 
-
-	//エフェクト系
-	[ SerializeField ] GameObject _tapEffect = null;
 
 	private void Awake( ) {
 		//先行後攻を判別して入れ替えられる。

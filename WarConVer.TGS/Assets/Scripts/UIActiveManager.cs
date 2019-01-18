@@ -13,18 +13,11 @@ public class UIActiveManager : MonoBehaviour {
 		TURN_END_COLOR,
 	}
 
-	//const int MAX_ACTION_COUNT = 3;	
-	const int FIRST_ROW_INDEX = 0;
-	const int SQUARE_ROW_NUM = 4;
-
 	[ SerializeField ] Field _field = null;
 
 	//ボタン
 	[ SerializeField ] List< GameObject > _UIButtons = new List< GameObject >( );
 	[ SerializeField ] GameObject _turnEndButtonMono = null;
-
-	//MainSceneOperation _mainSceneOperation = new MainSceneOperation( );//MonoBenaviourを継承したクラスをnewして使用するのは良くないみたいです（警告が出ます）
-
 
 	//全てのボタンの表示を切り替える---------------------
 	public void AllButtonActiveChanger( bool active ) {
@@ -126,7 +119,7 @@ public class UIActiveManager : MonoBehaviour {
 		if ( turnPlayer.DecreaseActivePointConfirmation( card.Card_Data._necessaryAP ) &&
 			 card.Action_Count < card.MAX_ACTION_COUNT ) {
 
-			if ( ( ( nowSquare.Index ) / SQUARE_ROW_NUM == FIRST_ROW_INDEX ) && card.gameObject.tag == "Player1" ) {		//一列目にいたら攻撃ボタンを表示//修正するだろうからマジックナンバーを放置
+			if ( ( ( nowSquare.Index ) / ConstantStorehouse.SQUARE_ROW_NUM == ConstantStorehouse.FIRST_ROW_INDEX ) && card.gameObject.tag == "Player1" ) {		//一列目にいたら攻撃ボタンを表示//修正するだろうからマジックナンバーを放置
 				ButtonActiveChanger( true, BUTTON.DIRECT_ATTACK );
 			}
 

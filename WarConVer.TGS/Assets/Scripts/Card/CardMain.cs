@@ -112,7 +112,7 @@ public class CardMain : MonoBehaviour {
 
 	//プレイヤーによってカードの持っている向きを調整して返す処理------------------------------------
 	public List< Field.DIRECTION > getDirections( string player, List< Field.DIRECTION > directions ) {
-		if ( player == "Player1" ) {
+		if ( player == ConstantStorehouse.TAG_PLAYER1 ) {
 			return directions;
 		}
 
