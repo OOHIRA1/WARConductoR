@@ -10,6 +10,8 @@ public class EnemyBehavior : MonoBehaviour {
 		MOVE,
 	}
 
+	const int MAX_SUMMON_CARD_NUM = 3;
+
 	[ SerializeField ] Field _field = null;
 	[ SerializeField ] Participant _enemy = null;
 	[ SerializeField ] Participant _player = null;
@@ -51,9 +53,10 @@ public class EnemyBehavior : MonoBehaviour {
 		}
 	}
 
+
+	//召喚処理Update-------------------------------------------------------------------
 	void EnemySummonUpdate( ) {
 
-		//List< Square > summonSquares = _enemy.SummonSquare( _enemy.gameObject.tag );
 		List< Square > summonSquares = _field.SummonSquare( _enemy.gameObject.tag );
 		if ( summonSquares.Count == 0 ) {
 			_enemyBehaviorStatus = ENEMY_BEHAVIOR_STATUS.DIRECT_ATTACK;
@@ -97,15 +100,17 @@ public class EnemyBehavior : MonoBehaviour {
 		}
 
 	}
+	//-----------------------------------------------------------------------------------------
 
 	
+	//ダイレクトアタック処理Update------------------------------------------------------------------------
 	void EnemyDirectAttackUpdate( ) { 
 
-		for ( int i = 0; i < 4; i++ ) { 
-			Square square = _field.getSquare( ( 4 * 4 ) + i );	// ( 横のマス数 ×　五列目 ) + 左からの番号
+		for ( int i = 0; i < ConstantStorehouse.SQUARE_ROW_NUM; i++ ) { 
+			Square square = _field.getSquare( ( ConstantStorehouse.SQUARE_ROW_NUM * ConstantStorehouse.FIFTH_ROW_INDEX ) + i );	// ( 横のマス数 ×　五列目 ) + 左からの番号
 
 			if ( square.On_Card == null ) continue;
-			if ( square.On_Card.gameObject.tag != "Player2" ) continue;
+			if ( square.On_Card.gameObject.tag != ConstantStorehouse.TAG_PLAYER2 ) continue;
 
 			CardMain directAttackCard = square.On_Card;
 			int nowAP = _enemyActivePoint.Point_Num;
@@ -117,7 +122,10 @@ public class EnemyBehavior : MonoBehaviour {
 
 		_enemyBehaviorStatus = ENEMY_BEHAVIOR_STATUS.MOVE;
 	}
+	//-------------------------------------------------------------------------------------------------------
 
+
+	//移動処理Update--------------------------------------------------
 	public void EnemyCardMoveUpdate( ) {
 
 		if ( _enemy.Card_In_Field.Count == 0 ) {
@@ -126,15 +134,16 @@ public class EnemyBehavior : MonoBehaviour {
 			return;
 		} 
 
-		//前列にいたら攻撃
 		MoveCardSearch( );
 	}
+	//---------------------------------------------------------------
 
-
+	
+	//召喚するカードを探す-----------------------------------------------------
 	CardMain SummonCardSearch( ) { 
 		List< CardMain > _handCard = _enemyHand.Card;
 
-		if ( _enemy.Card_In_Field.Count >= 3 ) return null; 
+		if ( _enemy.Card_In_Field.Count >= MAX_SUMMON_CARD_NUM ) return null; 
 
 		//手札のMPを見て召喚できるカードを取り出す
 		int max_mp = -1;
@@ -172,36 +181,35 @@ public class EnemyBehavior : MonoBehaviour {
 
 		return summonCard;
 	}
+	//---------------------------------------------------------------------------------------------------------------------------------
 
 
-	//名前はあとで変えることになる
-	//第一処理
+	//第一優先召喚マス探し-----------------------------------------------------------------------
 	Square FirstPrioritySquareSearch( ) { 
 		Square summonSquare = null;
 
-		for ( int i = 0; i < 4; i++ ) {	//前列は４マスまでしかない
+		for ( int i = 0; i < ConstantStorehouse.SQUARE_ROW_NUM; i++ ) {	//前列は４マスまでしかない
 			Square square = null;
 			square = _field.getSquare( i );
 
-			//if ( square.Index / 4 != 0 ) continue;
 			if ( square.On_Card == null ) continue;
 			if ( square.On_Card.gameObject.tag == _enemy.gameObject.tag ) continue;
 
-			summonSquare = SummonSquareSearch( square );
+			summonSquare = FirstPrioritySquareSearchAlgorithm( square );
 			return summonSquare;
 		}
 
 		return null;
 	}
+	//-------------------------------------------------------------------------------------------
 
 
-	//名前はあとで変えることになる
+	//第一優先召喚マス探しの処理(ネストを浅くするため)-----------------------------------
 	//あとでマジックナンバーを修正する
-	Square SummonSquareSearch( Square onCardSquare ) {
+	Square FirstPrioritySquareSearchAlgorithm( Square onCardSquare ) {
 		int index = onCardSquare.Index;
 		for ( int j = 1; j < 4; j++ ) {	//横一列を探すのは最大三回まで(カードがあった場所の左右から探すという意味)
 			Square summonSquare = null;
-			//index++;
 
 			if ( index + j < 4 ) {	//一列目の左端を超えてなかったら
 				summonSquare = _field.getSquare( index + j );
@@ -221,17 +229,17 @@ public class EnemyBehavior : MonoBehaviour {
 
 		return null;
 	}
+	//----------------------------------------------------------------------------------
 
 
-	//第二処理
+	//第二優先召喚マス探し-----------------------------------------------------------------
 	Square SecondPrioritySquareSearch( ) { 
 		Square summonSquare = null;
 
-		for ( int i = 0; i < _field.Max_Index - 4; i++ ) {	//一列目を除くマスの数
+		for ( int i = 0; i < _field.Max_Index - ConstantStorehouse.SQUARE_ROW_NUM; i++ ) {	//一列目を除くマスの数
 			Square square = null;
-			square = _field.getSquare( i + 4 );	//一列目を省く
+			square = _field.getSquare( i + ConstantStorehouse.SQUARE_ROW_NUM );	//一列目を省く
 
-			//if ( square.Index / 4 != 0 ) continue;
 			if ( square.On_Card == null ) continue;
 			if ( square.On_Card.gameObject.tag == _enemy.gameObject.tag ) continue;
 
@@ -244,14 +252,15 @@ public class EnemyBehavior : MonoBehaviour {
 
 		return null;
 	}
+	//-----------------------------------------------------------------------------------
 
 
-	//第三処理
+	//第三優先召喚マス探し-----------------------------------
 	//出す順番が逆っぽいからあとで調べる順番を逆にする
 	Square ThirdPrioritySquareSearch( ) { 
 		Square summonSquare = null;
 
-		for ( int i = 0; i < 4; i++ ) { 
+		for ( int i = 0; i < ConstantStorehouse.SQUARE_ROW_NUM; i++ ) { 
 			Square square = null;	
 			square = _field.getSquare( i );
 			if ( square.On_Card == null ) {
@@ -262,8 +271,10 @@ public class EnemyBehavior : MonoBehaviour {
 		
 		return null;
 	}
+	//-------------------------------------------------------
 
-
+	
+	//移動するカードを探す-------------------------------------------------------------------------
 	void MoveCardSearch( ) {
 		CardMain enemyMoveCard = null;
 		for ( int i = 0; i < _field.Max_Index; i++ ) {
@@ -271,32 +282,31 @@ public class EnemyBehavior : MonoBehaviour {
 
 			if ( square == null ) continue;
 			if ( square.On_Card == null ) continue;
-			if ( square.On_Card.gameObject.tag != "Player2" ) continue;
+			if ( square.On_Card.gameObject.tag != ConstantStorehouse.TAG_PLAYER2 ) continue;
 
 			enemyMoveCard = square.On_Card;
 			int nowAP = _enemyActivePoint.Point_Num;
 			if ( enemyMoveCard.Card_Data._necessaryAP > nowAP ) continue;
 			if ( enemyMoveCard.Action_Count >= enemyMoveCard.MAX_ACTION_COUNT ) continue;
 
+			//MoveCardDirectionSearch( enemyMoveCard, square );
+
 			List< Field.DIRECTION > directions = EnemyDirectionSorting( enemyMoveCard );
 
 			if ( directions.Count == 0 ) continue;
 
 
-
+			//移動できる場所を探す
 			List<Field.DIRECTION> enemyDirection = new List< Field.DIRECTION >( );
 
 			for ( int j = 0; j < directions.Count; j++ ) {
-				//enemyDirection[ 0 ] = directions[ j ];
 				enemyDirection.Add( directions[ j ] );
 
 				//変更してください！！！！！エラーになります！	→　CardDataのアクセッサーだとその先の_directionOfTravelまでアクセスできないっぽい
-				//enemyMoveCard.Card_Data._directionOfTravel = enemyDirection;	//エネミーのカードの移動先を書き換えている。いいのかはわからない
+				
 				List< Field.DIRECTION > preDirection = enemyMoveCard.Card_Data_Direction;
-				enemyMoveCard.Card_Data_Direction = enemyDirection;  // →　Card_Data._directionOfTravelのアクセッサーを用意したらいけた
-				//############################################################################################################################################
+				enemyMoveCard.Card_Data_Direction = enemyDirection;  // //エネミーのカードの移動先を書き換えている。いいのかはわからない →　Card_Data._directionOfTravelのアクセッサーを用意したらいけた
 
-				//List< Square > moveSquare = _enemy.MovePossibleSquare( enemyMoveCard, square );
 				List< Square > moveSquare = _field.MovePossibleSquare( enemyMoveCard, square );
 
 				//相手カードがあったりしたらよける処理
@@ -310,15 +320,50 @@ public class EnemyBehavior : MonoBehaviour {
 				MoveCard( enemyMoveCard, square, moveSquare[ 0 ] );		//あとでこの関数の役割を分けないといけない
 				enemyMoveCard.Card_Data_Direction = preDirection;
 				return;
-				//_enemy.MoveCard( enemyMoveCard, square, moveSquare[ 0 ] );	//方向を一つしか送っていないのでリストの中身も一つしか入らない。
 			}
 		}
 
 		_enemyBehaviorStatus = ENEMY_BEHAVIOR_STATUS.SUMMON;
 		_enemyUpdateFlag = false;
 	}
+	//------------------------------------------------------------------------------------------------
 
 
+	//void MoveCardDirectionSearch( CardMain enemyMoveCard, Square square ) {
+	//	List< Field.DIRECTION > directions = EnemyDirectionSorting( enemyMoveCard );
+
+	//		if ( directions.Count == 0 ) return;
+
+
+	//		//移動できる場所を探す
+	//		List<Field.DIRECTION> enemyDirection = new List< Field.DIRECTION >( );
+
+	//		for ( int j = 0; j < directions.Count; j++ ) {
+	//			enemyDirection.Add( directions[ j ] );
+
+	//			//変更してください！！！！！エラーになります！	→　CardDataのアクセッサーだとその先の_directionOfTravelまでアクセスできないっぽい
+				
+	//			List< Field.DIRECTION > preDirection = enemyMoveCard.Card_Data_Direction;
+	//			enemyMoveCard.Card_Data_Direction = enemyDirection;  // //エネミーのカードの移動先を書き換えている。いいのかはわからない →　Card_Data._directionOfTravelのアクセッサーを用意したらいけた
+
+	//			List< Square > moveSquare = _field.MovePossibleSquare( enemyMoveCard, square );
+
+	//			//相手カードがあったりしたらよける処理
+
+	//			if ( moveSquare.Count == 0 ) {
+	//				enemyMoveCard.Card_Data_Direction = preDirection;
+	//				enemyDirection.Remove( directions[ j ] );
+	//				continue;
+	//			}
+
+	//			MoveCard( enemyMoveCard, square, moveSquare[ 0 ] );		//あとでこの関数の役割を分けないといけない
+	//			enemyMoveCard.Card_Data_Direction = preDirection;
+	//			return;
+	//	}
+	//}
+
+
+	//エネミーカードの移動したくてかつできる場所を優先順位が高い順に抽出する-------------------------
 	List< Field.DIRECTION > EnemyDirectionSorting( CardMain card ) {
 		Field.DIRECTION[ ] enemyDirections = { Field.DIRECTION.FORWAED,
 											   Field.DIRECTION.LEFT_FORWARD,
@@ -338,15 +383,21 @@ public class EnemyBehavior : MonoBehaviour {
 		
 		return direction;
 	}
-	
-	void Summon( CardMain card, Square square ) { 
-		_enemy.Summon( card, square, "Player2" );	
-	}
+	//-----------------------------------------------------------------------------------------------
 
+	
+	//召喚----------------------------------------------------------------
+	void Summon( CardMain card, Square square ) { 
+		_enemy.Summon( card, square, ConstantStorehouse.TAG_PLAYER2 );	
+	}
+	//---------------------------------------------------------------------
+
+
+	//移動------------------------------------------------------------------
 	void MoveCard( CardMain card, Square nowSquare, Square moveSquare ) { 
 		_enemy.MoveCard( card, nowSquare, moveSquare );	
 	}
-
+	//-----------------------------------------------------------------------
 }
 
 //リファクタリング必須

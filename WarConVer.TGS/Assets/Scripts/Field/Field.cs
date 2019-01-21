@@ -15,9 +15,6 @@ public class Field : MonoBehaviour {
 	}
 
 	const int MAX_SQUARE = 20;
-	const int FIRST_ROW_INDEX = 0;
-	const int FIFTH_ROW_INDEX = 4;
-	const int SQUARE_ROW_NUM = 4;
 
 	Square[ ] _squares = new Square[ MAX_SQUARE ];		//マス
 	int _maxIndex = 0; 
@@ -115,22 +112,22 @@ public class Field : MonoBehaviour {
 	public List< Square > SummonSquare( string player ) { 
 		List< Square > squares = new List< Square >( );
 		
-		if ( player == "Player1" ) { 
+		if ( player == ConstantStorehouse.TAG_PLAYER1 ) { 
 			for ( int i = 0; i < _maxIndex; i++ ) { 
 				Square square = getSquare( i );
 
-				if ( ( square.Index ) / SQUARE_ROW_NUM != FIFTH_ROW_INDEX )  continue;
+				if ( ( square.Index ) / ConstantStorehouse.SQUARE_ROW_NUM != ConstantStorehouse.FIFTH_ROW_INDEX )  continue;
 				if ( square.On_Card != null ) continue;
 
 				squares.Add( square );
 			}		
 		}
 		
-		if ( player == "Player2" ) { 
+		if ( player == ConstantStorehouse.TAG_PLAYER2 ) { 
 			for ( int i = 0; i < _maxIndex; i++ ) { 
 				Square square = getSquare( i );
 		
-				if ( ( square.Index ) / SQUARE_ROW_NUM != FIRST_ROW_INDEX )  continue;
+				if ( ( square.Index ) / ConstantStorehouse.SQUARE_ROW_NUM != ConstantStorehouse.FIRST_ROW_INDEX )  continue;
 				if ( square.On_Card != null ) continue;
 		
 				squares.Add( square );

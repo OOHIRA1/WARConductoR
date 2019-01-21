@@ -813,19 +813,14 @@ MonoBehaviour:
   _player1: {fileID: 473805677}
   _player2: {fileID: 1256514221}
   _uIActiveManager: {fileID: 1099092320}
-  _field: {fileID: 835475849}
-  _returnButton: {fileID: 1949290537}
-  _moveButton: {fileID: 1474539973}
-  _directAttackButton: {fileID: 1207233793}
-  _effectButton: {fileID: 1865975021}
-  _effectYesBuuton: {fileID: 1421355633}
-  _turnEndButton: {fileID: 1417735798}
   _enemyBehavior: {fileID: 1256514223}
+  _field: {fileID: 835475849}
+  _tapEffect: {fileID: 100008, guid: 275a4ec31702e44099ce2dd407f995d5, type: 2}
+  _turnEndButton: {fileID: 1417735798}
   _drawCard: {fileID: 1976715242}
   _order: 0
   _debugCard: {fileID: 568092346}
   _debugSquare: {fileID: 782638987}
-  _tapEffect: {fileID: 100008, guid: 275a4ec31702e44099ce2dd407f995d5, type: 2}
 --- !u!4 &237354374
 Transform:
   m_ObjectHideFlags: 0

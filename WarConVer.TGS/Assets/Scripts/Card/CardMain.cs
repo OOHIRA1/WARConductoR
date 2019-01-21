@@ -110,7 +110,7 @@ public class CardMain : MonoBehaviour {
 
 	//プレイヤーによってカードの持っている向きを調整して返す処理------------------------------------
 	public List< Field.DIRECTION > getDirections( string player, List< Field.DIRECTION > directions ) {
-		if ( player == "Player1" ) {
+		if ( player == ConstantStorehouse.TAG_PLAYER1 ) {
 			return directions;
 		}
 
@@ -119,42 +119,34 @@ public class CardMain : MonoBehaviour {
 		
 			switch( directions[ i ] ) { 
 				case Field.DIRECTION.LEFT_FORWARD:
-					//player2Directions[ i ] = Field.DIRECTION.RIGHT_BACK;
 					player2Directions.Add( Field.DIRECTION.RIGHT_BACK );
 					break;
 
 				case Field.DIRECTION.FORWAED:
-					//player2Directions[ i ] = Field.DIRECTION.BACK;
 					player2Directions.Add( Field.DIRECTION.BACK );
 					break;
 
 				case Field.DIRECTION.RIGHT_FORWARD:
-					//player2Directions[ i ] = Field.DIRECTION.LEFT_BACK;
 					player2Directions.Add( Field.DIRECTION.LEFT_BACK );
 					break;
 
 				case Field.DIRECTION.LEFT:
-					//player2Directions[ i ] = Field.DIRECTION.RIGHT;
 					player2Directions.Add( Field.DIRECTION.RIGHT );
 					break;
 
 				case Field.DIRECTION.RIGHT:
-					//player2Directions[ i ] = Field.DIRECTION.LEFT;
 					player2Directions.Add( Field.DIRECTION.LEFT );
 					break;
 
 				case Field.DIRECTION.LEFT_BACK:
-					//player2Directions[ i ] = Field.DIRECTION.RIGHT_FORWARD;
 					player2Directions.Add( Field.DIRECTION.RIGHT_FORWARD );
 					break;
 
 				case Field.DIRECTION.BACK:
-					//player2Directions[ i ] = Field.DIRECTION.FORWAED;
 					player2Directions.Add( Field.DIRECTION.FORWAED );
 					break;
 
 				case Field.DIRECTION.RIGHT_BACK:
-					//player2Directions[ i ] = Field.DIRECTION.LEFT_FORWARD;
 					player2Directions.Add( Field.DIRECTION.LEFT_FORWARD );
 					break;
 				

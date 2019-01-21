@@ -13,7 +13,7 @@ public class StartPhase : Phase {
 		GameObject turnLogo = GameObject.Find ( "TurnLogo" );
 		//ターンロゴSpriteの更新----------------------------------------------------
 		Image turnLogoImage = turnLogo.GetComponent<Image> ( );
-		if ( _turnPlayer.gameObject.tag == "Player1" ) {
+		if ( _turnPlayer.gameObject.tag == ConstantStorehouse.TAG_PLAYER1 ) {
 			turnLogoImage.sprite = Resources.Load<Sprite> ( "UI/ui_your_turn" );
 		} else {
 			turnLogoImage.sprite = Resources.Load<Sprite> ( "UI/ui_enemy_turn" );

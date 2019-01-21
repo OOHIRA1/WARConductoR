@@ -5,9 +5,6 @@ using UnityEngine.Assertions;
 
 public class Participant : MonoBehaviour {
 	const int MAX_MAGIC_POINT = 12;
-	const int SQUARE_ROW_NUM = 4;
-	const int FIRST_ROW_INDEX = 0;
-	const int FIFTH_ROW_INDEX = 4;
 	const int ADD_CEMETARY_POINT = 1;
 	const int UP_MAGIC_POINT = 1;
 
@@ -200,80 +197,6 @@ public class Participant : MonoBehaviour {
 	}
 	//--------------------------------------------------------------
 
-
-	/*//移動できる場所を事前に調べる関数-------------------------------------------------------------------------------------------------
-	public List< Square > MovePossibleSquare( CardMain card, Square nowSquare ) { 
-		List< Square > squares = new List< Square >( );
-
-		//移動できるマスだけ格納
-		Field.DIRECTION[ ] directions = card.getDirections( card.gameObject.tag, card._cardDates.directions );
-		for ( int i = 0; i < directions.Length; i++ ) {
-			Square square = _field.SquareInThatDirection( nowSquare, directions[ i ], card._cardDates.distance );
-
-			if ( square == null ) continue;
-			if ( square.On_Card != null ) {
-				if ( square.On_Card.gameObject.tag == card.gameObject.tag ) continue;	//マスにあるのが自分のカードだったらcontinue
-			}
-
-			squares.Add( square );
-				
-		}
-
-		return squares;
-	}
-	//----------------------------------------------------------------------------------------------------------------------------------
-
-
-	//攻撃効果をするマスにカードがあるマスを事前に調べる関数-----------------------------------------------------------------------------------
-	public List< Square > AttackEffectPossibleOnCardSquare( CardMain card, Square nowSquare ) { 
-		List< Square > squares = new List< Square >( );
-
-		//攻撃できるマスだけ格納
-		Field.DIRECTION[ ] directions = card.getDirections( card.gameObject.tag, card._cardDates.effect_directions );
-		for ( int i = 0; i < directions.Length; i++ ) {
-			Square square = _field.SquareInThatDirection( nowSquare, directions[ i ], card._cardDates.effect_ditance );
-
-			if ( square == null ) continue;
-			if ( square.On_Card == null ) continue;
-			squares.Add( square );
-				
-		}
-
-		Debug.Log( squares );
-		return squares;
-	}
-	//------------------------------------------------------------------------------------------------------------------------------------
-
-	//召喚できるマスを事前に調べる関数-----------------------------
-	public List< Square > SummonSquare( string player ) { 
-		List< Square > squares = new List< Square >( );
-		
-		if ( player == "Player1" ) { 
-			for ( int i = 0; i < _field.Max_Index; i++ ) { 
-				Square square = _field.getSquare( i );
-
-				if ( ( square.Index ) / SQUARE_ROW_NUM != FIFTH_ROW_INDEX )  continue;
-				if ( square.On_Card != null ) continue;
-
-				squares.Add( square );
-			}		
-		}
-		
-		if ( player == "Player2" ) { 
-			for ( int i = 0; i < _field.Max_Index; i++ ) { 
-				Square square = _field.getSquare( i );
-
-				if ( ( square.Index ) / SQUARE_ROW_NUM != FIRST_ROW_INDEX )  continue;
-				if ( square.On_Card != null ) continue;
-
-				squares.Add( square );
-			}		
-		}
-
-		return squares;
-	}
-	//--------------------------------------------------------------*/
-
 	
 	//召喚処理-----------------------------------------------------------------------------------------------------------
 	public void Summon( CardMain card, Square square, string player ) {
@@ -288,11 +211,10 @@ public class Participant : MonoBehaviour {
 			CardMain fieldCard = fieldCardObj.GetComponent< CardMain >( );
 			fieldCard.loadID = card.loadID;
 
-			//召喚エフェクト処理-----------------------------------------------------------------
+			//召喚エフェクト処理
 			Vector3 effectPos = fieldCardObj.transform.position;
 			effectPos.z = Camera.main.transform.position.z + 1f;//カメラに近い位置に生成したいため
 			Instantiate( _summonEffect, effectPos, Quaternion.identity );
-			//----------------------------------------------------------------------------------
 
 			_magicPoint.DecreasePoint( card.Card_Data._necessaryMP );
 			square.On_Card = fieldCard;
@@ -312,7 +234,7 @@ public class Participant : MonoBehaviour {
 
 
 	//ドロー処理---------------------------
-	public void Draw( /*CardMain card*/ ) {
+	public void Draw( ) {
 		CardMain card = _deck.Draw ( );
 		if ( card ) {
 			card.gameObject.tag = this.gameObject.tag;	//自身のカードであることを示すタグを付ける
