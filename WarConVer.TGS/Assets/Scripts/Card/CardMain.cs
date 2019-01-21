@@ -60,8 +60,6 @@ public class CardMain : MonoBehaviour {
 		_cardSpriteRenderer = GetComponent<SpriteRenderer>();
 		_cardDataLoader = GameObject.Find ("CardDataLoader").GetComponent<CardDataLoader>();
 		Load ();//カードデータの読み込み
-		Debug.Log (_cardData);
-		Debug.Log (_actionCount);
 		_actionCount = 0;
 
 		_cardDetailsImage = Resources.Load< GameObject >( "Prefab/Dummy/CardDetailsImage" );
