@@ -613,6 +613,48 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &843839648
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4744277585376264, guid: 0c5a843e7ab2b1543961735e6873c867, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4744277585376264, guid: 0c5a843e7ab2b1543961735e6873c867, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4744277585376264, guid: 0c5a843e7ab2b1543961735e6873c867, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4744277585376264, guid: 0c5a843e7ab2b1543961735e6873c867, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4744277585376264, guid: 0c5a843e7ab2b1543961735e6873c867, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4744277585376264, guid: 0c5a843e7ab2b1543961735e6873c867, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4744277585376264, guid: 0c5a843e7ab2b1543961735e6873c867, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4744277585376264, guid: 0c5a843e7ab2b1543961735e6873c867, type: 2}
+      propertyPath: m_RootOrder
+      value: 13
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 0c5a843e7ab2b1543961735e6873c867, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &958844982
 GameObject:
   m_ObjectHideFlags: 0
@@ -1033,6 +1075,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 4fedde1fcc581694688a1bc4034e6e56, type: 3}
   _summonEffect: {fileID: 100000, guid: 5d8f9f93426caba42aa910ad4ff23429, type: 2}
   _lifeSpace: {fileID: 133027893}
+  _blackDamageEffect: {fileID: 114545247035460616, guid: 0c5a843e7ab2b1543961735e6873c867,
+    type: 2}
 --- !u!4 &1510587712
 Transform:
   m_ObjectHideFlags: 0

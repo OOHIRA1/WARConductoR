@@ -16,6 +16,7 @@ public class Participant : MonoBehaviour {
 	[ SerializeField ] Point _cemetaryPoint = null;
 	[ SerializeField ] Field _field			= null;
 	[ SerializeField ] GameObject _summonEffect = null;
+	[ SerializeField ] AutoDestroyEffect _blackDamageEffect = null;
 	[ SerializeField ] AutoDestroyBattleSpace _battleSpacePrefab = null;
 	[ SerializeField ] AutoNonActiveLPSpace _opponentLifeSpace = null;		//対戦相手のライフスペース
 
@@ -180,6 +181,9 @@ public class Participant : MonoBehaviour {
 	
 		for ( int i = 0; i < squares.Count; i++ ) { 
 			_cardDamageManager.CardEffectDamage( squares[ i ], card.Card_Data._effect_value );
+			//エフェクト処理-----------------------------------------------------------------------------------------
+			Instantiate<AutoDestroyEffect>( _blackDamageEffect, squares[ i ].transform.position, Quaternion.identity );
+			//------------------------------------------------------------------------------------------------------
 		}
 
 		_activePoint.DecreasePoint( card.Card_Data._necessaryAPForEffect );

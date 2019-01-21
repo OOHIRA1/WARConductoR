@@ -15,6 +15,7 @@ public class TestMainOohiraManager : MonoBehaviour {
 	public Sprite[] _cardSprite;
 	public GameObject _summonEffect;
 	public AutoNonActiveLPSpace _lifeSpace;
+	public AutoDestroyEffect _blackDamageEffect;
 
 	// Use this for initialization
 	void Start () {
@@ -82,6 +83,10 @@ public class TestMainOohiraManager : MonoBehaviour {
 
 		if (Input.GetKeyDown (KeyCode.I)) {
 			_lifeSpace.StartDirectAttackAnimation ();
+		}
+
+		if (Input.GetKeyDown (KeyCode.J)) {
+			Instantiate<AutoDestroyEffect> (_blackDamageEffect, Vector3.zero, Quaternion.identity);
 		}
 	}
 }

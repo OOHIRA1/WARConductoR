@@ -1376,6 +1376,8 @@ MonoBehaviour:
   _cemetaryPoint: {fileID: 962235146}
   _field: {fileID: 835475849}
   _summonEffect: {fileID: 100000, guid: 5d8f9f93426caba42aa910ad4ff23429, type: 2}
+  _blackDamageEffect: {fileID: 114545247035460616, guid: 0c5a843e7ab2b1543961735e6873c867,
+    type: 2}
   _battleSpacePrefab: {fileID: 114867156671284624, guid: b5178b5e2bf374c4f8760ef7def1774b,
     type: 2}
   _opponentLifeSpace: {fileID: 218685907}
@@ -3549,6 +3551,8 @@ MonoBehaviour:
   _cemetaryPoint: {fileID: 1256974571}
   _field: {fileID: 835475849}
   _summonEffect: {fileID: 100000, guid: 5d8f9f93426caba42aa910ad4ff23429, type: 2}
+  _blackDamageEffect: {fileID: 114545247035460616, guid: 0c5a843e7ab2b1543961735e6873c867,
+    type: 2}
   _battleSpacePrefab: {fileID: 114867156671284624, guid: b5178b5e2bf374c4f8760ef7def1774b,
     type: 2}
   _opponentLifeSpace: {fileID: 676149824}
