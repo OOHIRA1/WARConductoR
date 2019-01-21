@@ -17,6 +17,7 @@ public class Participant : MonoBehaviour {
 	[ SerializeField ] Field _field			= null;
 	[ SerializeField ] GameObject _summonEffect = null;
 	[ SerializeField ] AutoDestroyBattleSpace _battleSpacePrefab = null;
+	[ SerializeField ] AutoNonActiveLPSpace _opponentLifeSpace = null;		//対戦相手のライフスペース
 
 
 	List< CardMain > _cardInField  = new List< CardMain >( );			//フィールドの自分のカードの参照
@@ -141,6 +142,9 @@ public class Participant : MonoBehaviour {
 	public void DirectAttack( Participant opponentPlayer, int moveAp ) {
 		_activePoint.DecreasePoint( moveAp );
 		opponentPlayer._lifePoint.DecreasePoint( 1 );
+		//ダイレクトアタックアニメーション--------------------
+		_opponentLifeSpace.StartDirectAttackAnimation ( );
+		//--------------------------------------------------
 	}
 	//-----------------------------------------------------------------------
 
