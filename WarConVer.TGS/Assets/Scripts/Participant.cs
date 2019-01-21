@@ -17,6 +17,7 @@ public class Participant : MonoBehaviour {
 	[ SerializeField ] Field _field			= null;
 	[ SerializeField ] GameObject _summonEffect = null;
 	[ SerializeField ] AutoDestroyEffect _blackDamageEffect = null;
+	[ SerializeField ] AutoDestroyEffect _recoveryEffect = null;
 	[ SerializeField ] AutoDestroyBattleSpace _battleSpacePrefab = null;
 	[ SerializeField ] AutoNonActiveLPSpace _opponentLifeSpace = null;		//対戦相手のライフスペース
 
@@ -201,6 +202,9 @@ public class Participant : MonoBehaviour {
 	//回復効果(オーバロード)----------------------------------------
 	public void UseEffect( CardMain card ) {
 		card.Recovery( card.Card_Data._effect_value );
+		//エフェクト処理---------------------------------------------------------------
+		Instantiate<AutoDestroyEffect>( _recoveryEffect, card.transform.position, Quaternion.identity );
+		//----------------------------------------------------------------------------
 		_activePoint.DecreasePoint( card.Card_Data._necessaryAPForEffect );
 	}
 	//--------------------------------------------------------------

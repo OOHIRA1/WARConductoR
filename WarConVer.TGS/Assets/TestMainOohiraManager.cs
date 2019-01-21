@@ -16,6 +16,7 @@ public class TestMainOohiraManager : MonoBehaviour {
 	public GameObject _summonEffect;
 	public AutoNonActiveLPSpace _lifeSpace;
 	public AutoDestroyEffect _blackDamageEffect;
+	public AutoDestroyEffect _recoveryEffect;
 
 	// Use this for initialization
 	void Start () {
@@ -87,6 +88,10 @@ public class TestMainOohiraManager : MonoBehaviour {
 
 		if (Input.GetKeyDown (KeyCode.J)) {
 			Instantiate<AutoDestroyEffect> (_blackDamageEffect, Vector3.zero, Quaternion.identity);
+		}
+
+		if (Input.GetKeyDown (KeyCode.K)) {
+			Instantiate<AutoDestroyEffect> (_recoveryEffect, Vector3.zero, Quaternion.identity);
 		}
 	}
 }
