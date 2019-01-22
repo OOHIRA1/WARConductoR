@@ -59,7 +59,9 @@ public class UIActiveManager : MonoBehaviour {
 
 	
 	//エフェクトボタンの表示処理------------------------------------------------------------------------------
-	void EffectButtonActiveConditions( CardMain card, Participant turnPlayer, Square nowSquare ) { 
+	void EffectButtonActiveConditions( CardMain card, Participant turnPlayer, Square nowSquare ) {
+		if ( MainPhase._precedenceOneTurnFlag ) return;
+
 		//効果の種類によって処理を変える
 		//効果ボタン表示条件
 		switch ( card.Card_Data._effect_type ) { 
@@ -73,7 +75,7 @@ public class UIActiveManager : MonoBehaviour {
 
 			case CardData.EFFECT_TYPE.MOVE:
 				if ( turnPlayer.DecreaseActivePointConfirmation( card.Card_Data._necessaryAPForEffect ) && 
-					 _field.MovePossibleSquare( card, nowSquare ).Count > 0 &&
+					 _field.MovePossibleSquare( card, nowSquare, card.Card_Data._effect_distance ).Count > 0 &&
 					 card.Action_Count < card.MAX_ACTION_COUNT ) {
 
 					ButtonActiveChanger( true, BUTTON.EFFECT );
@@ -101,6 +103,8 @@ public class UIActiveManager : MonoBehaviour {
 	
 	//移動ボタンの表示処理-----------------------------------------------------------------------------
 	void MoveButtonActiveConditions( CardMain card, Participant turnPlayer, Square nowSquare ) {
+		if ( MainPhase._precedenceOneTurnFlag ) return;
+
 		//APが消費する分あって移動できるマスがあったてまだ行動できるカードだったら
 		if ( turnPlayer.DecreaseActivePointConfirmation( card.Card_Data._necessaryAP ) &&
 			 _field.MovePossibleSquare( card, nowSquare ).Count > 0 &&
@@ -114,7 +118,9 @@ public class UIActiveManager : MonoBehaviour {
 
 	
 	//攻撃ボタンの表示処理---------------------------------------------------------------------------------------------
-	void DirectAttackButtonActiveConditions( CardMain card, Participant turnPlayer, Square nowSquare ) { 
+	void DirectAttackButtonActiveConditions( CardMain card, Participant turnPlayer, Square nowSquare ) {
+		if ( MainPhase._precedenceOneTurnFlag ) return;
+
 		//消費するAPがあってまだ行動できるカードだったら
 		if ( turnPlayer.DecreaseActivePointConfirmation( card.Card_Data._necessaryAP ) &&
 			 card.Action_Count < card.MAX_ACTION_COUNT ) {

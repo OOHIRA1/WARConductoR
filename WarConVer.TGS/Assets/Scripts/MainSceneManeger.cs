@@ -52,6 +52,7 @@ public class MainSceneManeger : MonoBehaviour {
 		} else { 
 			_turnPlayer = _player2;
 			_enemyPlayer = _player1;
+			_uIActiveManager.ButtonActiveChanger( false, UIActiveManager.BUTTON.TURN_END_COLOR );
 		}
 
 		_phase = new PreparePhase( _turnPlayer, _enemyPlayer );
@@ -66,13 +67,15 @@ public class MainSceneManeger : MonoBehaviour {
 
 		if ( _player1.Lose_Flag ) { 
 			Debug.Log( "Player2の勝ちです" );
-			_resultPerformance.StartPerformCoroutine (_player1.Lose_Flag);
+			_resultPerformance.StartPerformCoroutine( _player1.Lose_Flag );
+			MainPhase._precedenceOneTurnFlag = true;
 			return;
 		}
 
 		if ( _player2.Lose_Flag ) { 
 			Debug.Log( "Player1の勝ちです" );
-			_resultPerformance.StartPerformCoroutine (_player1.Lose_Flag);
+			_resultPerformance.StartPerformCoroutine( _player1.Lose_Flag );
+			MainPhase._precedenceOneTurnFlag = true;
 			return;
 		}
 

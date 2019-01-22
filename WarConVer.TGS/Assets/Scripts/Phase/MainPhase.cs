@@ -17,6 +17,8 @@ public class MainPhase : Phase {
 		HANC_CARD_SUMMON
 	}
 	
+	public static bool _precedenceOneTurnFlag = true;
+	
 	const int LOSE_CEMETARY_POINT = 10;
 	const float SHOW_DETAILS_HOLD_TIME = 0.5f;		//手札の詳細を表示するホールド時間(手札をタッチしたときホールド時間がx秒以下だったら表示する)
 
@@ -31,7 +33,6 @@ public class MainPhase : Phase {
 	Vector3 _handCardPos				   = Vector3.zero;
 	MAIN_PHASE_STATUS _mainPhaseStatus	   = MAIN_PHASE_STATUS.IDLE;
 	bool _turnEndFlag					   = false;
-
 	Field _field = null;
 
 
@@ -86,6 +87,7 @@ public class MainPhase : Phase {
 			Debug.Log( "EnemuUpdate" );
 
 			if ( !_enemyBehavior.Enemy_Update_Flag ) {
+				if ( _precedenceOneTurnFlag ) _precedenceOneTurnFlag = false;
 				_enemyBehavior.Enemy_Update_Flag = true;	//フラグリセット
 				_turnEndFlag = true;
 			}
@@ -310,7 +312,7 @@ public class MainPhase : Phase {
 
 	//ダイレクトアタック処理----------------------------------------------------
 	void DirectAttack( ) { 
-		_turnPlayer.DirectAttack( _enemyPlayer, _card.Card_Data._necessaryAP );
+		_turnPlayer.DirectAttack( _enemyPlayer, _card.Card_Data._necessaryAP, _card );
 			_card = null;
 			_nowSquare = null;
 			_mainPhaseStatus = MAIN_PHASE_STATUS.IDLE;
@@ -431,7 +433,7 @@ public class MainPhase : Phase {
 
 	//移動効果中処理---------------------------------------------------------------------------------
 	void MoveEffect( ) {
-		List< Square > squares = _field.MovePossibleSquare( _card, _nowSquare );
+		List< Square > squares = _field.MovePossibleSquare( _card, _nowSquare, _card.Card_Data._effect_distance );
 
 		_turnPlayer.SquareChangeColor( squares, true );
 
@@ -501,7 +503,9 @@ public class MainPhase : Phase {
 	}
 
 	void TurnEndButtonClicked( ) { 
-		if ( _mainSceneOperation.TurnEndButtonClicked( ) ) { 
+		if ( _mainSceneOperation.TurnEndButtonClicked( ) ) {
+			if ( _precedenceOneTurnFlag ) _precedenceOneTurnFlag = false;
+
 			_uiActiveManager.ButtonActiveChanger( false, UIActiveManager.BUTTON.TURN_END_COLOR );
 			_turnEndFlag = true;
 		}

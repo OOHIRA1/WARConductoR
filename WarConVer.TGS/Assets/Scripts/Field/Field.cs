@@ -66,13 +66,13 @@ public class Field : MonoBehaviour {
 
 
 	//移動できる場所を事前に調べる関数-------------------------------------------------------------------------------------------------
-	public List< Square > MovePossibleSquare( CardMain card, Square nowSquare ) { 
+	public List< Square > MovePossibleSquare( CardMain card, Square nowSquare, int distans = 1 ) { 
 		List< Square > squares = new List< Square >( );
 
 		//移動できるマスだけ格納
 		List< DIRECTION > directions = card.getDirections( card.gameObject.tag, card.Card_Data._directionOfTravel );
 		for ( int i = 0; i < directions.Count; i++ ) {
-			Square square = SquareInThatDirection( nowSquare, directions[ i ], 1 );
+			Square square = SquareInThatDirection( nowSquare, directions[ i ], distans );
 
 			if ( square == null ) continue;
 			if ( square.On_Card != null ) {

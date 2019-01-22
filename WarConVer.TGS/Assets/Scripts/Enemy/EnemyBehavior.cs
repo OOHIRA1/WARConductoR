@@ -31,6 +31,12 @@ public class EnemyBehavior : MonoBehaviour {
 	public void EnemyUpdate( ) {
 		if ( !_enemyUpdateFlag ) return;
 
+		if ( MainPhase._precedenceOneTurnFlag && _enemyBehaviorStatus != ENEMY_BEHAVIOR_STATUS.SUMMON ) { 
+			_enemyBehaviorStatus = ENEMY_BEHAVIOR_STATUS.SUMMON;
+			_enemyUpdateFlag = false;
+			return;
+		}
+
 		switch ( _enemyBehaviorStatus ) { 
 			case ENEMY_BEHAVIOR_STATUS.SUMMON:
 				EnemySummonUpdate( );
@@ -115,8 +121,9 @@ public class EnemyBehavior : MonoBehaviour {
 			CardMain directAttackCard = square.On_Card;
 			int nowAP = _enemyActivePoint.Point_Num;
 			if ( directAttackCard.Card_Data._necessaryAP > nowAP ) continue;
+			if ( directAttackCard.Action_Count >= directAttackCard.MAX_ACTION_COUNT ) continue;
 
-			_enemy.DirectAttack( _player, directAttackCard.Card_Data._necessaryAP );
+			_enemy.DirectAttack( _player, directAttackCard.Card_Data._necessaryAP, directAttackCard );
 			return;
 		}
 
@@ -301,8 +308,6 @@ public class EnemyBehavior : MonoBehaviour {
 
 			for ( int j = 0; j < directions.Count; j++ ) {
 				enemyDirection.Add( directions[ j ] );
-
-				//変更してください！！！！！エラーになります！	→　CardDataのアクセッサーだとその先の_directionOfTravelまでアクセスできないっぽい
 				
 				List< Field.DIRECTION > preDirection = enemyMoveCard.Card_Data_Direction;
 				enemyMoveCard.Card_Data_Direction = enemyDirection;  // //エネミーのカードの移動先を書き換えている。いいのかはわからない →　Card_Data._directionOfTravelのアクセッサーを用意したらいけた

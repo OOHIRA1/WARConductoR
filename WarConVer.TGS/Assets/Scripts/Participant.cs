@@ -68,11 +68,11 @@ public class Participant : MonoBehaviour {
 
 
 	//カードを移動させる-----------------------------------------------------------------------------------------------------------------------------
-	public void MoveCard( CardMain card, Square nowSquare, Square moveSquare ) {
+	public void MoveCard( CardMain card, Square nowSquare, Square moveSquare, int distans = 1 ) {
 		List< Square > squares = new List< Square >( );
 
 		//移動できるマスだけ格納
-		squares = _field.MovePossibleSquare( card, nowSquare );
+		squares = _field.MovePossibleSquare( card, nowSquare, distans );
 
 		CardDamageManager.BATTLE_RESULT result = CardDamageManager.BATTLE_RESULT.NOT_BATTLE;
 		//移動できるマスの中に移動したいマスがあるか探す
@@ -143,9 +143,11 @@ public class Participant : MonoBehaviour {
 
 	
 	//ダイレクトアタック処理--------------------------------------------------
-	public void DirectAttack( Participant opponentPlayer, int moveAp ) {
+	public void DirectAttack( Participant opponentPlayer, int moveAp, CardMain card ) {
 		_activePoint.DecreasePoint( moveAp );
 		opponentPlayer._lifePoint.DecreasePoint( 1 );
+		card.Action_Count++;
+
 		//ダイレクトアタックアニメーション--------------------
 		_opponentLifeSpace.StartDirectAttackAnimation ( );
 		//--------------------------------------------------
@@ -196,7 +198,7 @@ public class Participant : MonoBehaviour {
 
 	//移動効果(オーバロード)-------------------------------------------------------------
 	public void UseEffect( CardMain card, Square nowSquare, Square touchSquare ) { 
-		MoveCard( card, nowSquare, touchSquare );
+		MoveCard( card, nowSquare, touchSquare, card.Card_Data._effect_distance );
 		//エフェクト処理-----------------------------------------------------------------------------------------
 		Instantiate<AutoDestroyEffect>( _moveEffect, touchSquare.transform.position, Quaternion.identity );
 		//------------------------------------------------------------------------------------------------------
