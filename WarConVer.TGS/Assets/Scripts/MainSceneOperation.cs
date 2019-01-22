@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class MainSceneOperation : MonoBehaviour {
 	float _holdCount = 0;
-	bool _backButtonClicked 	 = false; 
-	bool _moveButtonClicked      = false;
-	bool _attackButtonClicked    = false;
-	bool _effectButtonClicked    = false;
-	bool _effectYesButtonClicked = false;
-	bool _turnEndButtonClicked   = false;
+	bool _backButtonClicked 	 	 = false; 
+	bool _moveButtonClicked      	 = false;
+	bool _attackButtonClicked    	 = false;
+	bool _effectButtonClicked    	 = false;
+	bool _effectYesButtonClicked 	 = false;
+	bool _turnEndButtonClicked   	 = false;
+	bool _returnToTitleButtonClicked = false;
 
 
 	public bool MouseTouch( ) {
@@ -153,6 +154,23 @@ public class MainSceneOperation : MonoBehaviour {
 	}
 	//----------------------------------------------
 
+
+	//タイトルに戻るボタン判定--------------------------------
+	//タイトルに戻るボタンが押されたかどうかの判定
+	public bool ReturnToTitleButtonClicked( ) {
+		if ( _returnToTitleButtonClicked ) { 
+			_returnToTitleButtonClicked = false;
+			return true;
+		} else { 
+			return false;	
+		}
+	}
+
+	//タイトルに戻るボタンがクリックされたら呼ぶ関数
+	public void ClickReturnToTitleButto( ) {
+		_returnToTitleButtonClicked = true;
+	}
+	//---------------------------------------------------------
 
 	public float getHoldCount( ) { 
 		float holdCount = _holdCount;

@@ -24,6 +24,7 @@ public class MainSceneManeger : MonoBehaviour {
 	[ SerializeField ] UIActiveManager _uIActiveManager = null;
 	[ SerializeField ] EnemyBehavior _enemyBehavior = null;
 	[ SerializeField ] Field _field = null;
+	[ SerializeField ] ResultPerformance _resultPerformance = null;
 
 	//エフェクト系
 	[ SerializeField ] GameObject _tapEffect = null;
@@ -65,11 +66,13 @@ public class MainSceneManeger : MonoBehaviour {
 
 		if ( _player1.Lose_Flag ) { 
 			Debug.Log( "Player2の勝ちです" );
+			_resultPerformance.StartPerformCoroutine (_player1.Lose_Flag);
 			return;
 		}
 
 		if ( _player2.Lose_Flag ) { 
 			Debug.Log( "Player1の勝ちです" );
+			_resultPerformance.StartPerformCoroutine (_player1.Lose_Flag);
 			return;
 		}
 
