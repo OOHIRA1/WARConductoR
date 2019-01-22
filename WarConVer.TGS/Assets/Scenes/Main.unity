@@ -1381,6 +1381,8 @@ MonoBehaviour:
     type: 2}
   _recoveryEffect: {fileID: 114077763927613522, guid: 98b8926272d07364691170766426d773,
     type: 2}
+  _moveEffect: {fileID: 114052087749359178, guid: 5cb498e815b336344bd53639dff2c2f6,
+    type: 2}
   _battleSpacePrefab: {fileID: 114867156671284624, guid: b5178b5e2bf374c4f8760ef7def1774b,
     type: 2}
   _opponentLifeSpace: {fileID: 218685907}
@@ -3881,6 +3883,8 @@ MonoBehaviour:
   _blackDamageEffect: {fileID: 114545247035460616, guid: 0c5a843e7ab2b1543961735e6873c867,
     type: 2}
   _recoveryEffect: {fileID: 114077763927613522, guid: 98b8926272d07364691170766426d773,
+    type: 2}
+  _moveEffect: {fileID: 114052087749359178, guid: 5cb498e815b336344bd53639dff2c2f6,
     type: 2}
   _battleSpacePrefab: {fileID: 114867156671284624, guid: b5178b5e2bf374c4f8760ef7def1774b,
     type: 2}

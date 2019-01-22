@@ -18,6 +18,7 @@ public class Participant : MonoBehaviour {
 	[ SerializeField ] GameObject _summonEffect = null;
 	[ SerializeField ] AutoDestroyEffect _blackDamageEffect = null;
 	[ SerializeField ] AutoDestroyEffect _recoveryEffect = null;
+	[ SerializeField ] AutoDestroyEffect _moveEffect = null;
 	[ SerializeField ] AutoDestroyBattleSpace _battleSpacePrefab = null;
 	[ SerializeField ] AutoNonActiveLPSpace _opponentLifeSpace = null;		//対戦相手のライフスペース
 
@@ -195,6 +196,9 @@ public class Participant : MonoBehaviour {
 	//移動効果(オーバロード)-------------------------------------------------------------
 	public void UseEffect( CardMain card, Square nowSquare, Square touchSquare ) { 
 		MoveCard( card, nowSquare, touchSquare );
+		//エフェクト処理-----------------------------------------------------------------------------------------
+		Instantiate<AutoDestroyEffect>( _moveEffect, touchSquare.transform.position, Quaternion.identity );
+		//------------------------------------------------------------------------------------------------------
 	}
 	//-----------------------------------------------------------------------------------
 
