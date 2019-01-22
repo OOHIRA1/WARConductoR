@@ -15,7 +15,7 @@ public class Participant : MonoBehaviour {
 	[ SerializeField ] Point _lifePoint	    = null;
 	[ SerializeField ] Point _cemetaryPoint = null;
 	[ SerializeField ] Field _field			= null;
-	[ SerializeField ] GameObject _summonEffect = null;
+	[ SerializeField ] AutoDestroyEffect _summonEffect = null;
 	[ SerializeField ] AutoDestroyEffect _blackDamageEffect = null;
 	[ SerializeField ] AutoDestroyEffect _recoveryEffect = null;
 	[ SerializeField ] AutoDestroyEffect _moveEffect = null;
@@ -59,6 +59,7 @@ public class Participant : MonoBehaviour {
 
 	void Start( ) {
 		ReferenceCheck( );
+
 	}
 
 	void Update( ) {
@@ -230,7 +231,7 @@ public class Participant : MonoBehaviour {
 			//召喚エフェクト処理
 			Vector3 effectPos = fieldCardObj.transform.position;
 			effectPos.z = Camera.main.transform.position.z + 1f;//カメラに近い位置に生成したいため
-			Instantiate( _summonEffect, effectPos, Quaternion.identity );
+			Instantiate<AutoDestroyEffect>( _summonEffect, effectPos, Quaternion.identity );
 
 			_magicPoint.DecreasePoint( card.Card_Data._necessaryMP );
 			square.On_Card = fieldCard;
