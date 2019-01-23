@@ -13,8 +13,9 @@ public class EnemyBehavior : MonoBehaviour {
 
 	//移動する向きの優先順位
 	enum PRIORITY_DIRECTION { 
-		FIRST_PRIORITY,
-		SECOND_PRIORITY,
+		RIGHT_PRIORITY,
+		LEFT_PRIORITY,
+		NORMAR,
 	}
 
 	const int MAX_SUMMON_CARD_NUM = 3;
@@ -316,13 +317,16 @@ public class EnemyBehavior : MonoBehaviour {
 			if ( square.On_Card.gameObject.tag != ConstantStorehouse.TAG_PLAYER1 ) continue;
 
 			Square onEnemyCardSquare = null;
+			PRIORITY_DIRECTION priority_direction = PRIORITY_DIRECTION.NORMAR;
 			if ( i + 1 < 4 ) {	//一列目の左端を超えてなかったら
 				onEnemyCardSquare = _field.getSquare( i + 1 );
+				priority_direction = PRIORITY_DIRECTION.RIGHT_PRIORITY;
 			}
 
 			if ( i - 1 > -1 ) { //一列目の右端を超えていなかったら
 				if ( onEnemyCardSquare == null ) {
 					onEnemyCardSquare = _field.getSquare( i - 1 );
+					priority_direction = PRIORITY_DIRECTION.LEFT_PRIORITY;
 				}
 			}
 
@@ -337,7 +341,7 @@ public class EnemyBehavior : MonoBehaviour {
 			if ( enemyMoveCard.Card_Data._necessaryAP > nowAP ) continue;
 			if ( enemyMoveCard.Action_Count >= enemyMoveCard.MAX_ACTION_COUNT ) continue;
 
-			if ( !EnemyCardMove( enemyMoveCard, onEnemyCardSquare, PRIORITY_DIRECTION.FIRST_PRIORITY ) ) continue;
+			if ( !EnemyCardMove( enemyMoveCard, onEnemyCardSquare, priority_direction ) ) continue;
 
 			return true;
 
@@ -364,7 +368,7 @@ public class EnemyBehavior : MonoBehaviour {
 			if ( enemyMoveCard.Card_Data._necessaryAP > nowAP ) continue;
 			if ( enemyMoveCard.Action_Count >= enemyMoveCard.MAX_ACTION_COUNT ) continue;
 
-			if ( !EnemyCardMove( enemyMoveCard, square, PRIORITY_DIRECTION.SECOND_PRIORITY ) ) continue ;
+			if ( !EnemyCardMove( enemyMoveCard, square, PRIORITY_DIRECTION.NORMAR ) ) continue ;
 
 			return true;
 		}
@@ -407,24 +411,28 @@ public class EnemyBehavior : MonoBehaviour {
 	
 
 	//エネミーカードの移動したくてかつできる場所を優先順位が高い順に抽出する-------------------------
-	List< Field.DIRECTION > EnemyDirectionSorting( CardMain card, PRIORITY_DIRECTION priority ) {
+	List< Field.DIRECTION > EnemyDirectionSorting( CardMain card, PRIORITY_DIRECTION priorityDirection ) {
 		Field.DIRECTION[ ] enemyDirections = null;
 
-		switch ( priority ) { 
-			case PRIORITY_DIRECTION.FIRST_PRIORITY:
-				Field.DIRECTION[ ] firstPriority = { Field.DIRECTION.RIGHT,
-										 Field.DIRECTION.LEFT };
-				enemyDirections = firstPriority;
+		switch ( priorityDirection ) { 
+			case PRIORITY_DIRECTION.RIGHT_PRIORITY:
+				Field.DIRECTION[ ] right = { Field.DIRECTION.RIGHT };
+				enemyDirections = right;
 				break;
 
-			case PRIORITY_DIRECTION.SECOND_PRIORITY:
-				Field.DIRECTION[ ] secondPriority = { Field.DIRECTION.FORWAED,
-										 Field.DIRECTION.LEFT_FORWARD,
-										 Field.DIRECTION.RIGHT_FORWARD,
-										 Field.DIRECTION.RIGHT,
-										 Field.DIRECTION.LEFT };
+			case PRIORITY_DIRECTION.LEFT_PRIORITY:
+				Field.DIRECTION[ ] left = { Field.DIRECTION.LEFT };
+				enemyDirections = left;
+				break;
 
-				enemyDirections = secondPriority;
+			case PRIORITY_DIRECTION.NORMAR:
+				Field.DIRECTION[ ] normarDirections = { Field.DIRECTION.FORWAED,
+													  Field.DIRECTION.LEFT_FORWARD,
+													  Field.DIRECTION.RIGHT_FORWARD,
+													  Field.DIRECTION.RIGHT,
+													  Field.DIRECTION.LEFT };
+
+				enemyDirections = normarDirections;
 				break;
 
 			
