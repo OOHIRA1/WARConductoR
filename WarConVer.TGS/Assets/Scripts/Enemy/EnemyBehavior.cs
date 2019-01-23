@@ -4,10 +4,17 @@ using UnityEngine;
 using UnityEngine.Assertions;
 
 public class EnemyBehavior : MonoBehaviour {
+	//エネミーの行動状態
 	enum ENEMY_BEHAVIOR_STATUS { 
 		SUMMON,	
 		DIRECT_ATTACK,
 		MOVE,
+	}
+
+	//移動する向きの優先順位
+	enum PRIORITY_DIRECTION { 
+		FIRST_PRIORITY,
+		SECOND_PRIORITY,
 	}
 
 	const int MAX_SUMMON_CARD_NUM = 3;
@@ -283,49 +290,12 @@ public class EnemyBehavior : MonoBehaviour {
 	
 	//移動するカードを探す-------------------------------------------------------------------------
 	void MoveCardSearch( ) {
-		CardMain enemyMoveCard = null;
-		for ( int i = 0; i < _field.Max_Index; i++ ) {
-			Square square = _field.getSquare( i );
+		if ( FirstPriorityMoveCard( ) ) { 
+			return;	
+		}
 
-			if ( square == null ) continue;
-			if ( square.On_Card == null ) continue;
-			if ( square.On_Card.gameObject.tag != ConstantStorehouse.TAG_PLAYER2 ) continue;
-
-			enemyMoveCard = square.On_Card;
-			int nowAP = _enemyActivePoint.Point_Num;
-			if ( enemyMoveCard.Card_Data._necessaryAP > nowAP ) continue;
-			if ( enemyMoveCard.Action_Count >= enemyMoveCard.MAX_ACTION_COUNT ) continue;
-
-			//MoveCardDirectionSearch( enemyMoveCard, square );
-
-			List< Field.DIRECTION > directions = EnemyDirectionSorting( enemyMoveCard );
-
-			if ( directions.Count == 0 ) continue;
-
-
-			//移動できる場所を探す
-			List<Field.DIRECTION> enemyDirection = new List< Field.DIRECTION >( );
-
-			for ( int j = 0; j < directions.Count; j++ ) {
-				enemyDirection.Add( directions[ j ] );
-				
-				List< Field.DIRECTION > preDirection = enemyMoveCard.Card_Data_Direction;
-				enemyMoveCard.Card_Data_Direction = enemyDirection;  // //エネミーのカードの移動先を書き換えている。いいのかはわからない →　Card_Data._directionOfTravelのアクセッサーを用意したらいけた
-
-				List< Square > moveSquare = _field.MovePossibleSquare( enemyMoveCard, square );
-
-				//相手カードがあったりしたらよける処理
-
-				if ( moveSquare.Count == 0 ) {
-					enemyMoveCard.Card_Data_Direction = preDirection;
-					enemyDirection.Remove( directions[ j ] );
-					continue;
-				}
-
-				MoveCard( enemyMoveCard, square, moveSquare[ 0 ] );		//あとでこの関数の役割を分けないといけない
-				enemyMoveCard.Card_Data_Direction = preDirection;
-				return;
-			}
+		if ( SecondPriorityMoveCard( ) ) { 
+			return;	
 		}
 
 		_enemyBehaviorStatus = ENEMY_BEHAVIOR_STATUS.SUMMON;
@@ -334,47 +304,131 @@ public class EnemyBehavior : MonoBehaviour {
 	//------------------------------------------------------------------------------------------------
 
 
-	//void MoveCardDirectionSearch( CardMain enemyMoveCard, Square square ) {
-	//	List< Field.DIRECTION > directions = EnemyDirectionSorting( enemyMoveCard );
+	//第一優先カード移動-------------------------------------------------------------------------------------
+	//移動したかどうかをboolで返す
+	bool FirstPriorityMoveCard( ) { 
 
-	//		if ( directions.Count == 0 ) return;
+		for ( int i = 0; i < ConstantStorehouse.SQUARE_ROW_NUM; i++ ) { 
+			Square square = _field.getSquare( i );	
+			
+			if ( square == null ) continue;
+			if ( square.On_Card == null ) continue;
+			if ( square.On_Card.gameObject.tag != ConstantStorehouse.TAG_PLAYER1 ) continue;
+
+			Square onEnemyCardSquare = null;
+			if ( i + 1 < 4 ) {	//一列目の左端を超えてなかったら
+				onEnemyCardSquare = _field.getSquare( i + 1 );
+			}
+
+			if ( i - 1 > -1 ) { //一列目の右端を超えていなかったら
+				if ( onEnemyCardSquare == null ) {
+					onEnemyCardSquare = _field.getSquare( i - 1 );
+				}
+			}
+
+			if ( onEnemyCardSquare == null ) continue;
+			if ( onEnemyCardSquare.On_Card == null ) continue;
+			if ( onEnemyCardSquare.On_Card.gameObject.tag != ConstantStorehouse.TAG_PLAYER2 ) continue;
+
+			CardMain enemyMoveCard = null;
+			enemyMoveCard = onEnemyCardSquare.On_Card;
+
+			int nowAP = _enemyActivePoint.Point_Num;
+			if ( enemyMoveCard.Card_Data._necessaryAP > nowAP ) continue;
+			if ( enemyMoveCard.Action_Count >= enemyMoveCard.MAX_ACTION_COUNT ) continue;
+
+			if ( !EnemyCardMove( enemyMoveCard, onEnemyCardSquare, PRIORITY_DIRECTION.FIRST_PRIORITY ) ) continue;
+
+			return true;
+
+		}
+
+		return false;
+	}
+	//------------------------------------------------------------------------------------------------------
+
+	
+	//第二優先カード移動-------------------------------------------------------------------------------------
+	//移動したかどうかをboolで返す
+	bool SecondPriorityMoveCard( ) {
+		for ( int i = 0; i < _field.Max_Index; i++ ) {
+			Square square = _field.getSquare( i );
+
+			if ( square == null ) continue;
+			if ( square.On_Card == null ) continue;
+			if ( square.On_Card.gameObject.tag != ConstantStorehouse.TAG_PLAYER2 ) continue;
+
+			CardMain enemyMoveCard = null;
+			enemyMoveCard = square.On_Card;
+			int nowAP = _enemyActivePoint.Point_Num;
+			if ( enemyMoveCard.Card_Data._necessaryAP > nowAP ) continue;
+			if ( enemyMoveCard.Action_Count >= enemyMoveCard.MAX_ACTION_COUNT ) continue;
+
+			if ( !EnemyCardMove( enemyMoveCard, square, PRIORITY_DIRECTION.SECOND_PRIORITY ) ) continue ;
+
+			return true;
+		}
+
+		return false;
+	}
+	//-----------------------------------------------------------------------------------------------------
 
 
-	//		//移動できる場所を探す
-	//		List<Field.DIRECTION> enemyDirection = new List< Field.DIRECTION >( );
+	//移動できたら移動して移動できたかどうかを返す-----------------------------------------------------------
+	bool EnemyCardMove( CardMain enemyMoveCard, Square nowSquare, PRIORITY_DIRECTION priority ) { 
+		List< Field.DIRECTION > directions = EnemyDirectionSorting( enemyMoveCard, priority );
+		if ( directions.Count == 0 ) return false;
 
-	//		for ( int j = 0; j < directions.Count; j++ ) {
-	//			enemyDirection.Add( directions[ j ] );
 
-	//			//変更してください！！！！！エラーになります！	→　CardDataのアクセッサーだとその先の_directionOfTravelまでアクセスできないっぽい
-				
-	//			List< Field.DIRECTION > preDirection = enemyMoveCard.Card_Data_Direction;
-	//			enemyMoveCard.Card_Data_Direction = enemyDirection;  // //エネミーのカードの移動先を書き換えている。いいのかはわからない →　Card_Data._directionOfTravelのアクセッサーを用意したらいけた
+		List< Field.DIRECTION > enemyDirection = new List< Field.DIRECTION >( );
+		for ( int i = 0; i < directions.Count; i++ ) {
+			enemyDirection.Add( directions[ i ] );
+			
+			List< Field.DIRECTION > preDirection = enemyMoveCard.Card_Data_Direction;
+			enemyMoveCard.Card_Data_Direction = enemyDirection;  //一時的にエネミーのカードの移動先を書き換えている。
 
-	//			List< Square > moveSquare = _field.MovePossibleSquare( enemyMoveCard, square );
+			List< Square > moveSquare = _field.MovePossibleSquare( enemyMoveCard, nowSquare );
 
-	//			//相手カードがあったりしたらよける処理
+			if ( moveSquare.Count == 0 ) {
+				enemyMoveCard.Card_Data_Direction = preDirection;
+				enemyDirection.Remove( directions[ i ] );
+				continue;
+			}
 
-	//			if ( moveSquare.Count == 0 ) {
-	//				enemyMoveCard.Card_Data_Direction = preDirection;
-	//				enemyDirection.Remove( directions[ j ] );
-	//				continue;
-	//			}
+			MoveCard( enemyMoveCard, nowSquare, moveSquare[ 0 ] );		//あとでこの関数の役割を分けないといけない
+			enemyMoveCard.Card_Data_Direction = preDirection;
+			return true;
 
-	//			MoveCard( enemyMoveCard, square, moveSquare[ 0 ] );		//あとでこの関数の役割を分けないといけない
-	//			enemyMoveCard.Card_Data_Direction = preDirection;
-	//			return;
-	//	}
-	//}
+		}
 
+		return false;
+	}
+	//-------------------------------------------------------------------------------------------------------
+	
 
 	//エネミーカードの移動したくてかつできる場所を優先順位が高い順に抽出する-------------------------
-	List< Field.DIRECTION > EnemyDirectionSorting( CardMain card ) {
-		Field.DIRECTION[ ] enemyDirections = { Field.DIRECTION.FORWAED,
-											   Field.DIRECTION.LEFT_FORWARD,
-											   Field.DIRECTION.RIGHT_FORWARD,
-											   Field.DIRECTION.RIGHT,
-											   Field.DIRECTION.LEFT };
+	List< Field.DIRECTION > EnemyDirectionSorting( CardMain card, PRIORITY_DIRECTION priority ) {
+		Field.DIRECTION[ ] enemyDirections = null;
+
+		switch ( priority ) { 
+			case PRIORITY_DIRECTION.FIRST_PRIORITY:
+				Field.DIRECTION[ ] firstPriority = { Field.DIRECTION.RIGHT,
+										 Field.DIRECTION.LEFT };
+				enemyDirections = firstPriority;
+				break;
+
+			case PRIORITY_DIRECTION.SECOND_PRIORITY:
+				Field.DIRECTION[ ] secondPriority = { Field.DIRECTION.FORWAED,
+										 Field.DIRECTION.LEFT_FORWARD,
+										 Field.DIRECTION.RIGHT_FORWARD,
+										 Field.DIRECTION.RIGHT,
+										 Field.DIRECTION.LEFT };
+
+				enemyDirections = secondPriority;
+				break;
+
+			
+		}
 
 		List< Field.DIRECTION > direction = new List< Field.DIRECTION >( );
 		for ( int i = 0; i < enemyDirections.Length; i++ ) {
