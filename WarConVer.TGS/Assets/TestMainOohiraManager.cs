@@ -42,7 +42,7 @@ public class TestMainOohiraManager : MonoBehaviour {
 			Vector3 effectPosition = _card.transform.position;
 			effectPosition.z = -9;
 			Instantiate (_summonEffect, effectPosition, Quaternion.identity);
-
+			_card.Reverse (true);//裏返す
 		}
 
 		if (Input.GetKeyDown (KeyCode.D)) {

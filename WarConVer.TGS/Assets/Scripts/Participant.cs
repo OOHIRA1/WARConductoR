@@ -285,6 +285,14 @@ public class Participant : MonoBehaviour {
 	}
 
 
+	//--手札のカードを裏返す関数
+	public void ReverseHandCard( bool reverseFlag ) {
+		List<CardMain> handCardList = _hand.Card;
+		for ( int i = 0; i < handCardList.Count; i++ ) {
+			handCardList [i].Reverse (reverseFlag);
+		}
+	}
+
 
 	void AddMyFieldCards( CardMain card ) { 
 		_cardInField.Add( card );

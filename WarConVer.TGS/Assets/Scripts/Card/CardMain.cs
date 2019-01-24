@@ -15,6 +15,7 @@ public class CardMain : MonoBehaviour {
 	[SerializeField] CardDataLoader _cardDataLoader = null;
 	[SerializeField] CardData _cardData = new CardData();
 	[SerializeField] int _actionCount = 0;						//移動回数
+	[SerializeField] GameObject _cardBack = null;				//カードの裏面
 
 	GameObject _cardDetailsImage = null;
 	GameObject _details = null;
@@ -185,6 +186,11 @@ public class CardMain : MonoBehaviour {
 		_details = null;
 	}
 
+
+	//--カードを裏返す(裏面の画像を表示させる)
+	public void Reverse( bool reverseFlag ) {
+		_cardBack.SetActive ( reverseFlag );
+	}
 	//===========================================================================================================
 	//===========================================================================================================
 }

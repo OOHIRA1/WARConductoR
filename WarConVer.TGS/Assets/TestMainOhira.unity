@@ -321,7 +321,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &303821571
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -564,6 +564,7 @@ MonoBehaviour:
     _necessaryAPForEffect: 0
     _textString: 
   _actionCount: 0
+  _cardBack: {fileID: 0}
 --- !u!212 &472380972
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -799,6 +800,7 @@ MonoBehaviour:
     _necessaryAPForEffect: 0
     _textString: 
   _actionCount: 0
+  _cardBack: {fileID: 0}
 --- !u!212 &559674150
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1043,6 +1045,7 @@ MonoBehaviour:
     _necessaryAPForEffect: 0
     _textString: 
   _actionCount: 0
+  _cardBack: {fileID: 0}
 --- !u!212 &777664040
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1274,6 +1277,7 @@ MonoBehaviour:
     _necessaryAPForEffect: 0
     _textString: 
   _actionCount: 0
+  _cardBack: {fileID: 0}
 --- !u!212 &1194968196
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2022,6 +2026,7 @@ MonoBehaviour:
     _necessaryAPForEffect: 0
     _textString: 
   _actionCount: 0
+  _cardBack: {fileID: 0}
 --- !u!212 &2136544268
 SpriteRenderer:
   m_ObjectHideFlags: 0
