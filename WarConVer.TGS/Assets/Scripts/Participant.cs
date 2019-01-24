@@ -67,8 +67,8 @@ public class Participant : MonoBehaviour {
 	}
 
 
-	//カードを移動させる-----------------------------------------------------------------------------------------------------------------------------
-	public void MoveCard( CardMain card, Square nowSquare, Square moveSquare, int distans = 1 ) {
+	//カードを移動させる(返り値に移動できたかをboolで返す)-----------------------------------------------------------------------------------------------------------------------------
+	public bool MoveCard( CardMain card, Square nowSquare, Square moveSquare, int distans = 1 ) {
 		List< Square > squares = new List< Square >( );
 
 		//移動できるマスだけ格納
@@ -129,15 +129,15 @@ public class Participant : MonoBehaviour {
 
 				default:
 					Debug.Log( "予期せぬ勝敗が起きている" );
-					return;
+					return false;
 			}
 
 			card.Action_Count++;
 			_activePoint.DecreasePoint( card.Card_Data._necessaryAP );
-			return;
+			return true;
 			
 		}
-		
+		return false;
 	}
 	//----------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -198,9 +198,11 @@ public class Participant : MonoBehaviour {
 
 	//移動効果(オーバロード)-------------------------------------------------------------
 	public void UseEffect( CardMain card, Square nowSquare, Square touchSquare ) { 
-		MoveCard( card, nowSquare, touchSquare, card.Card_Data._effect_distance );
+		bool isMoved = MoveCard( card, nowSquare, touchSquare, card.Card_Data._effect_distance );
 		//エフェクト処理-----------------------------------------------------------------------------------------
-		Instantiate<AutoDestroyEffect>( _moveEffect, touchSquare.transform.position, Quaternion.identity );
+		if ( isMoved ) {
+			Instantiate<AutoDestroyEffect> ( _moveEffect, touchSquare.transform.position, Quaternion.identity );
+		}
 		//------------------------------------------------------------------------------------------------------
 	}
 	//-----------------------------------------------------------------------------------
