@@ -24,6 +24,7 @@ public struct CardData {
 	public int						_necessaryMP;			//召喚で必要なMP
 	public int 						_necessaryAP;			//移動で必要なAP
 	public int 						_necessaryAPForEffect;	//効果で必要なAP
+	public string					_textString;			//カードのテキスト文字
 
 
 	//======================================================================================

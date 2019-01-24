@@ -165,11 +165,13 @@ public class CardMain : MonoBehaviour {
 		_details = Object.Instantiate( _cardDetailsImage, Vector3.zero, Quaternion.identity );
 		Text attackPoint = _details.transform.Find( "Attack_Point_Background/Attack_Point" ).GetComponent< Text >( );
 		Text hitPoint = _details.transform.Find( "Hit_Point_Background/Hit_Point" ).GetComponent< Text >( );
+		Text cardText = _details.transform.Find ( "CardTextPanel/CardText" ).GetComponent< Text > ( );
 
 		//画像などの情報読み込み
 		_details.GetComponent< Image >( ).sprite = _cardSpriteRenderer.sprite;
 		attackPoint.text = _cardData._attack.ToString( );
 		hitPoint.text = _cardData._toughness.ToString( );
+		cardText.text = _cardData._textString;
 
 		//位置をずらしている
 		_details.transform.SetParent( _canvas.transform );

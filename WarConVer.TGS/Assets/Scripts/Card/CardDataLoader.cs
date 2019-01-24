@@ -64,6 +64,17 @@ public class CardDataLoader : MonoBehaviour {
 				cardData._necessaryMP 			= int.Parse(csvStringArrayList [i] [8]);
 				cardData._necessaryAP 			= int.Parse(csvStringArrayList [i] [9]);
 				cardData._necessaryAPForEffect 	= int.Parse(csvStringArrayList [i] [10]);
+				//一度改行部分で分割して再び結合させる(改行させるため)--------------------------
+				string[] cardTextList = csvStringArrayList [i] [11].Split (';');
+				string cardText = "";
+				for ( int j = 0; j < cardTextList.Length; j++ ) {
+					cardText += cardTextList [j];
+					if ( j < cardTextList.Length - 1 ) {
+						cardText += "\n";//これで改行させる
+					}
+				}
+				cardData._textString 			= cardText;
+				//----------------------------------------------------------------------------
 				_cardDatas.Add(cardData);
 			}
 		}
