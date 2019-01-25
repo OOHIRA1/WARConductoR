@@ -28,11 +28,6 @@ public class MainSceneManeger : MonoBehaviour {
 
 	//エフェクト系
 	[ SerializeField ] GameObject _tapEffect = null;
-	
-	Phase _phase = null;
-	PHASE _phaseStatus = PHASE.PREPARE;
-	Participant _turnPlayer = null;		//そのターンのプレイヤー
-	Participant _enemyPlayer = null;	//そのターンのプレイヤーではないほう
 
 	//ボタン
 	[ SerializeField ] GameObject _turnEndButton = null;
@@ -43,6 +38,10 @@ public class MainSceneManeger : MonoBehaviour {
 	[ SerializeField ] CardMain _debugCard = null;
 	[ SerializeField ] Square _debugSquare = null;
 
+	Phase _phase = null;
+	PHASE _phaseStatus = PHASE.PREPARE;
+	Participant _turnPlayer = null;		//そのターンのプレイヤー
+	Participant _enemyPlayer = null;	//そのターンのプレイヤーではないほう
 
 	private void Awake( ) {
 		//先行後攻を判別して入れ替えられる。
@@ -96,8 +95,8 @@ public class MainSceneManeger : MonoBehaviour {
 
 
 		//タップエフェクト処理-------------------------------------------------------------------
-		if( _mainSceneOperation.MouseTouch() ) {
-			Vector3 effectPos = _mainSceneOperation.getWorldMousePos ();
+		if( _mainSceneOperation.MouseTouch( ) ) {
+			Vector3 effectPos = _mainSceneOperation.getWorldMousePos( );
 			effectPos.z = Camera.main.transform.position.z + 1f;//カメラに近い位置に生成したいため
 			Instantiate( _tapEffect, effectPos, Quaternion.identity );
 		}

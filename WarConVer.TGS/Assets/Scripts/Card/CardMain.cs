@@ -10,13 +10,13 @@ public class CardMain : MonoBehaviour {
 	const int _MAX_ACTION_COUNT = 3;							//移動回数の最大値
 	const float DETAILS_POS_X = -210f;
 
-	[SerializeField] int _loadID = 0;							//読み込むカードID
-	[SerializeField] SpriteRenderer _cardSpriteRenderer = null;	//カードのSpriteRenderer
-	[SerializeField] CardDataLoader _cardDataLoader = null;
-	[SerializeField] CardData _cardData = new CardData();
-	[SerializeField] int _actionCount = 0;						//移動回数
-	[SerializeField] GameObject _cardBack = null;				//カードの裏面
-
+	[ SerializeField ] int _loadID = 0;							//読み込むカードID
+	[ SerializeField ] SpriteRenderer _cardSpriteRenderer = null;	//カードのSpriteRenderer
+	[ SerializeField ] CardDataLoader _cardDataLoader = null;
+	[ SerializeField ] CardData _cardData = new CardData( );
+	[ SerializeField ] int _actionCount = 0;						//移動回数
+	[ SerializeField ] GameObject _cardBack = null;				//カードの裏面
+	 
 	GameObject _cardDetailsImage = null;
 	GameObject _details = null;
 	GameObject _canvas = null;
@@ -57,10 +57,10 @@ public class CardMain : MonoBehaviour {
 
 
 	// Use this for initialization
-	void Start () {
-		_cardSpriteRenderer = GetComponent<SpriteRenderer>();
-		_cardDataLoader = GameObject.Find ("CardDataLoader").GetComponent<CardDataLoader>();
-		Load ();//カードデータの読み込み
+	void Start( ) {
+		_cardSpriteRenderer = GetComponent< SpriteRenderer >( );
+		_cardDataLoader = GameObject.Find ("CardDataLoader").GetComponent< CardDataLoader >( );
+		Load( );//カードデータの読み込み
 		_actionCount = 0;
 
 		_cardDetailsImage = Resources.Load< GameObject >( "Prefab/Dummy/CardDetailsImage" );
@@ -70,7 +70,7 @@ public class CardMain : MonoBehaviour {
 
 	//--カードデータを読み込む関数
 	void Load( ) {
-		_cardSpriteRenderer.sprite = (Sprite)Resources.Load<Sprite> ("Card/" + _loadID);//カード画像の読み込み
+		_cardSpriteRenderer.sprite = ( Sprite )Resources.Load< Sprite >( "Card/" + _loadID );//カード画像の読み込み
 		_cardData = _cardDataLoader.GetCardDataFromID ( _loadID );
 	}
 
@@ -166,7 +166,7 @@ public class CardMain : MonoBehaviour {
 		_details = Object.Instantiate( _cardDetailsImage, Vector3.zero, Quaternion.identity );
 		Text attackPoint = _details.transform.Find( "Attack_Point_Background/Attack_Point" ).GetComponent< Text >( );
 		Text hitPoint = _details.transform.Find( "Hit_Point_Background/Hit_Point" ).GetComponent< Text >( );
-		Text cardText = _details.transform.Find ( "CardTextPanel/CardText" ).GetComponent< Text > ( );
+		Text cardText = _details.transform.Find( "CardTextPanel/CardText" ).GetComponent< Text > ( );
 
 		//画像などの情報読み込み
 		_details.GetComponent< Image >( ).sprite = _cardSpriteRenderer.sprite;
@@ -178,7 +178,7 @@ public class CardMain : MonoBehaviour {
 		_details.transform.SetParent( _canvas.transform );
 //		_details.transform.parent = _canvas.transform;//RectTransformを使っているGameObjectの子にする時はSetParentメゾット推奨だそうです（警告が出ます、UIスケーリング問題を防ぐためとか…）
 		RectTransform detailsPos = _details.GetComponent< RectTransform >( );
-		detailsPos.localPosition = new Vector3( DETAILS_POS_X, 0, 0 );	//あとでこの部分の処理は修正するだろうからマジックナンバーを放置	
+		detailsPos.localPosition = new Vector3( DETAILS_POS_X, 0, 0 );
 	}
 
 	public void DeleteCardDetail( ) { 
@@ -189,7 +189,7 @@ public class CardMain : MonoBehaviour {
 
 	//--カードを裏返す(裏面の画像を表示させる)
 	public void Reverse( bool reverseFlag ) {
-		_cardBack.SetActive ( reverseFlag );
+		_cardBack.SetActive( reverseFlag );
 	}
 	//===========================================================================================================
 	//===========================================================================================================

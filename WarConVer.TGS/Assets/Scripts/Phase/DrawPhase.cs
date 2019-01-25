@@ -20,9 +20,9 @@ public class DrawPhase : Phase {
 		_turnPlayer.Draw( /*_drawCard*/ );
 		//Player2の場合手札のカードを裏返す処理--------------------------------
 		if ( _turnPlayer.gameObject.tag == ConstantStorehouse.TAG_PLAYER2 ) {
-			_turnPlayer.ReverseHandCard (true);
+			_turnPlayer.ReverseHandCard( true );
 		}
-		//-------------------------------------------------------------------
+		//---------------------------------------------------------------------
 		_didDraw = true;
 		
 		

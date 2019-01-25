@@ -37,7 +37,13 @@ public class PreparePhase : Phase {
 		while ( _enemyPlayer.Hand_Num < MAX_FIRST_HAND_NUM ) {
 			_enemyPlayer.Draw ( );
 		}
-		_enemyPlayer.ReverseHandCard (true);//エネミーだけ手札を裏返す
+
+
+		if ( _turnPlayer.gameObject.tag == ConstantStorehouse.TAG_PLAYER2 ) {
+			_turnPlayer.ReverseHandCard (true);//エネミーだけ手札を裏返す
+		} else { 
+			_enemyPlayer.ReverseHandCard (true);	
+		}
 		//-----------------------------------------------------------
 
 		_isPrepareFinished = true;

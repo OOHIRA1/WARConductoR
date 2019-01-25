@@ -81,15 +81,15 @@ public class Participant : MonoBehaviour {
 
 			if ( squares[ i ].On_Card != null ) {
 				if ( squares[ i ].On_Card.gameObject.tag != card.gameObject.tag ) {		//移動したマスに自分のじゃないカードがあったら
-					Sprite movingCardSprite = new Sprite();
+					Sprite movingCardSprite = new Sprite( );
 					movingCardSprite = nowSquare.On_Card.Card_Sprite_Renderer.sprite;
-					Sprite notMoveCardSprite = new Sprite ();
+					Sprite notMoveCardSprite = new Sprite( );
 					notMoveCardSprite = squares[ i ].On_Card.Card_Sprite_Renderer.sprite;
 
 					result = _cardDamageManager.CardBattleDamage( nowSquare, squares[ i ] );
 
 					//戦闘アニメーション処理-------------------------------------------------------------------------------------------------------------
-					AutoDestroyBattleSpace battleSpace = Instantiate<AutoDestroyBattleSpace> (_battleSpacePrefab, Vector3.zero, Quaternion.identity);
+					AutoDestroyBattleSpace battleSpace = Instantiate< AutoDestroyBattleSpace >( _battleSpacePrefab, Vector3.zero, Quaternion.identity );
 					switch(result) {
 					case CardDamageManager.BATTLE_RESULT.PLAYER_WIN:
 						battleSpace.StartRightWinAnim ( notMoveCardSprite, movingCardSprite );
@@ -187,7 +187,7 @@ public class Participant : MonoBehaviour {
 		for ( int i = 0; i < squares.Count; i++ ) { 
 			_cardDamageManager.CardEffectDamage( squares[ i ], card.Card_Data._effect_value );
 			//エフェクト処理-----------------------------------------------------------------------------------------
-			Instantiate<AutoDestroyEffect>( _blackDamageEffect, squares[ i ].transform.position, Quaternion.identity );
+			Instantiate< AutoDestroyEffect >( _blackDamageEffect, squares[ i ].transform.position, Quaternion.identity );
 			//------------------------------------------------------------------------------------------------------
 		}
 
@@ -201,7 +201,7 @@ public class Participant : MonoBehaviour {
 		bool isMoved = MoveCard( card, nowSquare, touchSquare, card.Card_Data._effect_distance );
 		//エフェクト処理-----------------------------------------------------------------------------------------
 		if ( isMoved ) {
-			Instantiate<AutoDestroyEffect> ( _moveEffect, touchSquare.transform.position, Quaternion.identity );
+			Instantiate< AutoDestroyEffect >( _moveEffect, touchSquare.transform.position, Quaternion.identity );
 		}
 		//------------------------------------------------------------------------------------------------------
 	}
@@ -212,7 +212,7 @@ public class Participant : MonoBehaviour {
 	public void UseEffect( CardMain card ) {
 		card.Recovery( card.Card_Data._effect_value );
 		//エフェクト処理---------------------------------------------------------------
-		Instantiate<AutoDestroyEffect>( _recoveryEffect, card.transform.position, Quaternion.identity );
+		Instantiate< AutoDestroyEffect >( _recoveryEffect, card.transform.position, Quaternion.identity );
 		//----------------------------------------------------------------------------
 		_activePoint.DecreasePoint( card.Card_Data._necessaryAPForEffect );
 	}
@@ -235,7 +235,7 @@ public class Participant : MonoBehaviour {
 			//召喚エフェクト処理
 			Vector3 effectPos = fieldCardObj.transform.position;
 			effectPos.z = Camera.main.transform.position.z + 1f;//カメラに近い位置に生成したいため
-			Instantiate<AutoDestroyEffect>( _summonEffect, effectPos, Quaternion.identity );
+			Instantiate< AutoDestroyEffect >( _summonEffect, effectPos, Quaternion.identity );
 
 			_magicPoint.DecreasePoint( card.Card_Data._necessaryMP );
 			square.On_Card = fieldCard;
@@ -287,9 +287,9 @@ public class Participant : MonoBehaviour {
 
 	//--手札のカードを裏返す関数
 	public void ReverseHandCard( bool reverseFlag ) {
-		List<CardMain> handCardList = _hand.Card;
+		List< CardMain > handCardList = _hand.Card;
 		for ( int i = 0; i < handCardList.Count; i++ ) {
-			handCardList [i].Reverse (reverseFlag);
+			handCardList[ i ].Reverse( reverseFlag );
 		}
 	}
 

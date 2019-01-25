@@ -3,17 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Hand : MonoBehaviour {
-	//const int MAX_ORVER_HAND_NUM = 1;	//手札が持てる最大数を超えて持てる枚数の最大値(_maxHn)
-	//const int MAX_HAND_NUM = 7;
-
 	[ SerializeField ] int _maxHandNum = 0;
-	//[ SerializeField ] GameObject _handCardObj = null;	//生成する手札のカードオブジェクト
 	[ SerializeField ] float _sortShiftPos = 0;
 	[ SerializeField ] List< CardMain > _card  = new List< CardMain >( );
-
-	//ネットワーク用 (テスト)
-	//[ SerializeField ] GameObject _uraCard = null;
-	//[ SerializeField ] List< GameObject > _uraCards  = new List< GameObject >( );
+	
+	string player = null;
 
 	public int Hnad_Num { 
 		get { return _card.Count; }
@@ -28,35 +22,24 @@ public class Hand : MonoBehaviour {
 	}
 
 
-	void Awake( ) {
-		//とりあえず今は最初から設定されている手札を取得する(あとでこの処理はいらなくなるかも)
-		//var handCards = gameObject.GetComponentInChildren< Transform >( ); 
-		/*foreach( Transform card in handCards ) { 
-			_card.Add( card.gameObject.GetComponent< CardMain >( ) );	
-		}
-
-
-		for ( int i = 0; i < _a.Length; i++ ) { 
-			_uraCards.Add( _a[ i ] );
-		}
-		*/
-	}
-
 	void Start( ) {
-		Sort( );
+		player = this.gameObject.tag;
+
+		Sort( player );
 	}
 
 	//手札を並べる------------------------------------------------------
-	void Sort( ) {
+	void Sort( string player ) {
 		Vector3 cardPos = transform.position;
 		for ( int i = 0; i < _card.Count; i++ ) {
 			_card[ i ].gameObject.transform.position = cardPos;
-			cardPos.x += _sortShiftPos;
-		}
 
-		//for ( int i = 0; i < _uraCards.Count; i++ ) { 
-		//	_uraCards[ i ].transform.position = _card[ i ].gameObject.transform.position;	
-		//}
+			if ( player == ConstantStorehouse.TAG_PLAYER1 ) {
+				cardPos.x += _sortShiftPos;
+			} else { 
+				cardPos.x -= _sortShiftPos;
+			}
+		}
 		
 	}
 	//-----------------------------------------------------------------
@@ -70,10 +53,7 @@ public class Hand : MonoBehaviour {
 			Destroy( _card[ i ].gameObject );
 			_card.Remove( _card[ i ] );
 
-			//Destroy( _uraCards[ i ] );
-			//_uraCards.Remove( _uraCards[ i ] );
-
-			Sort( );
+			Sort( player );
 			return;
 		}
 
@@ -82,28 +62,12 @@ public class Hand : MonoBehaviour {
 	//---------------------------------------------------------------------------
 
 	
-	//手札を増やす(生成する)--------------------------------------------------------------------------------
+	//手札を増やす--------------------------------
 	public void IncreaseHand( CardMain card ) {
-		//if ( _card.Count == _maxHandNum + 1 ) return;		//今のところ手札が持てる最大枚数より多くなるのは１枚までなので +1 している
-
-		//GameObject handCardObj = Instantiate( _handCardObj, transform.position, Quaternion.identity );
-
-		//CardMain handCard = handCardObj.GetComponent< CardMain >( );
-		//handCard._cardDates = card._cardDates;
-		//_card.Add( handCard );
 		_card.Add( card );
-
-		//SpriteRenderer handCardSprite = handCardObj.GetComponent< SpriteRenderer >( );
-		//SpriteRenderer sprite = card.GetComponent< SpriteRenderer >( );
-		//handCardSprite.sprite = sprite.sprite;
-
-		//handCardObj.transform.parent = this.transform;
 		card.transform.parent = this.transform;
 
-		//GameObject uraCardObj = Instantiate( _uraCard, transform.position, Quaternion.identity );
-		//_uraCards.Add( uraCardObj );
-
-		Sort( );
+		Sort( player );
 	}
-	//------------------------------------------------------------------------------------------------------
+	//-------------------------------------------
 }
