@@ -52,6 +52,10 @@ public class Participant : MonoBehaviour {
 		set { _loseFlag = value; }
 	}
 
+	public List< CardMain > Hand_Cards { 
+		get { return _hand.Card; }
+	}
+
 	public List< CardMain > Card_In_Field { 
 		get { return _cardInField; }	
 	} 

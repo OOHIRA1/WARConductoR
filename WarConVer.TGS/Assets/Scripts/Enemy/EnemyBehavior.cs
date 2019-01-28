@@ -26,6 +26,7 @@ public class EnemyBehavior : MonoBehaviour {
 	[ SerializeField ] Hand _enemyHand = null;
 	[ SerializeField ] Point _enemyMagicPoint = null;
 	[ SerializeField ] Point _enemyActivePoint = null;
+	[ SerializeField ] float _enemyUpdateTime = 3.0f;
 
 	ENEMY_BEHAVIOR_STATUS _enemyBehaviorStatus = ENEMY_BEHAVIOR_STATUS.SUMMON;
 	bool _enemyUpdateFlag = true;
@@ -36,35 +37,52 @@ public class EnemyBehavior : MonoBehaviour {
 	}
 
 
-	public void EnemyUpdate( ) {
-		if ( !_enemyUpdateFlag ) return;
 
-		if ( MainPhase._precedenceOneTurnFlag && _enemyBehaviorStatus != ENEMY_BEHAVIOR_STATUS.SUMMON ) { 
-			_enemyBehaviorStatus = ENEMY_BEHAVIOR_STATUS.SUMMON;
-			_enemyUpdateFlag = false;
-			return;
+	public void StartEnemyUpdate( ) {
+		string coroutineName = "EnemyUpdate"; 
+		StartCoroutine( coroutineName );		//代入しなおさないと止めた途中から始まってしまうらしい
+	}
+
+	public void StopEnemyUpdate( ) { 
+		StopCoroutine( "EnemyUpdate" );	
+	}
+
+
+	IEnumerator EnemyUpdate( ) {
+
+		while ( true ) {
+			if ( !_enemyUpdateFlag ) yield break;
+
+			if ( MainPhase._precedenceOneTurnFlag && _enemyBehaviorStatus != ENEMY_BEHAVIOR_STATUS.SUMMON ) { 
+				_enemyBehaviorStatus = ENEMY_BEHAVIOR_STATUS.SUMMON;
+				_enemyUpdateFlag = false;
+				yield break;
+			}
+
+			switch ( _enemyBehaviorStatus ) { 
+				case ENEMY_BEHAVIOR_STATUS.SUMMON:
+					EnemySummonUpdate( );
+					Debug.Log( "S" );
+					break;
+
+				case ENEMY_BEHAVIOR_STATUS.DIRECT_ATTACK:
+					EnemyDirectAttackUpdate( );
+					Debug.Log( "D" );
+					break;
+
+				case ENEMY_BEHAVIOR_STATUS.MOVE:
+					EnemyCardMoveUpdate( );
+					Debug.Log( "M" );
+					break;
+
+				default:
+					Assert.IsTrue( false, "エネミーの状態が想定外です" );
+					break;
+			}
+			yield return new WaitForSeconds( _enemyUpdateTime );
+
 		}
 
-		switch ( _enemyBehaviorStatus ) { 
-			case ENEMY_BEHAVIOR_STATUS.SUMMON:
-				EnemySummonUpdate( );
-				Debug.Log( "S" );
-				break;
-
-			case ENEMY_BEHAVIOR_STATUS.DIRECT_ATTACK:
-				EnemyDirectAttackUpdate( );
-				Debug.Log( "D" );
-				break;
-
-			case ENEMY_BEHAVIOR_STATUS.MOVE:
-				EnemyCardMoveUpdate( );
-				Debug.Log( "M" );
-				break;
-
-			default:
-				Assert.IsTrue( false, "エネミーの状態が想定外です" );
-				break;
-		}
 	}
 
 
@@ -141,7 +159,7 @@ public class EnemyBehavior : MonoBehaviour {
 
 
 	//移動処理Update--------------------------------------------------
-	public void EnemyCardMoveUpdate( ) {
+	void EnemyCardMoveUpdate( ) {
 
 		if ( _enemy.Card_In_Field.Count == 0 ) {
 			_enemyUpdateFlag = false;

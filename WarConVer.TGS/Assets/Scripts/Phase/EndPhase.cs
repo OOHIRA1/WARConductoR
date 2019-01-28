@@ -23,6 +23,31 @@ public class EndPhase : Phase {
 	public override void PhaseUpdate( ) {
 		if ( _didHandThrowAway ) return;
 
+		if ( _turnPlayer.gameObject.tag == ConstantStorehouse.TAG_PLAYER2 ) { 
+			EnemyTurnUpdate( );
+			return;
+		}
+
+		PlayerTurnUpdate( );
+	}
+
+	public override bool IsNextPhaseFlag( ) { 
+		return _didHandThrowAway;	
+	}
+
+
+	void EnemyTurnUpdate( ) {
+		List< CardMain > handCards = _turnPlayer.Hand_Cards;
+		CardMain card = handCards[ 0 ];
+
+		_turnPlayer.HandThrowAway( card );
+		if ( _turnPlayer.Hand_Num == _turnPlayer.Max_Hnad_Num ) {
+			_didHandThrowAway = true;
+		}
+	}
+
+
+	void PlayerTurnUpdate( ) { 
 		if ( _mainSceneOperation.MouseTouch( ) ) {
 			CardMain card = _rayShooter.RayCastHandCard( _turnPlayer.gameObject.tag );
 			if ( card == null ) return;
@@ -33,10 +58,4 @@ public class EndPhase : Phase {
 			}
 		}
 	}
-
-	public override bool IsNextPhaseFlag( ) { 
-		return _didHandThrowAway;	
-	}
 }
-
-//ハンドを一枚捨てる関数を作るしかない。多分墓地も増やす

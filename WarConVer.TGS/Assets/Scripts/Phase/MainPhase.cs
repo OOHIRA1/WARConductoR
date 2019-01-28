@@ -17,7 +17,7 @@ public class MainPhase : Phase {
 		HANC_CARD_SUMMON
 	}
 	
-	public static bool _precedenceOneTurnFlag = true;
+	public static bool _precedenceOneTurnFlag = true;	//先行１ターン目かどうか(クラスが破棄されてもまたは他のクラスにもほしい情報なので pulbic static)
 	
 	const int LOSE_CEMETARY_POINT = 10;
 	const float SHOW_DETAILS_HOLD_TIME = 0.5f;		//手札の詳細を表示するホールド時間(手札をタッチしたときホールド時間がx秒以下だったら表示する)
@@ -33,6 +33,7 @@ public class MainPhase : Phase {
 	Vector3 _handCardPos				   = Vector3.zero;
 	MAIN_PHASE_STATUS _mainPhaseStatus	   = MAIN_PHASE_STATUS.IDLE;
 	bool _turnEndFlag					   = false;
+	bool _enemyUpdateStartFlag = true;
 	Field _field = null;
 
 
@@ -43,7 +44,6 @@ public class MainPhase : Phase {
 	CardMain _drawCard = null;
 	CardMain _debugCard = null;
 	Square _debugSquare = null;
-	bool _enemyUpdateFlag = false;
 
 	public MainPhase( Participant turnPlayer, Participant enemyPlayer, MainSceneOperation mainSceneQperation, UIActiveManager uIActiveManager, Field field,
 					  GameObject turnEndButton,
@@ -78,22 +78,20 @@ public class MainPhase : Phase {
 		LoseTerms( );
 
 		if ( _turnPlayer.gameObject.tag == "Player2" ) {
-			/*アニメーションをしているフラグがたっていたらしていたらreturn*/
-			testEnemuUpdate( );
-			if ( !_enemyUpdateFlag ) return;
-			_enemyUpdateFlag = false;
-
-			_enemyBehavior.EnemyUpdate( );
-			Debug.Log( "EnemuUpdate" );
-
-			if ( !_enemyBehavior.Enemy_Update_Flag ) {
-				if ( _precedenceOneTurnFlag ) _precedenceOneTurnFlag = false;
-				_enemyBehavior.Enemy_Update_Flag = true;	//フラグリセット
-				_turnEndFlag = true;
-			}
+			EnemyTurnUpdate( );
 			return;
 		}
 
+		PlayerTurnUpdate( );
+	}
+	
+
+	public override bool IsNextPhaseFlag( ) {
+		return _turnEndFlag;
+	}
+
+
+	void PlayerTurnUpdate( ) { 
 		ActiveTurnEndButton( );
 		TurnEndButtonClicked( );
 		switch ( _mainPhaseStatus ) {
@@ -142,13 +140,20 @@ public class MainPhase : Phase {
 				return;
 		}
 	}
-	
 
-	public override bool IsNextPhaseFlag( ) {
-		return _turnEndFlag;
+	void EnemyTurnUpdate( ) { 
+		if ( _enemyUpdateStartFlag ) {
+			_enemyBehavior.StartEnemyUpdate( );
+			_enemyUpdateStartFlag = false;
+		}
+
+		if ( !_enemyBehavior.Enemy_Update_Flag ) {
+			if ( _precedenceOneTurnFlag ) _precedenceOneTurnFlag = false;
+			_enemyBehavior.Enemy_Update_Flag = true;	//フラグリセット
+			_enemyBehavior.StopEnemyUpdate( );
+			_turnEndFlag = true;
+		}
 	}
-
-
 
 
 	//待機状態-----------------------------------------
@@ -515,22 +520,18 @@ public class MainPhase : Phase {
 	void LoseTerms( ) { 
 		if ( _enemyPlayer.Lefe_Point <= 0 ) { 
 			_enemyPlayer.Lose_Flag = true;
+			_precedenceOneTurnFlag = true;
 		}
 
 		if ( _enemyPlayer.Cemetary_Point >= LOSE_CEMETARY_POINT ) { 
 			_enemyPlayer.Lose_Flag = true;	
+			_precedenceOneTurnFlag = true;
 		}
 
 		if ( _turnPlayer.Cemetary_Point >= LOSE_CEMETARY_POINT ) { 
 			_turnPlayer.Lose_Flag = true;	
+			_precedenceOneTurnFlag = true;
 		}
-	}
-
-
-	void testEnemuUpdate( ) { 
-		if ( Input.GetKeyDown( KeyCode.A ) ) { 
-			_enemyUpdateFlag = true;	
-		}	
 	}
 }
 
