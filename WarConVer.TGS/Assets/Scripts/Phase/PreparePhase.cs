@@ -30,6 +30,11 @@ public class PreparePhase : Phase {
 	public override void PhaseUpdate( ) {
 		if ( _isPrepareFinished ) return;
 
+		//デッキシャッフル処理----------------------------------------
+		_turnPlayer.Shuffle( );
+		_enemyPlayer.Shuffle( );
+		//-----------------------------------------------------------
+
 		//初期ドロー処理----------------------------------------------
 		while ( _turnPlayer.Hand_Num < MAX_FIRST_HAND_NUM ) {
 			_turnPlayer.Draw ( );

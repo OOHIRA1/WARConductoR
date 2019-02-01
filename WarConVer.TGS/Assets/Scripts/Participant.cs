@@ -298,6 +298,12 @@ public class Participant : MonoBehaviour {
 	}
 
 
+	//--デッキをシャッフルする
+	public void Shuffle( ) {
+		_deck.Shuffle( );
+	}
+
+
 	void AddMyFieldCards( CardMain card ) { 
 		_cardInField.Add( card );
 	}
