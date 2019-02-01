@@ -31,7 +31,12 @@ public class Deck : MonoBehaviour {
 
 	//--デッキをシャッフルする関数
 	public void Shuffle( ) {
-		
+		for ( int i = 0; i < _cardIDs.Count; i++ ) {
+			int temp = _cardIDs[ i ];
+			int random = Random.Range( 0, _cardIDs.Count );
+			_cardIDs[ i ] = _cardIDs[ random ];
+			_cardIDs[ random ] = temp;
+		}
 	}
 
 
@@ -43,7 +48,7 @@ public class Deck : MonoBehaviour {
 			GameObject prefab = (GameObject)Resources.Load ("Prefab/Card");
 			GameObject cardObj = (GameObject)Instantiate (prefab, Vector3.zero, Quaternion.identity);//原点にInstantiateする
 			card = cardObj.GetComponent<CardMain> ();
-			card.loadID = _cardIDs [0];//デッキトップのカードIDを読み込むように設定する
+			card.loadID = _cardIDs [ 0 ];//デッキトップのカードIDを読み込むように設定する
 			_cardIDs.RemoveAt (0);
 			_deckNum = _cardIDs.Count;//デッキ枚数の更新
 		} else {

@@ -93,5 +93,8 @@ public class TestMainOohiraManager : MonoBehaviour {
 		if (Input.GetKeyDown (KeyCode.K)) {
 			Instantiate<AutoDestroyEffect> (_recoveryEffect, Vector3.zero, Quaternion.identity);
 		}
+		if (Input.GetKeyDown (KeyCode.L)) {
+			_deck.Shuffle();
+		}
 	}
 }
