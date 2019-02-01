@@ -20,6 +20,12 @@ public class ResultPerformance : MonoBehaviour {
 	[ SerializeField ] float 	  	_fadeOutBGMTime = 2f;		//BGMがフェードアウトするまでの時間[単位：秒]
 	AudioSource 				  	_resultSESounder;			//勝敗SEを鳴らすAudioSource
 	bool 						  	_isStartPerforming;			//勝敗演出を開始したかどうかのフラグ
+	[ SerializeField ] Image _thankYouPanelImage = null;	//感謝UIパネルのImage
+	[ SerializeField ] GameObject _thankYouLogo = null;		//感謝UIロゴ
+	[ SerializeField ] float _waitTimeBeforeFadeOut = 2f;	//画面フェードアウトする前の待機時間[単位：秒]
+	[ SerializeField ] float _fadeOutTime = 2f;				//画面フェードアウトする時間[単位：秒]
+	[ SerializeField ] float _waitTimeBeforeChangeScene = 4f;	//シーン遷移するまでの待機時間[単位：秒]
+	[ SerializeField ] SceneTransition _transitioner = null;	//シーン遷移するもの
 
 
 	// Use this for initialization
@@ -62,6 +68,27 @@ public class ResultPerformance : MonoBehaviour {
 		_resultPanel.SetActive ( true );
 		_resultSESounder.Play ();
 		//-----------------------------------------------------------------
+
+		yield return new WaitForSeconds ( _waitTimeBeforeFadeOut );	//フェードアウトするまでの待機
+
+		_thankYouPanelImage.gameObject.SetActive (true);
+		//画面フェードアウト処理---------------------------------------------
+		while (_thankYouPanelImage.color.a < 1f) {
+			Color panelColor = _thankYouPanelImage.color;
+			panelColor.a += Time.deltaTime / _fadeOutTime;
+			if (panelColor.a >= 1f) {
+				panelColor.a = 1f;
+			}
+			_thankYouPanelImage.color = panelColor;
+			yield return null;	//フェードアウトが終わるまで待機
+		}
+		//------------------------------------------------------------------
+
+		_thankYouLogo.SetActive (true);
+
+		yield return new WaitForSeconds ( _waitTimeBeforeChangeScene ); //シーン遷移するまでの待機
+
+		_transitioner.Transition ("Title");
 
 	}
 
