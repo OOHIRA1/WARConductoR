@@ -10,7 +10,9 @@ public class MainSceneOperation : MonoBehaviour {
 	bool _effectButtonClicked    	 = false;
 	bool _effectYesButtonClicked 	 = false;
 	bool _turnEndButtonClicked   	 = false;
-	bool _returnToTitleButtonClicked = false;
+	bool _mulliganYesButtonClicked 	 = false;
+	bool _mulliganNoButtonClicked 	 = false;
+
 
 
 	public bool MouseTouch( ) {
@@ -155,20 +157,35 @@ public class MainSceneOperation : MonoBehaviour {
 	//----------------------------------------------
 
 
-	//タイトルに戻るボタン判定--------------------------------
-	//タイトルに戻るボタンが押されたかどうかの判定
-	public bool ReturnToTitleButtonClicked( ) {
-		if ( _returnToTitleButtonClicked ) { 
-			_returnToTitleButtonClicked = false;
+	//マリガンボタン判定-----------------------------------------
+	//マリガンYesボタンが押されたかどうかの判定
+	public bool MulliganYesButtonClicked( ) {
+		if ( _mulliganYesButtonClicked ) { 
+			_mulliganYesButtonClicked = false;
 			return true;
 		} else { 
 			return false;	
 		}
 	}
 
-	//タイトルに戻るボタンがクリックされたら呼ぶ関数
-	public void ClickReturnToTitleButto( ) {
-		_returnToTitleButtonClicked = true;
+	//マリガンYesボタンがクリックされたら呼ぶ関数
+	public void ClickMulliganYesButton( ) {
+		_mulliganYesButtonClicked = true;
+	}
+
+	//マリガンNoボタンが押されたかどうかの判定
+	public bool MulliganNoButtonClicked( ) {
+		if ( _mulliganNoButtonClicked ) { 
+			_mulliganNoButtonClicked = false;
+			return true;
+		} else { 
+			return false;	
+		}
+	}
+
+	//マリガンNoボタンがクリックされたら呼ぶ関数
+	public void ClickMulliganNoButton( ) {
+		_mulliganNoButtonClicked = true;
 	}
 	//---------------------------------------------------------
 

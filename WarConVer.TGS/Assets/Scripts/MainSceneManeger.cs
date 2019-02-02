@@ -54,7 +54,7 @@ public class MainSceneManeger : MonoBehaviour {
 			_uIActiveManager.ButtonActiveChanger( false, UIActiveManager.BUTTON.TURN_END_COLOR );
 		}
 
-		_phase = new PreparePhase( _turnPlayer, _enemyPlayer );
+		_phase = new PreparePhase( _turnPlayer, _enemyPlayer, _mainSceneOperation, _uIActiveManager );
 	}
 
 	void Start( ) {
@@ -108,7 +108,7 @@ public class MainSceneManeger : MonoBehaviour {
 		
 		switch ( _phaseStatus ) { 
 			case PHASE.PREPARE:
-				_phase = new PreparePhase ( _turnPlayer, _enemyPlayer );
+			_phase = new PreparePhase ( _turnPlayer, _enemyPlayer, _mainSceneOperation, _uIActiveManager );
 				break;
 
 			case PHASE.START:

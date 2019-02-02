@@ -19,6 +19,10 @@ public class UIActiveManager : MonoBehaviour {
 	[ SerializeField ] List< GameObject > _UIButtons = new List< GameObject >( );
 	[ SerializeField ] GameObject _turnEndButtonMono = null;
 
+	//パネル
+	[ SerializeField ] GameObject _mulliganPanel = null;
+
+
 	//全てのボタンの表示を切り替える---------------------
 	public void AllButtonActiveChanger( bool active ) {
 		for ( int i = 0; i < _UIButtons.Count; i++ ) {
@@ -56,6 +60,13 @@ public class UIActiveManager : MonoBehaviour {
 		}
 	}
 	//------------------------------------------------------------------------------------------------------------------
+
+
+	//マリガンパネルの表示処理--------------------------------------------------------------------------
+	public void MulliganPanelActiveChanger( bool active ) {
+		_mulliganPanel.SetActive ( active );
+	}
+	//-------------------------------------------------------------------------------------------------
 
 	
 	//エフェクトボタンの表示処理------------------------------------------------------------------------------
@@ -148,4 +159,5 @@ public class UIActiveManager : MonoBehaviour {
 		}
 	}
 	//-------------------------------------------------------
+
 }

@@ -304,6 +304,15 @@ public class Participant : MonoBehaviour {
 	}
 
 
+	//--手札のカードをデッキに戻す関数
+	public void ReturnCardFromHandToDeck( ) {
+		List<CardMain> handCardList = _hand.Card;
+		for (int i = 0; i < handCardList.Count; i++) {
+			_deck.ReturnCard ( handCardList[i].loadID );
+			_hand.DecreaseHandCard ( handCardList[i] );
+		}
+	}
+
 	void AddMyFieldCards( CardMain card ) { 
 		_cardInField.Add( card );
 	}
