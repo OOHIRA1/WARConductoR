@@ -7,13 +7,17 @@ public class EndPhase : Phase {
 
 	RayShooter _rayShooter = new RayShooter( );
 	MainSceneOperation _mainSceneOperation = null;
+	UIActiveManager _uiActiveManager = null;
 
-	public EndPhase( Participant turnPlayer, MainSceneOperation mainSceneOperation ) {
+	public EndPhase( Participant turnPlayer, MainSceneOperation mainSceneOperation, UIActiveManager uiActiveManager ) {
 		_turnPlayer = turnPlayer;
 		_mainSceneOperation = mainSceneOperation;
+		_uiActiveManager = uiActiveManager;
 
 		if ( _turnPlayer.Hand_Num <= _turnPlayer.Max_Hnad_Num ) { 
 			_didHandThrowAway = true;
+		} else { 
+            _uiActiveManager.TextActiveChanger( true, UIActiveManager.TEXT.HAND_CARD_LIMIT );
 		}
 
 		Debug.Log( _turnPlayer.gameObject.tag + "エンドフェーズ" );	
@@ -55,6 +59,7 @@ public class EndPhase : Phase {
 			_turnPlayer.HandThrowAway( card );
 			if ( _turnPlayer.Hand_Num == _turnPlayer.Max_Hnad_Num ) {
 				_didHandThrowAway = true;
+				_uiActiveManager.TextActiveChanger( false, UIActiveManager.TEXT.HAND_CARD_LIMIT );
 			}
 		}
 	}

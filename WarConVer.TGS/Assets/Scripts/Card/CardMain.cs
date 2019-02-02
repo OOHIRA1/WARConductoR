@@ -9,6 +9,7 @@ using UnityEngine.UI;
 public class CardMain : MonoBehaviour {
 	const int _MAX_ACTION_COUNT = 3;							//移動回数の最大値
 	const float DETAILS_POS_X = -210f;
+	const float EXPANSION_SCALE = 1.3f;							//カードを大きくするときの大きさ
 
 	[ SerializeField ] int _loadID = 0;							//読み込むカードID
 	[ SerializeField ] SpriteRenderer _cardSpriteRenderer = null;	//カードのSpriteRenderer
@@ -20,7 +21,8 @@ public class CardMain : MonoBehaviour {
 	GameObject _cardDetailsImage = null;
 	GameObject _details = null;
 	GameObject _canvas = null;
-
+	float _scaleX = 0;
+	float _scaleY = 0;
 
 	//===================================================================
 	//アクセッサ
@@ -65,6 +67,10 @@ public class CardMain : MonoBehaviour {
 
 		_cardDetailsImage = Resources.Load< GameObject >( "Prefab/Dummy/CardDetailsImage" );
 		_canvas = GameObject.Find( "Canvas" );
+
+		_scaleX = transform.localScale.x;
+		_scaleY = transform.localScale.y;
+
 	}
 
 
@@ -190,6 +196,18 @@ public class CardMain : MonoBehaviour {
 	//--カードを裏返す(裏面の画像を表示させる)
 	public void Reverse( bool reverseFlag ) {
 		_cardBack.SetActive( reverseFlag );
+	}
+
+
+	public void CardExpansion( ) { 
+		transform.localScale = new Vector3( EXPANSION_SCALE, EXPANSION_SCALE, 1.0f );
+		_cardSpriteRenderer.sortingOrder = 3;
+	}
+
+
+	public void CardExpansionRestore( ) { 
+		transform.localScale = new Vector3( _scaleX, _scaleY, 1.0f );
+		_cardSpriteRenderer.sortingOrder = 1;
 	}
 	//===========================================================================================================
 	//===========================================================================================================

@@ -33,10 +33,7 @@ public class MainSceneManeger : MonoBehaviour {
 	[ SerializeField ] GameObject _turnEndButton = null;
 
 	//テスト用
-	[ SerializeField ] CardMain _drawCard	  = null;
 	[ SerializeField ] ATTACK_FIRST_OR_SECOND _order = ATTACK_FIRST_OR_SECOND.FIRST;
-	[ SerializeField ] CardMain _debugCard = null;
-	[ SerializeField ] Square _debugSquare = null;
 
 	Phase _phase = null;
 	PHASE _phaseStatus = PHASE.PREPARE;
@@ -116,18 +113,17 @@ public class MainSceneManeger : MonoBehaviour {
 				break;
 
 			case PHASE.DRAW:
-				_phase = new DrawPhase( _turnPlayer, _drawCard );	//多分,Deckクラスを送るのかな？
+				_phase = new DrawPhase( _turnPlayer );	//多分,Deckクラスを送るのかな？
 				break;
 
 			case PHASE.MAIN:
 				_phase = new MainPhase( _turnPlayer, _enemyPlayer, _mainSceneOperation, _uIActiveManager, _field,
 									    _turnEndButton,
-										_enemyBehavior,
-										_drawCard, _debugCard, _debugSquare );
+										_enemyBehavior );
 				break;
 
 			case PHASE.END:
-				_phase = new EndPhase( _turnPlayer, _mainSceneOperation );
+				_phase = new EndPhase( _turnPlayer, _mainSceneOperation, _uIActiveManager );
 				break;
 
 			default:

@@ -40,15 +40,10 @@ public class MainPhase : Phase {
 	//ボタン
 	GameObject _turnEndButton	   = null;
 
-	//テスト用
-	CardMain _drawCard = null;
-	CardMain _debugCard = null;
-	Square _debugSquare = null;
 
 	public MainPhase( Participant turnPlayer, Participant enemyPlayer, MainSceneOperation mainSceneQperation, UIActiveManager uIActiveManager, Field field,
 					  GameObject turnEndButton,
-					  EnemyBehavior enemyBehavior,
-					  CardMain drawCard, CardMain debugCard, Square debugSquare ) {
+					  EnemyBehavior enemyBehavior ) {
 
 		_turnPlayer = turnPlayer;
 		_enemyPlayer = enemyPlayer;
@@ -61,9 +56,12 @@ public class MainPhase : Phase {
 
 		_enemyBehavior = enemyBehavior;
 
-		_drawCard = drawCard;
-		_debugCard = debugCard;
-		_debugSquare = debugSquare;
+		//敵プレイヤーターン中に表示するテキスト
+        if ( _turnPlayer.gameObject.tag == ConstantStorehouse.TAG_PLAYER2 ) { 
+            _uiActiveManager.TextActiveChanger( true, UIActiveManager.TEXT.NOW_ENEMY_TURN );    
+        } else { 
+            _uiActiveManager.TextActiveChanger( false, UIActiveManager.TEXT.NOW_ENEMY_TURN );
+        }
 
 		Debug.Log( _turnPlayer.gameObject.tag + "メインフェーズ" );
 
@@ -191,6 +189,7 @@ public class MainPhase : Phase {
 
 		_handCardPos = _handCard.transform.position;
 		_handCard.gameObject.GetComponent< BoxCollider2D >( ).enabled = false;
+		_handCard.CardExpansion( );
 		_mainPhaseStatus = MAIN_PHASE_STATUS.HAND_CARD_OPERATION;
 	}
 	//---------------------------------------------------------------------------
@@ -217,8 +216,7 @@ public class MainPhase : Phase {
 		if ( _mainSceneOperation.BackButtonClicked( ) ) { 
 			_uiActiveManager.AllButtonActiveChanger( false );
 			_card.DeleteCardDetail( );
-			_card = null;
-			_nowSquare = null;
+			GetDataReset( );
 			_mainPhaseStatus = MAIN_PHASE_STATUS.IDLE;
 			return;
 		}
@@ -292,8 +290,7 @@ public class MainPhase : Phase {
 			}
 
 			//情報リセット
-			_card = null;
-			_nowSquare = null;
+			GetDataReset( );
 
 			_mainPhaseStatus = MAIN_PHASE_STATUS.IDLE;
 			return;
@@ -305,8 +302,7 @@ public class MainPhase : Phase {
 			_turnPlayer.SquareChangeColor( squares, false );	//色をもとに戻す
 
 			//情報リセット
-			_card = null;
-			_nowSquare = null;
+			GetDataReset( );
 
 			_mainPhaseStatus = MAIN_PHASE_STATUS.IDLE;
 			return;
@@ -318,8 +314,7 @@ public class MainPhase : Phase {
 	//ダイレクトアタック処理----------------------------------------------------
 	void DirectAttack( ) { 
 		_turnPlayer.DirectAttack( _enemyPlayer, _card.Card_Data._necessaryAP, _card );
-			_card = null;
-			_nowSquare = null;
+			GetDataReset( );
 			_mainPhaseStatus = MAIN_PHASE_STATUS.IDLE;
 			return;
 	}
@@ -335,13 +330,13 @@ public class MainPhase : Phase {
 			_turnPlayer.SquareChangeColor( summonableSquares, true );
 		}
 
+		//手札を離したとき
 		if ( !_mainSceneOperation.MouseConsecutivelyTouch( ) ) {
-			if ( _mainSceneOperation.getHoldCount( ) <= SHOW_DETAILS_HOLD_TIME ) {
+			if ( _mainSceneOperation.getHoldCount( ) <= SHOW_DETAILS_HOLD_TIME ) {	//離したのが一定時間内だったら
 				_handCard.ShowCardDetail( );
 				_uiActiveManager.ButtonActiveChanger( true, UIActiveManager.BUTTON.BACK );
 				_turnPlayer.SquareChangeColor( summonableSquares, false );
-				_handCard.transform.position = _handCardPos;
-				_handCard.gameObject.GetComponent< BoxCollider2D >( ).enabled = true;
+				HandCardRestore( );
 				_mainPhaseStatus = MAIN_PHASE_STATUS.HAND_CARD_DETAILS;
 				return;
 			} else { 
@@ -368,22 +363,23 @@ public class MainPhase : Phase {
 	void HandCardSummon( ) {
 		List< Square > summonableSquares = _field.SummonSquare( _turnPlayer.gameObject.tag );
 
+		//MPが足りなかったら
 		if ( !_turnPlayer.DecreaseMPointConfirmation( _handCard.Card_Data._necessaryMP ) ) {
-			_handCard.transform.position = _handCardPos;
-			_handCard.gameObject.GetComponent< BoxCollider2D >( ).enabled = true;
+			HandCardRestore( );
 			_mainPhaseStatus = MAIN_PHASE_STATUS.IDLE;
 			return;
 		}
 		
 		Square rayHitedSquare = _rayShooter.RayCastSquare( );
+		//離したときにマスがなかったら
 		if ( rayHitedSquare == null ) {
-			_turnPlayer.SquareChangeColor( summonableSquares, false );
-			_handCard.transform.position = _handCardPos;
+			HandCardRestore( );
 			_handCard.gameObject.GetComponent< BoxCollider2D >( ).enabled = true;
 			_mainPhaseStatus = MAIN_PHASE_STATUS.IDLE;
 			return;
 		}
 		
+		//召喚
 		for ( int i = 0; i < summonableSquares.Count; i++ ) { 
 			if ( rayHitedSquare.Index != summonableSquares[ i ].Index ) continue;
 		
@@ -397,11 +393,17 @@ public class MainPhase : Phase {
 
 
 		_turnPlayer.SquareChangeColor( summonableSquares, false );
-		_handCard.transform.position = _handCardPos;
-		_handCard.gameObject.GetComponent< BoxCollider2D >( ).enabled = true;
+		HandCardRestore( );
 		_mainPhaseStatus = MAIN_PHASE_STATUS.IDLE;
 	}
 	//----------------------------------------------------------------------------------------
+
+
+	void HandCardRestore( ) { 
+        _handCard.transform.position = _handCardPos;
+        _handCard.gameObject.GetComponent< BoxCollider2D >( ).enabled = true;
+        _handCard.CardExpansionRestore( );
+    }
 
 
 	//攻撃効果中処理------------------------------------------------------------------------------
@@ -413,8 +415,7 @@ public class MainPhase : Phase {
 			_turnPlayer.SquareChangeColor( squares, false );
 			_uiActiveManager.AllButtonActiveChanger( false );
 	
-			_card = null;
-			_nowSquare = null;
+			GetDataReset( );
 
 			_mainPhaseStatus = MAIN_PHASE_STATUS.IDLE;
 			return;
@@ -425,8 +426,7 @@ public class MainPhase : Phase {
 			_turnPlayer.UseEffect( _card, _nowSquare );
 			_uiActiveManager.AllButtonActiveChanger( false );
 
-			_card = null;
-			_nowSquare = null;
+			GetDataReset( );
 
 			_mainPhaseStatus = MAIN_PHASE_STATUS.IDLE;
 			return;
@@ -450,8 +450,7 @@ public class MainPhase : Phase {
 			if ( square != null ) {
 				_turnPlayer.UseEffect( _card, _nowSquare, square );	//移動できるかどうかを判定し移動できたら移動する
 			}
-			_card = null;
-			_nowSquare = null;
+			GetDataReset( );
 
 			_mainPhaseStatus = MAIN_PHASE_STATUS.IDLE;
 			return;
@@ -461,8 +460,7 @@ public class MainPhase : Phase {
 			_turnPlayer.SquareChangeColor( squares, false );
 			_uiActiveManager.ButtonActiveChanger( false, UIActiveManager.BUTTON.BACK );
 
-			_card = null;
-			_nowSquare = null;
+			GetDataReset( );
 
 			_mainPhaseStatus = MAIN_PHASE_STATUS.IDLE;
 			return;
@@ -476,8 +474,7 @@ public class MainPhase : Phase {
 		if ( _mainSceneOperation.BackButtonClicked( ) ) {
 			_uiActiveManager.AllButtonActiveChanger( false );
 
-			_card = null;
-			_nowSquare = null;
+			GetDataReset( );
 
 			_mainPhaseStatus = MAIN_PHASE_STATUS.IDLE;
 			return;
@@ -487,8 +484,7 @@ public class MainPhase : Phase {
 			_turnPlayer.UseEffect( _card );
 			_uiActiveManager.AllButtonActiveChanger( false );
 
-			_card = null;
-			_nowSquare = null;
+			GetDataReset( );
 
 			_mainPhaseStatus = MAIN_PHASE_STATUS.IDLE;
 			return;
@@ -496,7 +492,13 @@ public class MainPhase : Phase {
 	}
 	//--------------------------------------------------------------
 
+
+	void GetDataReset( ) { 
+        _card = null;
+        _nowSquare = null;
+    }
 	
+
 	void ActiveTurnEndButton( ) { 
 		if ( _mainPhaseStatus == MAIN_PHASE_STATUS.IDLE && !_turnEndButton.activeInHierarchy ) { 
 			_uiActiveManager.ButtonActiveChanger( true, UIActiveManager.BUTTON.TURN_END_COLOR );

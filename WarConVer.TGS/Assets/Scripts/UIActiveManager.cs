@@ -13,10 +13,16 @@ public class UIActiveManager : MonoBehaviour {
 		TURN_END_COLOR,
 	}
 
+	public enum TEXT { 
+		NOW_ENEMY_TURN,
+		HAND_CARD_LIMIT,
+	}
+
 	[ SerializeField ] Field _field = null;
 
 	//ボタン
 	[ SerializeField ] List< GameObject > _UIButtons = new List< GameObject >( );
+	[ SerializeField ] List< GameObject > _texts	 = new List< GameObject >( ); 
 	[ SerializeField ] GameObject _turnEndButtonMono = null;
 
 	//パネル
@@ -38,6 +44,15 @@ public class UIActiveManager : MonoBehaviour {
 		for ( int i = 0; i < buttons.Length; i++ ) {
 			_UIButtons[ ( int )buttons[ i ] ].SetActive( active );
 			MonoAndColorSwap( buttons[ i ] );
+		}
+	}
+	//----------------------------------------------------------------------------
+
+
+	//指定のテキストの表示を切り替える----------------------------------------------
+	public void TextActiveChanger( bool active, params TEXT[ ] texts ) {
+		for ( int i = 0; i < texts.Length; i++ ) {
+			_texts[ ( int )texts[ i ] ].SetActive( active );
 		}
 	}
 	//----------------------------------------------------------------------------
