@@ -409,7 +409,7 @@ public class EnemyBehavior : MonoBehaviour {
 			List< Field.DIRECTION > preDirection = enemyMoveCard.Card_Data_Direction;
 			enemyMoveCard.Card_Data_Direction = enemyDirection;  //一時的にエネミーのカードの移動先を書き換えている。
 
-			List< Square > moveSquare = _field.MovePossibleSquare( enemyMoveCard, nowSquare );
+			List< Square > moveSquare = _field.MovePossibleSquare( enemyMoveCard, enemyMoveCard.Card_Data._directionOfTravel, nowSquare );
 
 			if ( moveSquare.Count == 0 ) {
 				enemyMoveCard.Card_Data_Direction = preDirection;
@@ -480,7 +480,7 @@ public class EnemyBehavior : MonoBehaviour {
 
 	//移動------------------------------------------------------------------
 	void MoveCard( CardMain card, Square nowSquare, Square moveSquare ) { 
-		_enemy.MoveCard( card, nowSquare, moveSquare );	
+		_enemy.MoveCard( card, card.Card_Data._directionOfTravel, card.Card_Data._necessaryAP, nowSquare, moveSquare );	
 	}
 	//-----------------------------------------------------------------------
 }

@@ -276,7 +276,7 @@ public class MainPhase : Phase {
 	
 	//カード移動状態処理----------------------------------------------------------------------------------------------------------------
 	void MoveCardStatus( ) {
-		List< Square > squares = _field.MovePossibleSquare( _card, _nowSquare );
+		List< Square > squares = _field.MovePossibleSquare( _card, _card.Card_Data._directionOfTravel, _nowSquare );
 
 		_turnPlayer.SquareChangeColor( squares, true );		//移動できるマスの色を変える
 
@@ -286,7 +286,7 @@ public class MainPhase : Phase {
 			_uiActiveManager.ButtonActiveChanger( false, UIActiveManager.BUTTON.BACK );
 
 			if ( square != null ) {
-				_turnPlayer.MoveCard( _card, _nowSquare, square );	//移動できるかどうかを判定し移動できたら移動する
+				_turnPlayer.MoveCard( _card, _card.Card_Data._directionOfTravel, _card.Card_Data._necessaryAP, _nowSquare, square );	//移動できるかどうかを判定し移動できたら移動する
 			}
 
 			//情報リセット
@@ -438,7 +438,7 @@ public class MainPhase : Phase {
 
 	//移動効果中処理---------------------------------------------------------------------------------
 	void MoveEffect( ) {
-		List< Square > squares = _field.MovePossibleSquare( _card, _nowSquare, _card.Card_Data._effect_distance );
+		List< Square > squares = _field.MovePossibleSquare( _card, _card.Card_Data._effect_direction, _nowSquare, _card.Card_Data._effect_distance );
 
 		_turnPlayer.SquareChangeColor( squares, true );
 
@@ -548,6 +548,3 @@ public class MainPhase : Phase {
 
 //ボタンの表示を全部消すときに二つ以上あったら全部表示を切り替える処理、一つだけなら指定のものだけ表示を切り替える処理でやっている。
 //無駄な処理をしている感じなのだろか？もしくはわかりづらいだろうか？
-
-
-//移動処理がうまくいっていない。普通に重なる →　再現ができない。再現でき次第確認
