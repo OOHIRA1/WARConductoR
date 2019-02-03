@@ -55,7 +55,7 @@ public class DeckSelectSceneManager : MonoBehaviour {
 			for (int i = 0; i < _deckSelectedButtons.Length; i++) {
 				_deckSelectedButtons [i].SetActive (false);
 			}
-			_selectedDeckData.USE_DECK = _decks[ (int)DECK_TYPE.WHITE ];
+			_selectedDeckData.USE_DECK_CARD_IDS = _decks[ (int)DECK_TYPE.WHITE ].CARD_IDS;
 			_confirmLogo.sprite = _confirmLogoSprites [ (int)DECK_TYPE.WHITE ];
 			_confirmPanel.SetActive (true);
 		}
@@ -63,7 +63,7 @@ public class DeckSelectSceneManager : MonoBehaviour {
 			for (int i = 0; i < _deckSelectedButtons.Length; i++) {
 				_deckSelectedButtons [i].SetActive (false);
 			}
-			_selectedDeckData.USE_DECK = _decks[ (int)DECK_TYPE.BLACK ];
+			_selectedDeckData.USE_DECK_CARD_IDS = _decks[ (int)DECK_TYPE.BLACK ].CARD_IDS;
 			_confirmLogo.sprite = _confirmLogoSprites [(int)DECK_TYPE.BLACK];
 			_confirmPanel.SetActive (true);
 

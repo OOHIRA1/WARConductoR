@@ -6,14 +6,14 @@ using UnityEngine;
 //
 //==DonotDestroyOnLoadなオブジェクトにアタッチ
 public class SelectedDeckData : MonoBehaviour {
-	[ SerializeField ] Deck _useDeck;	//ユーザーが使用するデッキ
+	[ SerializeField ] List<int> _useDeckCardIDs;	//ユーザーが使用するデッキ内ののカードIDリスト
 
 
 	//===============================================================
 	//アクセッサ
-	public Deck USE_DECK {
-		get { return _useDeck; }
-		set { _useDeck = value; }
+	public List<int> USE_DECK_CARD_IDS {
+		get { return _useDeckCardIDs; }
+		set { _useDeckCardIDs = value; }
 	}
 	//===============================================================
 	//===============================================================

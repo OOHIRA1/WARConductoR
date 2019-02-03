@@ -323,6 +323,12 @@ public class Participant : MonoBehaviour {
 		}
 	}
 
+
+	//--デッキをセットする関数
+	public void SetDeck( List<int> cardIDs ) {
+		_deck.SetDeck( cardIDs );
+	}
+
 	void AddMyFieldCards( CardMain card ) { 
 		_cardInField.Add( card );
 	}

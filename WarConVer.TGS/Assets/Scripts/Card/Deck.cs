@@ -16,6 +16,11 @@ public class Deck : MonoBehaviour {
 	public int deckNum {
 		get { return _deckNum; }
 	}
+
+
+	public List<int> CARD_IDS {
+		get { return _cardIDs; }
+	}
 	//===============================================================
 	//===============================================================
 
@@ -62,6 +67,12 @@ public class Deck : MonoBehaviour {
 	//--デッキにカードを戻す関数
 	public void ReturnCard( int cardID ) {
 		_cardIDs.Add( cardID );
+	}
+
+
+	//--デッキをセットする関数
+	public void SetDeck( List<int> cardIDs ) {
+		_cardIDs = cardIDs;
 	}
 	//=======================================================================================================================
 	//=======================================================================================================================

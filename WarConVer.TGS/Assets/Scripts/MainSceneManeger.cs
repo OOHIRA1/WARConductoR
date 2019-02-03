@@ -40,6 +40,8 @@ public class MainSceneManeger : MonoBehaviour {
 	Participant _turnPlayer = null;		//そのターンのプレイヤー
 	Participant _enemyPlayer = null;	//そのターンのプレイヤーではないほう
 
+	SelectedDeckData _selectedDeckData = null;
+
 	private void Awake( ) {
 		//先行後攻を判別して入れ替えられる。
 		if ( _order == ATTACK_FIRST_OR_SECOND.FIRST ) {
@@ -56,6 +58,13 @@ public class MainSceneManeger : MonoBehaviour {
 
 	void Start( ) {
 		ReferenceCheck( );
+		//自分のデッキをセットする----------------------------------------------------
+		GameObject deckDataObj = GameObject.FindGameObjectWithTag("DeckData");
+		if ( deckDataObj ) {
+			_selectedDeckData = deckDataObj.GetComponent<SelectedDeckData>( );
+			_player1.SetDeck( _selectedDeckData.USE_DECK_CARD_IDS );
+		}
+		//----------------------------------------------------------------------------
 	}
 
 	
