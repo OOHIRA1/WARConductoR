@@ -31,7 +31,7 @@ public class TitleSceneManager : MonoBehaviour {
 			_titleSounder.volume -= Time.deltaTime / _fadeOutTime;
 			if (_titleSounder.volume <= 0) {
 				_titleSounder.Stop ();
-				_sceneTransition.Transition ( "Main" );//メインシーンへ遷移
+				_sceneTransition.Transition ( "DeckSelect" );//デッキ選択シーンへ遷移
 			}
 		}
 		//--------------------------------------------------------------
