@@ -101,7 +101,7 @@ public class UIActiveManager : MonoBehaviour {
 
 			case CardData.EFFECT_TYPE.MOVE:
 				if ( turnPlayer.DecreaseActivePointConfirmation( card.Card_Data._necessaryAPForEffect ) && 
-					 _field.MovePossibleSquare( card, nowSquare, card.Card_Data._effect_distance ).Count > 0 &&
+					 _field.MovePossibleSquare( card, card.Card_Data._effect_direction, nowSquare, card.Card_Data._effect_distance ).Count > 0 &&
 					 card.Action_Count < card.MAX_ACTION_COUNT ) {
 
 					ButtonActiveChanger( true, BUTTON.EFFECT );
@@ -133,7 +133,7 @@ public class UIActiveManager : MonoBehaviour {
 
 		//APが消費する分あって移動できるマスがあったてまだ行動できるカードだったら
 		if ( turnPlayer.DecreaseActivePointConfirmation( card.Card_Data._necessaryAP ) &&
-			 _field.MovePossibleSquare( card, nowSquare ).Count > 0 &&
+			 _field.MovePossibleSquare( card, card.Card_Data._directionOfTravel, nowSquare ).Count > 0 &&
 			 card.Action_Count < card.MAX_ACTION_COUNT ) {
 
 			ButtonActiveChanger( true, BUTTON.MOVE );

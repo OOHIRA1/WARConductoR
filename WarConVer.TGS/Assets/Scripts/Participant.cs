@@ -7,6 +7,7 @@ public class Participant : MonoBehaviour {
 	const int MAX_MAGIC_POINT = 12;
 	const int ADD_CEMETARY_POINT = 1;
 	const int UP_MAGIC_POINT = 1;
+	const float ENEMY_FIELD_CARD_ROTA_X = 180.0f;
 
 	[ SerializeField ] Hand  _hand			= null;
 	[ SerializeField ] Deck  _deck			= null;
@@ -21,14 +22,11 @@ public class Participant : MonoBehaviour {
 	[ SerializeField ] AutoDestroyEffect _moveEffect = null;
 	[ SerializeField ] AutoDestroyBattleSpace _battleSpacePrefab = null;
 	[ SerializeField ] AutoNonActiveLPSpace _opponentLifeSpace = null;		//対戦相手のライフスペース
-
+	[ SerializeField ] GameObject _fieldCard = null;
 
 	List< CardMain > _cardInField  = new List< CardMain >( );			//フィールドの自分のカードの参照
 	CardDamageManager _cardDamageManager = new CardDamageManager( );
 	bool _loseFlag = false;
-
-	//テスト用
-	[ SerializeField ] GameObject _fieldCard = null;
 
 
 	public int Hand_Num { 
@@ -72,11 +70,11 @@ public class Participant : MonoBehaviour {
 
 
 	//カードを移動させる(返り値に移動できたかをboolで返す)-----------------------------------------------------------------------------------------------------------------------------
-	public bool MoveCard( CardMain card, Square nowSquare, Square moveSquare, int distans = 1 ) {
+	public bool MoveCard( CardMain card, List< Field.DIRECTION > direction, int ap, Square nowSquare, Square moveSquare, int distans = 1 ) {
 		List< Square > squares = new List< Square >( );
 
 		//移動できるマスだけ格納
-		squares = _field.MovePossibleSquare( card, nowSquare, distans );
+		squares = _field.MovePossibleSquare( card, direction, nowSquare, distans );
 
 		CardDamageManager.BATTLE_RESULT result = CardDamageManager.BATTLE_RESULT.NOT_BATTLE;
 		//移動できるマスの中に移動したいマスがあるか探す
@@ -85,9 +83,16 @@ public class Participant : MonoBehaviour {
 
 			if ( squares[ i ].On_Card != null ) {
 				if ( squares[ i ].On_Card.gameObject.tag != card.gameObject.tag ) {		//移動したマスに自分のじゃないカードがあったら
-					Sprite movingCardSprite = new Sprite( );
+					Texture2D moveingCardTexture = nowSquare.On_Card.Card_Sprite_Renderer.sprite.texture;
+					Sprite movingCardSprite = Sprite.Create( moveingCardTexture,													//Sprite のグラフィックスとして適用させるテクスチャ
+															 new Rect( 0,0, moveingCardTexture.width, moveingCardTexture.height ),	//Sprite に適用させるテクスチャの Rect 領域
+															 new Vector2( 0.5f, 0.5f ) );											//グラフィックスの Rect に対するピボット地点の相対位置 //中心
 					movingCardSprite = nowSquare.On_Card.Card_Sprite_Renderer.sprite;
-					Sprite notMoveCardSprite = new Sprite( );
+
+					Texture2D notMovingCardTexture = squares[ i ].On_Card.Card_Sprite_Renderer.sprite.texture;
+					Sprite notMoveCardSprite = Sprite.Create( notMovingCardTexture,
+															  new Rect( 0,0, notMovingCardTexture.width, notMovingCardTexture.height ),
+															  new Vector2( 0.5f,0.5f ) );
 					notMoveCardSprite = squares[ i ].On_Card.Card_Sprite_Renderer.sprite;
 
 					result = _cardDamageManager.CardBattleDamage( nowSquare, squares[ i ] );
@@ -137,7 +142,7 @@ public class Participant : MonoBehaviour {
 			}
 
 			card.Action_Count++;
-			_activePoint.DecreasePoint( card.Card_Data._necessaryAP );
+			_activePoint.DecreasePoint( ap );
 			return true;
 			
 		}
@@ -202,7 +207,7 @@ public class Participant : MonoBehaviour {
 
 	//移動効果(オーバロード)-------------------------------------------------------------
 	public void UseEffect( CardMain card, Square nowSquare, Square touchSquare ) { 
-		bool isMoved = MoveCard( card, nowSquare, touchSquare, card.Card_Data._effect_distance );
+		bool isMoved = MoveCard( card, card.Card_Data._effect_direction, card.Card_Data._necessaryAPForEffect, nowSquare, touchSquare, card.Card_Data._effect_distance );
 		//エフェクト処理-----------------------------------------------------------------------------------------
 		if ( isMoved ) {
 			Instantiate< AutoDestroyEffect >( _moveEffect, touchSquare.transform.position, Quaternion.identity );
@@ -232,7 +237,12 @@ public class Participant : MonoBehaviour {
 
 			_hand.DecreaseHandCard( card );
 			GameObject fieldCardObj = Instantiate( _fieldCard, square.transform.position, Quaternion.identity );	//生成はHnadがやるプレイヤーがやる？
-			
+
+			if ( fieldCardObj.gameObject.tag == ConstantStorehouse.TAG_PLAYER2 ) {
+				fieldCardObj.transform.eulerAngles = new Vector3( ENEMY_FIELD_CARD_ROTA_X, 0, 0 );	//反転
+			}
+
+
 			CardMain fieldCard = fieldCardObj.GetComponent< CardMain >( );
 			fieldCard.loadID = card.loadID;
 
