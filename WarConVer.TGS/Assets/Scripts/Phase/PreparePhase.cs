@@ -15,6 +15,7 @@ public class PreparePhase : Phase {
 	UIActiveManager _uiActiveManager;
 	bool _isDrawFinished;		//初期ドローをし終わったかどうかのフラグ
 	bool _isPrepareFinished;	//プリペアフェーズ処理が終わったかどうかのフラグ
+	bool _isMulliganed;			//マリガンを行ったかどうかのフラグ
 
 
 	//================================================================
@@ -26,6 +27,7 @@ public class PreparePhase : Phase {
 		_uiActiveManager = uiActiveManager;
 		_isDrawFinished = false;
 		_isPrepareFinished = false;
+		_isMulliganed = false;
 
 		Debug.Log ( "プリペアフェーズ" );
 	}
@@ -61,14 +63,16 @@ public class PreparePhase : Phase {
 			}
 			//-----------------------------------------------------------
 
-			_uiActiveManager.MulliganPanelActiveChanger( true );//マリガンパネルの表示
-
+			if ( !_isMulliganed ) {
+				_uiActiveManager.MulliganPanelActiveChanger( true );//マリガンパネルの表示
+			}
 			_isDrawFinished = true;
 		}
 
 		//マリガンYesボタンを押したときの処理--------------------------
 		if ( _mainSceneOperation.MulliganYesButtonClicked( ) ) {
 			_isDrawFinished = false;
+			_isMulliganed = true;
 			_uiActiveManager.MulliganPanelActiveChanger( false );
 			_turnPlayer.ReturnCardFromHandToDeck( );
 			_enemyPlayer.ReturnCardFromHandToDeck( );
@@ -81,6 +85,12 @@ public class PreparePhase : Phase {
 			_isPrepareFinished = true;
 		}
 		//------------------------------------------------------------
+
+		//マリガン処理を行ってかつ、初期ドローを終わった時の処理-----------
+		if ( _isMulliganed && _isDrawFinished ) {
+			_isPrepareFinished = true;
+		}
+		//--------------------------------------------------------------
 	}
 
 
