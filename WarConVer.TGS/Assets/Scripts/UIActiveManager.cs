@@ -13,6 +13,12 @@ public class UIActiveManager : MonoBehaviour {
 		TURN_END_COLOR,
 	}
 
+	public enum INTERRUPTION {
+		INTERRUPTION,
+		INTERRUPTION_YES,
+		INTERRUPTION_NO,
+	}
+
 	public enum TEXT { 
 		NOW_ENEMY_TURN,
 		HAND_CARD_LIMIT,
@@ -22,6 +28,7 @@ public class UIActiveManager : MonoBehaviour {
 
 	//ボタン
 	[ SerializeField ] List< GameObject > _UIButtons = new List< GameObject >( );
+	[ SerializeField ] List< GameObject > _interruptionButton = new List< GameObject >( );
 	[ SerializeField ] List< GameObject > _texts	 = new List< GameObject >( ); 
 	[ SerializeField ] GameObject _turnEndButtonMono = null;
 
@@ -44,6 +51,15 @@ public class UIActiveManager : MonoBehaviour {
 		for ( int i = 0; i < buttons.Length; i++ ) {
 			_UIButtons[ ( int )buttons[ i ] ].SetActive( active );
 			MonoAndColorSwap( buttons[ i ] );
+		}
+	}
+	//----------------------------------------------------------------------------
+
+
+	//指定の中断ボタンの表示を切り替える----------------------------------------------
+	public void InterruptionButtonActiveChanger( bool active, params INTERRUPTION[ ] interruptionButton ) {
+		for ( int i = 0; i < interruptionButton.Length; i++ ) {
+			_interruptionButton[ ( int )interruptionButton[ i ] ].SetActive( active );
 		}
 	}
 	//----------------------------------------------------------------------------

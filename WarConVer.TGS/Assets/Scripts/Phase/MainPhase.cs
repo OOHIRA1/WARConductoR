@@ -29,32 +29,31 @@ public class MainPhase : Phase {
 	Participant _enemyPlayer			   = null;
 	EnemyBehavior _enemyBehavior		   = null;
 	UIActiveManager _uiActiveManager	   = null;
+	Field _field						   = null;
+	SceneTransition _sceneTransition	   = null;
 	RayShooter _rayShooter				   = new RayShooter( );
 	Vector3 _handCardPos				   = Vector3.zero;
 	MAIN_PHASE_STATUS _mainPhaseStatus	   = MAIN_PHASE_STATUS.IDLE;
 	bool _turnEndFlag					   = false;
-	bool _enemyUpdateStartFlag = true;
-	Field _field = null;
-
+	bool _enemyUpdateStartFlag			   = true;
 
 	//ボタン
 	GameObject _turnEndButton	   = null;
 
 
 	public MainPhase( Participant turnPlayer, Participant enemyPlayer, MainSceneOperation mainSceneQperation, UIActiveManager uIActiveManager, Field field,
-					  GameObject turnEndButton,
-					  EnemyBehavior enemyBehavior ) {
+					  GameObject turnEndButton, EnemyBehavior enemyBehavior, SceneTransition sceneTransition ) {
 
 		_turnPlayer = turnPlayer;
 		_enemyPlayer = enemyPlayer;
 		_mainSceneOperation = mainSceneQperation;
 		_uiActiveManager = uIActiveManager;
-
 		_field = field;
+		_enemyBehavior = enemyBehavior;
+		_sceneTransition = sceneTransition;
 
 		_turnEndButton = turnEndButton;
 
-		_enemyBehavior = enemyBehavior;
 
 		//敵プレイヤーターン中に表示するテキスト
         if ( _turnPlayer.gameObject.tag == ConstantStorehouse.TAG_PLAYER2 ) { 
@@ -74,6 +73,8 @@ public class MainPhase : Phase {
 
 	public override void PhaseUpdate( ) {
 		LoseTerms( );
+		InterruptionButtonClicked( );
+		Interruption( );
 
 		if ( _turnPlayer.gameObject.tag == "Player2" ) {
 			EnemyTurnUpdate( );
@@ -339,7 +340,8 @@ public class MainPhase : Phase {
 				HandCardRestore( );
 				_mainPhaseStatus = MAIN_PHASE_STATUS.HAND_CARD_DETAILS;
 				return;
-			} else { 
+			} else {
+				_turnPlayer.SquareChangeColor( summonableSquares, false );
 				_mainPhaseStatus = MAIN_PHASE_STATUS.HANC_CARD_SUMMON;
 				return;
 			}
@@ -350,7 +352,7 @@ public class MainPhase : Phase {
 
 	//手札の詳細表示状態-------------------------------------------------------------------
 	void HnadCardDetailsStatus( ) { 
-		if ( _mainSceneOperation.BackButtonClicked( ) ) { 
+		if ( _mainSceneOperation.BackButtonClicked( ) ) {
 			_handCard.DeleteCardDetail( );
 			_uiActiveManager.ButtonActiveChanger( false, UIActiveManager.BUTTON.BACK );
 			_mainPhaseStatus = MAIN_PHASE_STATUS.IDLE;
@@ -519,6 +521,27 @@ public class MainPhase : Phase {
 	}
 
 
+	void InterruptionButtonClicked( ) {
+		if ( _mainSceneOperation.InterruptionButtonClicked( ) )	{ 
+			_uiActiveManager.InterruptionButtonActiveChanger( true, UIActiveManager.INTERRUPTION.INTERRUPTION_YES, UIActiveManager.INTERRUPTION.INTERRUPTION_NO );
+			_uiActiveManager.InterruptionButtonActiveChanger( false, UIActiveManager.INTERRUPTION.INTERRUPTION );
+		}
+	}
+
+	void Interruption( ) { 
+		if ( _mainSceneOperation.InterruptionYesButtonClicked( ) ) { 
+			_uiActiveManager.InterruptionButtonActiveChanger( false, UIActiveManager.INTERRUPTION.INTERRUPTION_YES, UIActiveManager.INTERRUPTION.INTERRUPTION_NO );
+			_precedenceOneTurnFlag = true;
+			_sceneTransition.Transition( "Title" );
+		}
+
+		if ( _mainSceneOperation.InterruptionNoButtonClicked( ) ) { 
+			_uiActiveManager.InterruptionButtonActiveChanger( false, UIActiveManager.INTERRUPTION.INTERRUPTION_YES, UIActiveManager.INTERRUPTION.INTERRUPTION_NO );
+			_uiActiveManager.InterruptionButtonActiveChanger( true, UIActiveManager.INTERRUPTION.INTERRUPTION );
+		}
+	}
+
+
 	void LoseTerms( ) { 
 		if ( _enemyPlayer.Lefe_Point <= 0 ) { 
 			_enemyPlayer.Lose_Flag = true;
@@ -548,3 +571,7 @@ public class MainPhase : Phase {
 
 //ボタンの表示を全部消すときに二つ以上あったら全部表示を切り替える処理、一つだけなら指定のものだけ表示を切り替える処理でやっている。
 //無駄な処理をしている感じなのだろか？もしくはわかりづらいだろうか？
+
+
+//中断処理を無理やり追加。あとでリファクタリングするべし
+//デッキデータがリセットされないバグあり
