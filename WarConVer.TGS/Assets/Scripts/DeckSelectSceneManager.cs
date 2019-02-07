@@ -37,6 +37,16 @@ public class DeckSelectSceneManager : MonoBehaviour {
 		_isBlackDeckSelectButtonClicked = false;
 		_isEnterButtonClicked = false;
 		_isCancelButtonClicked = false;
+		GameObject[] selectedDeckDataObjs = GameObject.FindGameObjectsWithTag ( "DeckData" );
+		if (selectedDeckDataObjs.Length >= 2) {//2つ以上存在した場合
+			for (int i = 0; i < selectedDeckDataObjs.Length; i++) {
+				if (selectedDeckDataObjs [i].scene.name == "DontDestroyOnLoad") {
+					_selectedDeckData = selectedDeckDataObjs [i].GetComponent< SelectedDeckData >( );
+				}
+			}
+		} else {
+			_selectedDeckData = selectedDeckDataObjs [0].GetComponent< SelectedDeckData >( );
+		}
 	}
 	
 	// Update is called once per frame
