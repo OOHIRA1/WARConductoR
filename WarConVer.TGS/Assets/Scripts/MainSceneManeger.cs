@@ -13,7 +13,7 @@ public class MainSceneManeger : MonoBehaviour {
 	}
 
 	//テスト用(プレイヤー１を中心に考えている)
-	enum ATTACK_FIRST_OR_SECOND { 
+	public enum ATTACK_FIRST_OR_SECOND { 
 		FIRST,
 		SECOND
 	}
@@ -25,6 +25,7 @@ public class MainSceneManeger : MonoBehaviour {
 	[ SerializeField ] EnemyBehavior _enemyBehavior = null;
 	[ SerializeField ] Field _field = null;
 	[ SerializeField ] ResultPerformance _resultPerformance = null;
+	[ SerializeField ] SceneTransition _sceneTransition = null;
 
 	//エフェクト系
 	[ SerializeField ] GameObject _tapEffect = null;
@@ -33,7 +34,7 @@ public class MainSceneManeger : MonoBehaviour {
 	[ SerializeField ] GameObject _turnEndButton = null;
 
 	//テスト用
-	[ SerializeField ] ATTACK_FIRST_OR_SECOND _order = ATTACK_FIRST_OR_SECOND.FIRST;
+	[ SerializeField ] ATTACK_FIRST_OR_SECOND _order = ATTACK_FIRST_OR_SECOND.FIRST;	//緊急用でpublic static
 
 	Phase _phase = null;
 	PHASE _phaseStatus = PHASE.PREPARE;
@@ -127,8 +128,7 @@ public class MainSceneManeger : MonoBehaviour {
 
 			case PHASE.MAIN:
 				_phase = new MainPhase( _turnPlayer, _enemyPlayer, _mainSceneOperation, _uIActiveManager, _field,
-									    _turnEndButton,
-										_enemyBehavior );
+									    _turnEndButton,_enemyBehavior, _sceneTransition );
 				break;
 
 			case PHASE.END:

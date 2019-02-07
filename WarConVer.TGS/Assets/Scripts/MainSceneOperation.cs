@@ -4,15 +4,17 @@ using UnityEngine;
 
 public class MainSceneOperation : MonoBehaviour {
 	float _holdCount = 0;
-	bool _backButtonClicked 	 	 = false; 
-	bool _moveButtonClicked      	 = false;
-	bool _attackButtonClicked    	 = false;
-	bool _effectButtonClicked    	 = false;
-	bool _effectYesButtonClicked 	 = false;
-	bool _turnEndButtonClicked   	 = false;
-	bool _mulliganYesButtonClicked 	 = false;
-	bool _mulliganNoButtonClicked 	 = false;
-
+	bool _backButtonClicked 	 	   = false; 
+	bool _moveButtonClicked      	   = false;
+	bool _attackButtonClicked    	   = false;
+	bool _effectButtonClicked    	   = false;
+	bool _effectYesButtonClicked 	   = false;
+	bool _turnEndButtonClicked   	   = false;
+	bool _mulliganYesButtonClicked 	   = false;
+	bool _mulliganNoButtonClicked 	   = false;
+	bool _interruptionButtonClicked	   = false;
+	bool _interruptionYesButtonClicked = false;
+	bool _interruptionNoButtonClicked  = false;
 
 
 	public bool MouseTouch( ) {
@@ -188,6 +190,49 @@ public class MainSceneOperation : MonoBehaviour {
 		_mulliganNoButtonClicked = true;
 	}
 	//---------------------------------------------------------
+
+
+	public bool InterruptionButtonClicked( ) { 
+		if ( _interruptionButtonClicked ) { 
+			_interruptionButtonClicked = false;
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public void ClickInterruptionButton( ) { 
+		_interruptionButtonClicked = true;	
+	}
+
+
+	public bool InterruptionYesButtonClicked( ) { 
+		if ( _interruptionYesButtonClicked ) { 
+			_interruptionYesButtonClicked = false;
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public void ClickInterruptionYesButton( ) { 
+		_interruptionYesButtonClicked = true;	
+	}
+
+
+	public bool InterruptionNoButtonClicked( ) { 
+		if ( _interruptionNoButtonClicked ) { 
+			_interruptionNoButtonClicked = false;
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public void ClickInterruptionNoButton( ) { 
+		_interruptionNoButtonClicked = true;	
+	}
+
 
 	public float getHoldCount( ) { 
 		float holdCount = _holdCount;
